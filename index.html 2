@@ -1,0 +1,103 @@
+<h1 id="introduction">Introduction</h1>
+
+<p>The Mach1 Spatial SDK includes three components and libraries: 
+  - Mach1Encode lib
+  - Mach1Decode lib
+  - Mach1Transcode lib
+This allows developers to design applications that can encode or pan to a spatial audio render from audio streams and/or playback and decode Mach1Spatial 8channel spatial audio mixes with orientation to decode the correct stereo output sum of the user&rsquo;s current orientation. 
+The Mach1Transcode lib allows users to safely convert surround/spatial audio mixes to and from the Mach1Spatial or Mach1Horizon formats. </p>
+
+<h1 id="mach1decode-setup">Mach1Decode Setup</h1>
+
+<blockquote>
+<p>Import the appropriate library file and external headers to your project and initialize the library:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>    Mach1Decode mach1Decode;
+</code></pre></div>
+<blockquote>
+<p>Use the <code class="prettyprint">setAngularSettings</code> function to set the device&rsquo;s angle order and convention if applicable:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>    mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
+</code></pre></div>
+<blockquote>
+<p>Setup the appropriate angles:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>void M1AudioPlayer::SetAngles(float Yaw, float Pitch, float Roll)
+{
+    this-&gt;Yaw = Yaw;
+    this-&gt;Pitch = Pitch;
+    this-&gt;Roll = Roll;
+}
+</code></pre></div>
+<blockquote>
+<p>Setup buffer playback and use orientation angles to change the spatial audio coefficients correctly per buffer: </p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>bool M1AudioPlayer::Get(short * buf, int samples)
+{
+    if (ready &amp;&amp; running)
+    {
+        size_t idx = 0;
+
+        float sndL = 0;
+        float sndR = 0;
+        float volumes[18]; //16 coefficients of spatial, 2 coefficients of headlocked stereo
+
+        mach1Decode.beginBuffer();
+        for (size_t i = 0; i &lt; samples; i++)
+        {
+            mach1Decode.spatialAlgo(Yaw, Pitch, Roll, volumes, samples, i);
+
+            sndL = 0;
+            sndR = 0;
+
+            idx = (bufferRead + i) % AUDIO_PLAYER_BUFFERSIZE;
+
+            for (int j = 0; j &lt; 8; j++)
+            {
+                sndL += volumes[j * 2 + 0] * buffer[j][idx];
+                sndR += volumes[j * 2 + 1] * buffer[j][idx];
+            }
+
+            if (sndL &gt; 1) sndL = 1;
+            if (sndL &lt; -1) sndL = -1;
+
+            if (sndR &gt; 1) sndR = 1;
+            if (sndR &lt; -1) sndR = -1;
+
+            buf[i * 2 + 0] = (short) (sndL * (SHRT_MAX-1));
+            buf[i * 2 + 1] = (short) (sndR * (SHRT_MAX-1));
+        }
+        mach1Decode.endBuffer();
+
+        bufferRead += samples;
+
+        return true;
+    }
+    else
+    {
+        for (size_t i = 0; i &lt; samples; i++)
+        {
+            buf[i * 2 + 0] = buf[i * 2 + 1] = 0;
+        }
+
+        return false;
+    }
+}
+</code></pre></div>
+<h1 id="common-issues">Common Issues</h1>
+
+<blockquote>
+<p>The following will list common heard issues during implementation and include audio tools to help find these issues as well as basic descriptions of their behavior and how they can be avoided.</p>
+</blockquote>
+
+<h3 id="orientation-latency-issues">Orientation Latency Issues</h3>
+
+<h3 id="orientation-rate-issues-zipper">Orientation Rate Issues (Zipper)</h3>
+
+<h3 id="audio-visual-sync-issues">Audio/Visual Sync Issues</h3>
+
+<h3 id="spatial-decoding-phase-issues">Spatial Decoding Phase Issues</h3>
+
+<h1 id="mach1transcode-use">Mach1Transcode Use</h1>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>m1fmtconv <span class="nt">--help</span>
+</code></pre></div>
