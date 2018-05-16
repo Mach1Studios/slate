@@ -283,6 +283,18 @@
                     <a href="#end-buffer" class="toc-h2 toc-link" data-title="Mach1Decode API">End Buffer</a>
                   </li>
                   <li>
+                    <a href="#mach1spatial-decode" class="toc-h2 toc-link" data-title="Mach1Decode API">Mach1Spatial Decode</a>
+                  </li>
+                  <li>
+                    <a href="#mach1horizon-decode" class="toc-h2 toc-link" data-title="Mach1Decode API">Mach1Horizon Decode</a>
+                  </li>
+                  <li>
+                    <a href="#mach1horizonpairs-decode" class="toc-h2 toc-link" data-title="Mach1Decode API">Mach1HorizonPairs Decode</a>
+                  </li>
+                  <li>
+                    <a href="#mach1spatialpairs-decode" class="toc-h2 toc-link" data-title="Mach1Decode API">Mach1SpatialPairs Decode</a>
+                  </li>
+                  <li>
                     <a href="#return-coefficients-example" class="toc-h2 toc-link" data-title="Mach1Decode API">Return Coefficients Example</a>
                   </li>
                   <li>
@@ -303,6 +315,9 @@
                     <a href="#formats-supported" class="toc-h2 toc-link" data-title="Mach1Transcode API">Formats Supported</a>
                   </li>
               </ul>
+          </li>
+          <li>
+            <a href="#positional-spatial-functions" class="toc-h1 toc-link" data-title="Positional Spatial Functions">Positional Spatial Functions</a>
           </li>
           <li>
             <a href="#common-issues" class="toc-h1 toc-link" data-title="Common Issues">Common Issues</a>
@@ -340,8 +355,20 @@
 
 <p>This allows developers to design applications that can encode or pan to a spatial audio render from audio streams and/or playback and decode Mach1Spatial 8channel spatial audio mixes with orientation to decode the correct stereo output sum of the user&#39;s current orientation. 
 The Mach1Transcode lib allows users to safely convert surround/spatial audio mixes to and from the Mach1Spatial or Mach1Horizon formats. </p>
-<h1 id='mach1encode-api'>Mach1Encode API</h1><h2 id='create'>Create</h2><pre class="highlight cpp tab-cpp"><code><span class="n">M1Encode</span> <span class="n">m1Encode</span><span class="p">;</span>
-</code></pre><h2 id='delete'>Delete</h2><pre class="highlight cpp tab-cpp"><code><span class="n">M1Encode</span> <span class="o">~</span><span class="n">m1Encode</span><span class="p">;</span>
+<h1 id='mach1encode-api'>Mach1Encode API</h1><h2 id='create'>Create</h2><pre class="highlight cpp tab-cpp"><code><span class="n">Mach1Encode</span><span class="o">::</span><span class="n">Mach1Encode</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">Mach1Encode</span> <span class="o">=</span> <span class="n">Mach1EncodeCAPI_create</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre><pre class="highlight swift tab-swift"><code><span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">Mach1Encode</span> <span class="o">=</span> <span class="kt">Mach1EncodeCAPI_create</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre><h2 id='delete'>Delete</h2><pre class="highlight cpp tab-cpp"><code><span class="n">Mach1Encode</span><span class="o">::</span><span class="n">Mach1Encode</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">Mach1Encode</span> <span class="o">=</span> <span class="n">Mach1EncodeCAPI_create</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre><pre class="highlight swift tab-swift"><code><span class="kd">deinit</span> <span class="p">{</span>
+    <span class="kt">Mach1EncodeCAPI_delete</span><span class="p">(</span><span class="kt">Mach1Encode</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre><h2 id='generate-point-results'>Generate Point Results</h2>
 <p>Returns the resulting <code>points</code> coefficients based on selected and calculated input/output configuration.</p>
 <pre class="highlight cpp tab-cpp"><code><span class="k">auto</span> <span class="n">points</span> <span class="o">=</span> <span class="n">m1Encode</span><span class="p">.</span><span class="n">generatePointResults</span><span class="p">();</span>
@@ -438,10 +465,10 @@ The Mach1Transcode lib allows users to safely convert surround/spatial audio mix
 </blockquote>
 <pre class="highlight cpp tab-cpp"><code><span class="n">Mach1Decode</span><span class="o">::</span><span class="n">Mach1Decode</span><span class="p">()</span>
 <span class="p">{</span>
-  <span class="n">M1obj</span> <span class="o">=</span> <span class="n">Mach1DecodeCAPI_create</span><span class="p">();</span>
+  <span class="n">Mach1Decode</span> <span class="o">=</span> <span class="n">Mach1DecodeCAPI_create</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre><pre class="highlight swift tab-swift"><code><span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kt">M1obj</span> <span class="o">=</span> <span class="kt">Mach1DecodeCAPI_create</span><span class="p">()</span>
+    <span class="kt">Mach1Decode</span> <span class="o">=</span> <span class="kt">Mach1DecodeCAPI_create</span><span class="p">()</span>
 <span class="p">}</span>
 </code></pre><h2 id='delete'>Delete</h2>
 <blockquote>
@@ -449,10 +476,10 @@ The Mach1Transcode lib allows users to safely convert surround/spatial audio mix
 </blockquote>
 <pre class="highlight cpp tab-cpp"><code><span class="n">Mach1Decode</span><span class="o">::~</span><span class="n">Mach1Decode</span><span class="p">()</span>
 <span class="p">{</span>
-  <span class="n">Mach1DecodeCAPI_delete</span><span class="p">(</span><span class="n">M1obj</span><span class="p">);</span>
+  <span class="n">Mach1DecodeCAPI_delete</span><span class="p">(</span><span class="n">Mach1Decode</span><span class="p">);</span>
 <span class="p">}</span> 
 </code></pre><pre class="highlight swift tab-swift"><code><span class="kd">deinit</span> <span class="p">{</span>
-    <span class="kt">Mach1DecodeCAPI_delete</span><span class="p">(</span><span class="kt">M1obj</span><span class="p">)</span>
+    <span class="kt">Mach1DecodeCAPI_delete</span><span class="p">(</span><span class="kt">Mach1Decode</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre><h2 id='set-angular-type'>Set Angular Type</h2>
 <blockquote>
@@ -463,22 +490,49 @@ Use the <code>setAngularSettings</code> function to set the device&#39;s angle o
 <ul>
 <li>m1Default</li>
 <li>m1Unity</li>
-<li>M1UE</li>
-<li>M1oFEasyCam</li>
+<li>m1UE</li>
+<li>m1oFEasyCam</li>
 <li>m1Android</li>
 <li>m1iOSPortrait</li>
 <li>m1iOSLandscape</li>
 </ul>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">Mach1Decode</span><span class="o">::</span><span class="n">setAngularSettingsType</span><span class="p">(</span><span class="n">AngularSettingsType</span> <span class="n">type</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="n">Mach1DecodeCAPI_setAngularSettingsType</span><span class="p">(</span><span class="n">M1obj</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">type</span><span class="p">);</span>
+  <span class="n">Mach1DecodeCAPI_setAngularSettingsType</span><span class="p">(</span><span class="n">Mach1Decode</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">type</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre>
 <!-- ```android
 mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
 ``` -->
-<pre class="highlight swift tab-swift"><code><span class="n">m1obj</span><span class="o">.</span><span class="nf">setAngularSettingsType</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">AngularSettingsType</span><span class="o">.</span><span class="n">m1iOSPortrait</span><span class="p">)</span>
-</code></pre><h2 id='begin-buffer'>Begin Buffer</h2><h2 id='end-buffer'>End Buffer</h2><h2 id='return-coefficients-example'>Return Coefficients Example</h2>
+<pre class="highlight swift tab-swift"><code><span class="n">mach1Decode</span><span class="o">.</span><span class="nf">setAngularSettingsType</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">AngularSettingsType</span><span class="o">.</span><span class="n">m1iOSPortrait</span><span class="p">)</span>
+</code></pre><h2 id='begin-buffer'>Begin Buffer</h2><h2 id='end-buffer'>End Buffer</h2><h2 id='mach1spatial-decode'>Mach1Spatial Decode</h2>
+<p>8 Channel spatial mix decoding from our cuboid configuration. 
+This is the default and recommended decoding utilizing isotropic decoding behavior.</p>
+
+<blockquote>
+<p>Default Isotropic Decoding: </p>
+</blockquote>
+<pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">spatialAlgo</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>Alternative Periphonic Decoding:</p>
+</blockquote>
+<pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">spatialAltAlgo</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre>
+<p>Add headlocked / noon-diegetic stereo mix to the output summed coefficients.</p>
+<h2 id='mach1horizon-decode'>Mach1Horizon Decode</h2>
+<p>4 channel spatial mix decoding for compass / yaw only configurations.
+Also able to decode and virtualize a first person perspective of Quad Surround mixes. </p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">horizonAlgo</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre>
+<p>Add headlocked / noon-diegetic stereo mix to the output summed coefficients.</p>
+<h2 id='mach1horizonpairs-decode'>Mach1HorizonPairs Decode</h2>
+<p>8 channel spatial mix decoding for compass / yaw only that can support headlocked / non-diegetic stereo elements to be mastered within the mix / 8 channels.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">horizonPairsAlgo</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre><h2 id='mach1spatialpairs-decode'>Mach1SpatialPairs Decode</h2>
+<aside class="warning">This function of decoding is deprecated and only helpful for experimental use cases!</aside>
+<pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">spatialPairsAlgo</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre><h2 id='return-coefficients-example'>Return Coefficients Example</h2>
 <p>Input orientation angles and return the current sample/buffers coefficients</p>
 
 <blockquote>
@@ -573,9 +627,25 @@ mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
 <li>FuMaO3A - 3rd order B-format, Furse-Malham order and weighting</li>
 <li>CubeFace - Encoder for mono to cube faces</li>
 </ul>
-<h1 id='common-issues'>Common Issues</h1>
-<aside class="notice">The following is a list of common heard issues during implementation and include audio tools to help find these issues as well as basic descriptions of their behavior and how they can be avoided.</aside>
-<h3 id='orientation-latency-issues'>Orientation Latency Issues</h3><h3 id='orientation-rate-issues-zipper'>Orientation Rate Issues (Zipper)</h3><h3 id='audio-visual-sync-issues'>Audio/Visual Sync Issues</h3><h3 id='spatial-decoding-phase-issues'>Spatial Decoding Phase Issues</h3>
+<h1 id='positional-spatial-functions'>Positional Spatial Functions</h1><h1 id='common-issues'>Common Issues</h1>
+<p>The following is a list of common heard issues during implementation and include audio tools to help find these issues as well as basic descriptions of their behavior and how they can be avoided.</p>
+<h3 id='orientation-latency-issues'>Orientation Latency Issues</h3>
+<aside class="notice">Orientation Latency is usually the biggest concern in the current climate of devices that need some sort of headtracking or window tracking. This is an issue for visuals but just as much for audio as well, if the angles inputted into the Mach1Decode functions are late then so are the returned coefficients which leads to the user losing immersion and effect.
+</aside>
+<h3 id='orientation-rate-issues-zipper'>Orientation Rate Issues (Zipper)</h3>
+<aside class="notice">
+If the rate of angles sending to the app layer with Mach1Decode integrated is too slow, this can cause some audible distortion / clicking issues added to the mix. The effect will sound like a zipper as you headtrack faster and faster. This is due to the difference of the returned coefficients being too large from result to result, causing the gain change applied to be too large and creating a "jump". We have included ways to filter the input angles into our functions however this is a band-aid to the issue if your target device has this issue. The idea is to filter and delay the inputting angles adding more intermidiary angles between each "jump" but at the cost of Orientation Latency (see above).
+</aside>
+<pre class="highlight cpp tab-cpp"><code>
+</code></pre><h3 id='audio-visual-sync-issues'>Audio/Visual Sync Issues</h3>
+<aside class="notice">
+It is important to ensure sync between a visual element in your project / application and the spatial audio mix. Ensure they are managed by the same function receiving the same call.
+</aside>
+<h3 id='spatial-decoding-phase-issues'>Spatial Decoding Phase Issues</h3>
+<aside class="notice">
+If you have your spatial audio streams coming from different audio managers that do not have sync between them you will start hearing strange channel phasing issues while you track your head orientation or device orientation. Eliminate these by ensuring your audio is called at the same time and managed properly. 
+</aside>
+
       </div>
       <div class="dark-box">
           <div class="lang-selector">
