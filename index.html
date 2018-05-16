@@ -268,6 +268,9 @@
             <a href="#mach1decode-api" class="toc-h1 toc-link" data-title="Mach1Decode API">Mach1Decode API</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#installation" class="toc-h2 toc-link" data-title="Mach1Decode API">Installation</a>
+                  </li>
+                  <li>
                     <a href="#create" class="toc-h2 toc-link" data-title="Mach1Decode API">Create</a>
                   </li>
                   <li>
@@ -345,16 +348,28 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
+<p>This allows developers to design applications that can encode or pan to a spatial audio render from audio streams and/or playback and decode Mach1Spatial 8channel spatial audio mixes with orientation to decode the correct stereo output sum of the user&#39;s current orientation. 
+The Mach1Transcode lib allows users to safely convert surround/spatial audio mixes to and from the Mach1Spatial or Mach1Horizon formats. </p>
+
 <p>The Mach1 Spatial SDK includes three components and libraries: </p>
 
 <ul>
-<li>Mach1Encode lib</li>
-<li>Mach1Decode lib</li>
-<li>Mach1Transcode lib</li>
-</ul>
+<li>Mach1Encode lib
 
-<p>This allows developers to design applications that can encode or pan to a spatial audio render from audio streams and/or playback and decode Mach1Spatial 8channel spatial audio mixes with orientation to decode the correct stereo output sum of the user&#39;s current orientation. 
-The Mach1Transcode lib allows users to safely convert surround/spatial audio mixes to and from the Mach1Spatial or Mach1Horizon formats. </p>
+<ul>
+<li>Encode and process input streams/audio into a Mach1Spatial VVBP format.</li>
+</ul></li>
+<li>Mach1Decode lib
+
+<ul>
+<li>Decode and process a Mach1Spatial VVBP format with device orientation / headtracking to output directional spatial audio.</li>
+</ul></li>
+<li>Mach1Transcode lib
+
+<ul>
+<li>Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatial VVBP format.</li>
+</ul></li>
+</ul>
 <h1 id='mach1encode-api'>Mach1Encode API</h1><h2 id='create'>Create</h2><pre class="highlight cpp tab-cpp"><code><span class="n">Mach1Encode</span><span class="o">::</span><span class="n">Mach1Encode</span><span class="p">()</span>
 <span class="p">{</span>
   <span class="n">Mach1Encode</span> <span class="o">=</span> <span class="n">Mach1EncodeCAPI_create</span><span class="p">();</span>
@@ -459,7 +474,17 @@ The Mach1Transcode lib allows users to safely convert surround/spatial audio mix
 <p>default value: true</p>
 </blockquote>
 <pre class="highlight cpp tab-cpp"><code><span class="n">m1Encode</span><span class="p">.</span><span class="n">isotropicEncode</span> <span class="o">=</span> <span class="n">enableIsotropicEncode</span><span class="p">;</span>
-</code></pre><h1 id='mach1decode-api'>Mach1Decode API</h1><h2 id='create'>Create</h2>
+</code></pre><h1 id='mach1decode-api'>Mach1Decode API</h1><h2 id='installation'>Installation</h2>
+<p>Import and link the appropriate target device&#39;s / IDE&#39;s library file. </p>
+
+<blockquote>
+<p>shell: OpenFrameworks ofxMach1 import</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>rsync -aved  ../../../addons/ofxMach1/libs/lib/osx/libMach1DecodeCAPI.dylib  <span class="s2">"</span><span class="nv">$TARGET_BUILD_DIR</span><span class="s2">/</span><span class="nv">$PRODUCT_NAME</span><span class="s2">.app/Contents/Frameworks/"</span>;
+install_name_tool -change libMach1DecodeCAPI.dylib @executable_path/../Frameworks/libMach1DecodeCAPI.dylib <span class="s2">"</span><span class="nv">$TARGET_BUILD_DIR</span><span class="s2">/</span><span class="nv">$PRODUCT_NAME</span><span class="s2">.app/Contents/MacOS/</span><span class="nv">$PRODUCT_NAME</span><span class="s2">"</span>;
+</code></pre>
+<aside class="notice">OF: when importing ofxMach1 add the following to your post-build script</aside>
+<h2 id='create'>Create</h2>
 <blockquote>
 <p>Create a Mach1Decode object</p>
 </blockquote>
