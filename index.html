@@ -224,6 +224,9 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
+            <a href="#contents" class="toc-h1 toc-link" data-title="Contents">Contents</a>
+          </li>
+          <li>
             <a href="#mach1encode-api" class="toc-h1 toc-link" data-title="Mach1Encode API">Mach1Encode API</a>
               <ul class="toc-list-h2">
                   <li>
@@ -278,6 +281,9 @@
                   </li>
                   <li>
                     <a href="#set-angular-type" class="toc-h2 toc-link" data-title="Mach1Decode API">Set Angular Type</a>
+                  </li>
+                  <li>
+                    <a href="#set-filter-speed" class="toc-h2 toc-link" data-title="Mach1Decode API">Set Filter Speed</a>
                   </li>
                   <li>
                     <a href="#begin-buffer" class="toc-h2 toc-link" data-title="Mach1Decode API">Begin Buffer</a>
@@ -348,27 +354,19 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>This allows developers to design applications that can encode or pan to a spatial audio render from audio streams and/or playback and decode Mach1Spatial 8channel spatial audio mixes with orientation to decode the correct stereo output sum of the user&#39;s current orientation. 
-The Mach1Transcode lib allows users to safely convert surround/spatial audio mixes to and from the Mach1Spatial or Mach1Horizon formats. </p>
+<p>M1SDK includes APIs to allow developers to design applications that can encode or pan to a spatial audio render from audio streams and/or playback and decode Mach1Spatial 8channel spatial audio mixes with orientation to decode the correct stereo output sum of the user&#39;s current orientation. Additionally the M1SDK allows users to safely convert surround/spatial audio mixes to and from the Mach1Spatial or Mach1Horizon <strong>VVBP</strong> formats. </p>
 
+<p><strong>VVBP</strong> or <em>Virtual Vector Based Panning</em> is a controlled virtual version of traditional <strong>VBAP</strong> (<em>Vector Based Amplitude Panning</em>) or <strong>SPS</strong> (<em>Spatial PCM Sampling</em>). These formats are designed for simplicity and ease of use &amp; implementation both for the content creators and the developers. The spatial audio mixes are based on only amplitude based coefficients changes for both encoding and decoding, and unlike many other spatial audio approaches, there are no additional signal altering processes (such as room modeling, delays or filters) to create coherent and accurate spatial sound fields and play them back from a first person headtracked perspective. Due to the simplicity of the format and cuboid vector space it relies on, it is also ideal for converting and carrying surround and spatial audio mixes without altering the mix to do so, making it an ideal server side audio middleman container. </p>
+<h1 id='contents'>Contents</h1>
 <p>The Mach1 Spatial SDK includes three components and libraries: </p>
 
 <ul>
-<li>Mach1Encode lib
-
-<ul>
-<li>Encode and process input streams/audio into a Mach1Spatial VVBP format.</li>
-</ul></li>
-<li>Mach1Decode lib
-
-<ul>
-<li>Decode and process a Mach1Spatial VVBP format with device orientation / headtracking to output directional spatial audio.</li>
-</ul></li>
-<li>Mach1Transcode lib
-
-<ul>
-<li>Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatial VVBP format.</li>
-</ul></li>
+<li><strong><em>Mach1Encode lib:</em></strong>
+Encode and process input streams/audio into a Mach1Spatial VVBP format.</li>
+<li><strong><em>Mach1Decode lib:</em></strong>
+Decode and process a Mach1Spatial VVBP format with device orientation / headtracking to output directional spatial audio.</li>
+<li><strong><em>Mach1Transcode lib:</em></strong>
+Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatial VVBP format.</li>
 </ul>
 <h1 id='mach1encode-api'>Mach1Encode API</h1><h2 id='create'>Create</h2><pre class="highlight cpp tab-cpp"><code><span class="n">Mach1Encode</span><span class="o">::</span><span class="n">Mach1Encode</span><span class="p">()</span>
 <span class="p">{</span>
@@ -416,8 +414,8 @@ The Mach1Transcode lib allows users to safely convert surround/spatial audio mix
 <p>Sets the output spatial format, Mach1Spatial or Mach1Horizon</p>
 
 <ul>
-<li>OUTPUT_4CH (Mach1Spatial)</li>
-<li>OUTPUT_8CH (Mach1Horizon)</li>
+<li>OUTPUT_4CH (Mach1Horizon) [Yaw only]</li>
+<li>OUTPUT_8CH (Mach1Spatial) [Yaw, Pitch, Roll]</li>
 </ul>
 <pre class="highlight cpp tab-cpp"><code><span class="k">if</span> <span class="p">(</span><span class="n">outputKind</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Output: Quad
 </span>    <span class="n">m1Encode</span><span class="p">.</span><span class="n">outputMode</span> <span class="o">=</span> <span class="n">M1Encode</span><span class="o">::</span><span class="n">OUTPUT_4CH</span><span class="p">;</span>
@@ -530,6 +528,11 @@ Use the <code>setAngularSettings</code> function to set the device&#39;s angle o
 mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
 ``` -->
 <pre class="highlight swift tab-swift"><code><span class="n">mach1Decode</span><span class="o">.</span><span class="nf">setAngularSettingsType</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">AngularSettingsType</span><span class="o">.</span><span class="n">m1iOSPortrait</span><span class="p">)</span>
+</code></pre><h2 id='set-filter-speed'>Set Filter Speed</h2>
+<p>Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1Decode class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with &gt;0.9 but could get some orientation latency when &lt;0.85.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">filterSpeed</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">f</span><span class="p">;</span>
+
+<span class="n">mach1Decode</span><span class="p">.</span><span class="n">setFilterSpeed</span><span class="p">(</span><span class="n">filterSpeed</span><span class="p">);</span>
 </code></pre><h2 id='begin-buffer'>Begin Buffer</h2><h2 id='end-buffer'>End Buffer</h2><h2 id='mach1spatial-decode'>Mach1Spatial Decode</h2>
 <p>8 Channel spatial mix decoding from our cuboid configuration. 
 This is the default and recommended decoding utilizing isotropic decoding behavior.</p>
