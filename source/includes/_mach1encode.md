@@ -1,35 +1,5 @@
 # Mach1Encode API
 
-## Create
-
-```cpp
-Mach1Encode::Mach1Encode()
-{
-  Mach1Encode = Mach1EncodeCAPI_create();
-}
-```
-
-```swift
-init() {
-    Mach1Encode = Mach1EncodeCAPI_create()
-}
-```
-
-## Delete
-
-```cpp
-Mach1Encode::Mach1Encode()
-{
-  Mach1Encode = Mach1EncodeCAPI_create();
-}
-```
-
-```swift
-deinit {
-    Mach1EncodeCAPI_delete(Mach1Encode)
-}
-```
-
 ## Generate Point Results
 Returns the resulting `points` coefficients based on selected and calculated input/output configuration.
 
@@ -67,8 +37,8 @@ if (inputKind == 4) { // Input: BFORMAT
 ## Set Output Mode
 Sets the output spatial format, Mach1Spatial or Mach1Horizon
 
- - OUTPUT_4CH (Mach1Spatial)
- - OUTPUT_8CH (Mach1Horizon)
+ - OUTPUT_4CH (Mach1Horizon) [Yaw only]
+ - OUTPUT_8CH (Mach1Spatial) [Yaw, Pitch, Roll]
 
 ```cpp
 if (outputKind == 0) { // Output: Quad

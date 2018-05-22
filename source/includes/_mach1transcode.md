@@ -2,24 +2,25 @@
 <aside class="notice">Please select `shell`</aside>
 
 ## Usage
-Rapidly offline render to and from Mach1 formats. 
+Rapidly offline render to and from Mach1 formats. Supports expansion of more formats and more cross-conversions if requested.
 
 >Example of usage
 
 ```shell
-m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt m1spatial -out-file /path/to/output.wav
+m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt M1Spatial -out-file /path/to/output.wav
 ```
 
 ## Formats Supported
  - Stereo - L & R spatialized
  - Stereo_Cinema - L & R spatialized, forward focus
  - LCR - L & R spatialized with C mono
- - Square (Mach1 Horizon / Quad) - L R Ls Rs
- - Square+S (Mach1 Horizon / Quad) - L R Ls Rs StereoL StereoR
- - Square8 (Mach1 Horizon / Quad-Binaural) - FrontPair, LeftPair, RearPair, RightPair
- - Cube (Mach1Spatial) - Upper L R Ls Rs, Lower L R Ls Rs
- - Cube+S (Mach1Spatial) - Upper L R Ls Rs, Lower L R Ls Rs, StereoL StereoR
- - Cube16 (Mach1Spatial Pairs) - Upper front, left, rear, right, pairs, then lower same
+ - M1Horizon (Mach1 Horizon / Quad) - L R Ls Rs
+ - M1Horizon+S (Mach1 Horizon / Quad) - L R Ls Rs StereoL StereoR
+ - M1HorizonPairs (Mach1 Horizon / Quad-Binaural) - FrontPair, LeftPair, RearPair, RightPair
+ - M1Spatial (Mach1Spatial) - Upper L R Ls Rs, Lower L R Ls Rs
+ - M1Spatial+S (Mach1Spatial) - Upper L R Ls Rs, Lower L R Ls Rs, StereoL StereoR
+ - M1SpatialPairs (Mach1Spatial Pairs) - Upper front, left, rear, right, pairs, then lower same
+ - M1SpatialFaces - Encoder for mono to cube faces
  - FiveOh - L C R Ls Rs
  - FiveOneFilm (Pro Tools default) - L C R Ls Rs LFE
  - FiveOneFilm_Cinema (Pro Tools default) - L C R Ls Rs LFE, forward focus
@@ -38,8 +39,10 @@ m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt m1spatial -out-file /
  - SevenZeroTwo - L C R Lss Rss Lsr Rsr Lts Rts
  - SevenOneFour - L C R Lss Rss Lsr Rsr LFE FLts FRts BLts BRts
  - SevenZeroFour - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts
- - NineOne - 
- - NineZero - 
+ - NineOne 
+ - NineZero
+
+ Ambisonics (special thanks to VVAudio):
  - ACNSN3D - 1st order B-format, ACN order and SN3D weighting
  - FuMa - 1st order B-format, Furse-Malham order and weighting
  - ACNSN3DO2A - 2nd order B-format, AmbiX ACN order and SN3D weighting
@@ -47,6 +50,5 @@ m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt m1spatial -out-file /
  - TBE - Facebook360 Hybrid 2nd order
  - ACNSN3DO3A - 3rd order B-format, AmbiX ACN order and SN3D weighting
  - FuMaO3A - 3rd order B-format, Furse-Malham order and weighting
- - CubeFace - Encoder for mono to cube faces
 
 

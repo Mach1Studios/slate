@@ -1,36 +1,15 @@
 # Mach1Decode API
 
-## Create
-> Create a Mach1Decode object
+## Installation
+Import and link the appropriate target device's / IDE's library file. 
 
-```cpp
-Mach1Decode::Mach1Decode()
-{
-  Mach1Decode = Mach1DecodeCAPI_create();
-}
+> shell: OpenFrameworks ofxMach1 import
+
+```shell
+rsync -aved  ../../../addons/ofxMach1/libs/lib/osx/libMach1DecodeCAPI.dylib  "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
+install_name_tool -change libMach1DecodeCAPI.dylib @executable_path/../Frameworks/libMach1DecodeCAPI.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
 ```
-
-```swift
-init() {
-    Mach1Decode = Mach1DecodeCAPI_create()
-}
-```
-
-## Delete
-> Remove a Mach1Decode object
-
-```cpp
-Mach1Decode::~Mach1Decode()
-{
-  Mach1DecodeCAPI_delete(Mach1Decode);
-} 
-```
-
-```swift
-deinit {
-    Mach1DecodeCAPI_delete(Mach1Decode)
-}
-```
+<aside class="notice">OF: when importing ofxMach1 add the following to your post-build script</aside>
 
 ## Set Angular Type
 > Set the Angular Type for the target device via the enum
@@ -46,10 +25,7 @@ Use the `setAngularSettings` function to set the device's angle order and conven
  - m1iOSLandscape
 
 ```cpp
-void Mach1Decode::setAngularSettingsType(AngularSettingsType type)
-{
-  Mach1DecodeCAPI_setAngularSettingsType(Mach1Decode, (int)type);
-}
+mach1Decode.setAngularSettingsType(m1Default);
 ```
 <!-- ```android
 mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
@@ -57,6 +33,15 @@ mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
 
 ```swift
 mach1Decode.setAngularSettingsType(type: AngularSettingsType.m1iOSPortrait)
+```
+
+## Set Filter Speed
+Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1Decode class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with >0.9 but could get some orientation latency when <0.85.
+
+```cpp
+float filterSpeed = 1.0f;
+
+mach1Decode.setFilterSpeed(filterSpeed);
 ```
 
 ## Begin Buffer
