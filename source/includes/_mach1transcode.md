@@ -1,5 +1,6 @@
 # Mach1Transcode API
-<aside class="notice">Please select `shell`</aside>
+
+Mach1Transcode includes functions for use cases that utilizing Mach1Spatial's agnostic abilities and allows 1:1 VBAP style conversions from any surround or spatial audio format and to any other surround or spatial audio format. This is very helpful for apps that have certain input requirements but different output requirements based on whether the app is launched for VR/AR/MR or just mobile use without completely redesigning the application's structure for audio. This is also a recommended method of carrying one master spatial audio container and at endpoints converting it as needed without adverse signal altering effects seen in other spatial audio formats. 
 
 ## Usage
 Rapidly offline render to and from Mach1 formats. Supports expansion of more formats and more cross-conversions if requested.

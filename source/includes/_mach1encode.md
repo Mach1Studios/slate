@@ -1,5 +1,7 @@
 # Mach1Encode API
 
+Mach1Encode allows you to transform input audio streams into the Mach1Spatial VVBP 8 channel format. Included are functions needed for mono, stereo or quad/FOA audio streams. The input streams are referred to as `Points` in our SDK.
+
 ## Generate Point Results
 Returns the resulting `points` coefficients based on selected and calculated input/output configuration.
 
