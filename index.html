@@ -297,9 +297,6 @@
                     <a href="#get-current-time" class="toc-h2 toc-link" data-title="Mach1Decode API">Get Current Time</a>
                   </li>
                   <li>
-                    <a href="#get-current-angle" class="toc-h2 toc-link" data-title="Mach1Decode API">Get Current Angle</a>
-                  </li>
-                  <li>
                     <a href="#get-log" class="toc-h2 toc-link" data-title="Mach1Decode API">Get Log</a>
                   </li>
               </ul>
@@ -337,7 +334,6 @@
           </li>
       </div>
         <ul class="toc-footer">
-            <li><a href='http://www.qdepartment.com/__Mach1/research/'>Research Papers</a></li>
             <li><a href='http://www.mach1studios.com/signup'>Sign up for beta workflow tools</a></li>
         </ul>
     </div>
@@ -347,7 +343,7 @@
         <h1 id='introduction'>Introduction</h1>
 <p>M1SDK includes APIs to allow developers to design applications that can encode or pan to a spatial audio render from audio streams and/or playback and decode Mach1Spatial 8channel spatial audio mixes with orientation to decode the correct stereo output sum of the user&#39;s current orientation. Additionally the M1SDK allows users to safely convert surround/spatial audio mixes to and from the Mach1Spatial or Mach1Horizon <strong>VVBP</strong> formats. </p>
 
-<p><strong>VVBP</strong> or <em>Virtual Vector Based Panning</em> is a controlled virtual version of traditional <strong>VBAP</strong> (<em>Vector Based Amplitude Panning</em>) or <strong>SPS</strong> (<em>Spatial PCM Sampling</em>). These formats are designed for simplicity and ease of use &amp; implementation both for the content creators and the developers. The spatial audio mixes are based on only amplitude based coefficients changes for both encoding and decoding, and unlike many other spatial audio approaches, there are no additional signal altering processes (such as room modeling, delays or filters) to create coherent and accurate spatial sound fields and play them back from a first person headtracked perspective. Due to the simplicity of the format and cuboid vector space it relies on, it is also ideal for converting and carrying surround and spatial audio mixes without altering the mix to do so, making it an ideal server side audio middleman container. Bringing controlled post-produced spatial audio into new mediums easily.</p>
+<p><strong>VVBP</strong> or <em>Virtual Vector Based Panning</em> is a controlled virtual version of traditional <strong>VBAP</strong> (<em>Vector Based Amplitude Panning</em>) or <strong>SPS</strong> (<em>Spatial PCM Sampling</em>). These formats are designed for simplicity and ease of use &amp; implementation both for the content creators and the developers. The spatial audio mixes are based on only amplitude based coefficients changes for both encoding and decoding, and unlike many other spatial audio approaches, there are no additional signal altering processes (such as room modeling, delays or filters) to create coherent and accurate spatial sound fields and play them back from a first person headtracked perspective. Due to the simplicity of the format and cuboid vector space it relies on, it is also ideal for converting and carrying surround and spatial audio mixes without altering the mix to do so, making it an ideal server side audio middleman container. </p>
 <h1 id='contents'>Contents</h1>
 <p>The Mach1 Spatial SDK includes three components and libraries: </p>
 
@@ -538,12 +534,12 @@ mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
 This is the default and recommended decoding utilizing isotropic decoding behavior.</p>
 
 <blockquote>
-<p>Default Isotropic Decoding [recommended]: </p>
+<p>Default Isotropic Decoding: </p>
 </blockquote>
 <pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">spatialAlgo</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
 </code></pre>
 <blockquote>
-<p>Alternative Periphonic Decoding [not recommended]:</p>
+<p>Alternative Periphonic Decoding:</p>
 </blockquote>
 <pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">spatialAltAlgo</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
 </code></pre>
@@ -559,10 +555,6 @@ Also able to decode and virtualize a first person perspective of Quad Surround m
 <pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">horizonPairsAlgo</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
 </code></pre><h2 id='mach1spatialpairs-decode'>Mach1SpatialPairs Decode</h2>
 <aside class="warning">This function of decoding is deprecated and only helpful for experimental use cases!</aside>
-
-<blockquote>
-<p>Periphonic stereo pairs decoding [not recommended]</p>
-</blockquote>
 <pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">spatialPairsAlgo</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
 </code></pre><h2 id='return-coefficients-example'>Return Coefficients Example</h2>
 <p>Input orientation angles and return the current sample/buffers coefficients</p>
@@ -610,24 +602,16 @@ Also able to decode and virtualize a first person perspective of Quad Surround m
 <span class="p">}</span>
 <span class="n">mach1Decode</span><span class="p">.</span><span class="n">endBuffer</span><span class="p">();</span>
 <span class="n">bufferRead</span> <span class="o">+=</span> <span class="n">samples</span><span class="p">;</span>
-</code></pre><h2 id='get-current-time'>Get Current Time</h2>
-<p>Use this to get the current time and correlate it to the incoming audio streams, good for debug. </p>
-<h2 id='get-current-angle'>Get Current Angle</h2>
-<p>Use this to get the current angle being processed by Mach1Decode, good for orientation latency checks. </p>
-<h2 id='get-log'>Get Log</h2>
-<p>Use this to get a list of input angles and the associated output coefficients from the used Mach1Decode function.</p>
-<h1 id='mach1transcode-api'>Mach1Transcode API</h1>
+</code></pre><h2 id='get-current-time'>Get Current Time</h2><h2 id='get-log'>Get Log</h2><h1 id='mach1transcode-api'>Mach1Transcode API</h1>
 <p>Mach1Transcode includes functions for use cases that utilizing Mach1Spatial&#39;s agnostic abilities and allows 1:1 VBAP style conversions from any surround or spatial audio format and to any other surround or spatial audio format. This is very helpful for apps that have certain input requirements but different output requirements based on whether the app is launched for VR/AR/MR or just mobile use without completely redesigning the application&#39;s structure for audio. This is also a recommended method of carrying one master spatial audio container and at endpoints converting it as needed without adverse signal altering effects seen in other spatial audio formats. </p>
 <h2 id='usage'>Usage</h2>
 <p>Rapidly offline render to and from Mach1 formats. Supports expansion of more formats and more cross-conversions if requested.</p>
 
 <blockquote>
-<p>Example in CI for converting TBE to Mach1Spatial
-<code>
-m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt M1Spatial -out-file /path/to/output.wav
-</code></p>
+<p>Example of usage in shell:</p>
 </blockquote>
-<h2 id='formats-supported'>Formats Supported</h2>
+<pre class="highlight plaintext"><code>m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt M1Spatial -out-file /path/to/output.wav
+</code></pre><h2 id='formats-supported'>Formats Supported</h2>
 <ul>
 <li>Stereo - L &amp; R spatialized</li>
 <li>Stereo_Cinema - L &amp; R spatialized, forward focus</li>
@@ -669,19 +653,7 @@ m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt M1Spatial -out-file /
  - TBE - Facebook360 Hybrid 2nd order
  - ACNSN3DO3A - 3rd order B-format, AmbiX ACN order and SN3D weighting
  - FuMaO3A - 3rd order B-format, Furse-Malham order and weighting</p>
-<h1 id='positional-spatial-functions'>Positional Spatial Functions</h1>
-<aside class="notice"> Please visit our Unity & Unreal Engine guides for examples of use</aside>
-
-<ul>
-<li>setCameraPosition(Mach1Point3DCore* pos) </li>
-<li>setCameraRotation(Mach1Point3DCore* euler)</li>
-<li>setSpatialAlgoPosition(Mach1Point3DCore* pos)</li>
-<li>setSpatialAlgoRotation(Mach1Point3DCore* euler) </li>
-<li>setSpatialAlgoScale(Mach1Point3DCore* scale) </li>
-<li>setAttenuationCurve(float* curve)</li>
-<li>getPostionResults()</li>
-</ul>
-<h1 id='common-issues'>Common Issues</h1>
+<h1 id='positional-spatial-functions'>Positional Spatial Functions</h1><h1 id='common-issues'>Common Issues</h1>
 <p>The following is a list of common heard issues during implementation and include audio tools to help find these issues as well as basic descriptions of their behavior and how they can be avoided.</p>
 <h3 id='orientation-latency-issues'>Orientation Latency Issues</h3>
 <aside class="notice">Orientation Latency is usually the biggest concern in the current climate of devices that need some sort of headtracking or window tracking. This is an issue for visuals but just as much for audio as well, if the angles inputted into the Mach1Decode functions are late then so are the returned coefficients which leads to the user losing immersion and effect.
@@ -699,11 +671,6 @@ It is important to ensure sync between a visual element in your project / applic
 <aside class="notice">
 If you have your spatial audio streams coming from different audio managers that do not have sync between them you will start hearing strange channel phasing issues while you track your head orientation or device orientation. Eliminate these by ensuring your audio is called at the same time and managed properly. 
 </aside>
-<p><em>Last updated: 2018-May-16</em></p>
-
-<p>© Copyright 2017-2018, Mach1. All rights reserved.</p>
-
-<p>Documentation built with <a href="https://github.com/lord/slate">Slate</a></p>
 
       </div>
       <div class="dark-box">
