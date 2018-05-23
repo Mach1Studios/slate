@@ -3,9 +3,7 @@ title: Mach1 SDK Reference & Documentation
 
 language_tabs:
   - cpp
-<!--   - cs
-  - swift -->
-  - shell
+  - swift
 
 toc_footers:
   - <a href='http://www.mach1studios.com/signup'>Sign up for beta workflow tools</a>

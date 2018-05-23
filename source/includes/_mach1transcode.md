@@ -4,9 +4,9 @@
 ## Usage
 Rapidly offline render to and from Mach1 formats. Supports expansion of more formats and more cross-conversions if requested.
 
->Example of usage
+>Example of usage in shell:
 
-```shell
+```
 m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt M1Spatial -out-file /path/to/output.wav
 ```
 

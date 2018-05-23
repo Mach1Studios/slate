@@ -3,9 +3,9 @@
 ## Installation
 Import and link the appropriate target device's / IDE's library file. 
 
-> shell: OpenFrameworks ofxMach1 import
+> shell:
 
-```shell
+```
 rsync -aved  ../../../addons/ofxMach1/libs/lib/osx/libMach1DecodeCAPI.dylib  "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
 install_name_tool -change libMach1DecodeCAPI.dylib @executable_path/../Frameworks/libMach1DecodeCAPI.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
 ```
@@ -34,6 +34,22 @@ mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
 ```swift
 mach1Decode.setAngularSettingsType(type: AngularSettingsType.m1iOSPortrait)
 ```
+
+### Angle Order Conventions
+1. Order of Yaw, Pitch, Roll (Defined as angle applied first, second and third).
+2. Direction of transform around each pole's positive movement (left or right rotation).
+3. integer Range before tranform completes 2(PI).
+
+| Order        | airplane      | telescope | symbol | angular velocity |
+| -------------:| -------------:| ---------:| ------:| ----------------:| 
+| applied first | heading | azimuth   | θ (theta) |         yaw         |
+| applied second      | attitude      | elevation | φ (phi) | pitch |
+| applied last | bank | tilt    | ψ (psi) | roll |
+
+### Euler Angle Orders:
+- (yaw-pitch-roll)
+- Unity: Left handed x-y-z (pitch-roll-yaw)
+- Unreal Engine: Right handed z-y-x 
 
 ## Set Filter Speed
 Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1Decode class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with >0.9 but could get some orientation latency when <0.85.
