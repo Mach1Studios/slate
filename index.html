@@ -314,6 +314,29 @@
           </li>
           <li>
             <a href="#positional-spatial-functions" class="toc-h1 toc-link" data-title="Positional Spatial Functions">Positional Spatial Functions</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#setcameraposition-mach1point3dcore-pos" class="toc-h2 toc-link" data-title="Positional Spatial Functions">setCameraPosition(Mach1Point3DCore* pos)</a>
+                  </li>
+                  <li>
+                    <a href="#setcamerarotation-mach1point3dcore-euler" class="toc-h2 toc-link" data-title="Positional Spatial Functions">setCameraRotation(Mach1Point3DCore* euler)</a>
+                  </li>
+                  <li>
+                    <a href="#setspatialalgoposition-mach1point3dcore-pos" class="toc-h2 toc-link" data-title="Positional Spatial Functions">setSpatialAlgoPosition(Mach1Point3DCore* pos)</a>
+                  </li>
+                  <li>
+                    <a href="#setspatialalgorotation-mach1point3dcore-euler" class="toc-h2 toc-link" data-title="Positional Spatial Functions">setSpatialAlgoRotation(Mach1Point3DCore* euler)</a>
+                  </li>
+                  <li>
+                    <a href="#setspatialalgoscale-mach1point3dcore-scale" class="toc-h2 toc-link" data-title="Positional Spatial Functions">setSpatialAlgoScale(Mach1Point3DCore* scale)</a>
+                  </li>
+                  <li>
+                    <a href="#setattenuationcurve-float-curve" class="toc-h2 toc-link" data-title="Positional Spatial Functions">setAttenuationCurve(float* curve)</a>
+                  </li>
+                  <li>
+                    <a href="#getpostionresults" class="toc-h2 toc-link" data-title="Positional Spatial Functions">getPostionResults()</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#common-issues" class="toc-h1 toc-link" data-title="Common Issues">Common Issues</a>
@@ -355,7 +378,9 @@ Decode and process a Mach1Spatial VVBP format with device orientation / headtrac
 <li><strong><em>Mach1Transcode lib:</em></strong>
 Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatial VVBP format.</li>
 </ul>
-<h1 id='mach1encode-api'>Mach1Encode API</h1><h2 id='generate-point-results'>Generate Point Results</h2>
+<h1 id='mach1encode-api'>Mach1Encode API</h1>
+<p>Mach1Encode allows you to transform input audio streams into the Mach1Spatial VVBP 8 channel format. Included are functions needed for mono, stereo or quad/FOA audio streams. The input streams are referred to as <code>Points</code> in our SDK.</p>
+<h2 id='generate-point-results'>Generate Point Results</h2>
 <p>Returns the resulting <code>points</code> coefficients based on selected and calculated input/output configuration.</p>
 <pre class="highlight cpp tab-cpp"><code><span class="k">auto</span> <span class="n">points</span> <span class="o">=</span> <span class="n">m1Encode</span><span class="p">.</span><span class="n">generatePointResults</span><span class="p">();</span>
 </code></pre><h2 id='set-input-mode'>Set Input Mode</h2>
@@ -445,7 +470,9 @@ Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatia
 <p>default value: true</p>
 </blockquote>
 <pre class="highlight cpp tab-cpp"><code><span class="n">m1Encode</span><span class="p">.</span><span class="n">isotropicEncode</span> <span class="o">=</span> <span class="n">enableIsotropicEncode</span><span class="p">;</span>
-</code></pre><h1 id='mach1decode-api'>Mach1Decode API</h1><h2 id='installation'>Installation</h2>
+</code></pre><h1 id='mach1decode-api'>Mach1Decode API</h1>
+<p>Mach1Decode supplies the functions needed to playback the Mach1Spatial VVBP 8channels to a stereo stream based on the device&#39;s orientation, this can be used for mobile device windowing or first person based media such as AR/VR/MR without any additional processing effects required.</p>
+<h2 id='installation'>Installation</h2>
 <p>Import and link the appropriate target device&#39;s / IDE&#39;s library file. </p>
 
 <blockquote>
@@ -599,7 +626,7 @@ Also able to decode and virtualize a first person perspective of Quad Surround m
 <span class="n">mach1Decode</span><span class="p">.</span><span class="n">endBuffer</span><span class="p">();</span>
 <span class="n">bufferRead</span> <span class="o">+=</span> <span class="n">samples</span><span class="p">;</span>
 </code></pre><h2 id='get-current-time'>Get Current Time</h2><h2 id='get-log'>Get Log</h2><h1 id='mach1transcode-api'>Mach1Transcode API</h1>
-<aside class="notice">Please select `shell`</aside>
+<p>Mach1Transcode includes functions for use cases that utilizing Mach1Spatial&#39;s agnostic abilities and allows 1:1 VBAP style conversions from any surround or spatial audio format and to any other surround or spatial audio format. This is very helpful for apps that have certain input requirements but different output requirements based on whether the app is launched for VR/AR/MR or just mobile use without completely redesigning the application&#39;s structure for audio. This is also a recommended method of carrying one master spatial audio container and at endpoints converting it as needed without adverse signal altering effects seen in other spatial audio formats. </p>
 <h2 id='usage'>Usage</h2>
 <p>Rapidly offline render to and from Mach1 formats. Supports expansion of more formats and more cross-conversions if requested.</p>
 
@@ -649,7 +676,7 @@ Also able to decode and virtualize a first person perspective of Quad Surround m
  - TBE - Facebook360 Hybrid 2nd order
  - ACNSN3DO3A - 3rd order B-format, AmbiX ACN order and SN3D weighting
  - FuMaO3A - 3rd order B-format, Furse-Malham order and weighting</p>
-<h1 id='positional-spatial-functions'>Positional Spatial Functions</h1><h1 id='common-issues'>Common Issues</h1>
+<h1 id='positional-spatial-functions'>Positional Spatial Functions</h1><h2 id='setcameraposition-mach1point3dcore-pos'>setCameraPosition(Mach1Point3DCore* pos)</h2><h2 id='setcamerarotation-mach1point3dcore-euler'>setCameraRotation(Mach1Point3DCore* euler)</h2><h2 id='setspatialalgoposition-mach1point3dcore-pos'>setSpatialAlgoPosition(Mach1Point3DCore* pos)</h2><h2 id='setspatialalgorotation-mach1point3dcore-euler'>setSpatialAlgoRotation(Mach1Point3DCore* euler)</h2><h2 id='setspatialalgoscale-mach1point3dcore-scale'>setSpatialAlgoScale(Mach1Point3DCore* scale)</h2><h2 id='setattenuationcurve-float-curve'>setAttenuationCurve(float* curve)</h2><h2 id='getpostionresults'>getPostionResults()</h2><h1 id='common-issues'>Common Issues</h1>
 <p>The following is a list of common heard issues during implementation and include audio tools to help find these issues as well as basic descriptions of their behavior and how they can be avoided.</p>
 <h3 id='orientation-latency-issues'>Orientation Latency Issues</h3>
 <aside class="notice">Orientation Latency is usually the biggest concern in the current climate of devices that need some sort of headtracking or window tracking. This is an issue for visuals but just as much for audio as well, if the angles inputted into the Mach1Decode functions are late then so are the returned coefficients which leads to the user losing immersion and effect.
