@@ -70,13 +70,13 @@ mach1Decode.setFilterSpeed(filterSpeed);
 8 Channel spatial mix decoding from our cuboid configuration. 
 This is the default and recommended decoding utilizing isotropic decoding behavior.
 
-> Default Isotropic Decoding: 
+> Default Isotropic Decoding [recommended]: 
 
 ```cpp
 mach1Decode.spatialAlgo(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize = 0, int sampleIndex = 0);
 ```
 
-> Alternative Periphonic Decoding:
+> Alternative Periphonic Decoding [not recommended]:
 
 ```cpp
 mach1Decode.spatialAltAlgo(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize = 0, int sampleIndex = 0);
@@ -103,6 +103,8 @@ mach1Decode.horizonPairsAlgo(float deviceYaw, float devicePitch, float deviceRol
 
 ## Mach1SpatialPairs Decode
 <aside class="warning">This function of decoding is deprecated and only helpful for experimental use cases!</aside>
+
+> Periphonic stereo pairs decoding [not recommended]
 
 ```cpp
 mach1Decode.spatialPairsAlgo(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize = 0, int sampleIndex = 0);
@@ -162,4 +164,12 @@ bufferRead += samples;
 
 ## Get Current Time
 
+Use this to get the current time and correlate it to the incoming audio streams, good for debug. 
+
+## Get Current Angle
+
+Use this to get the current angle being processed by Mach1Decode, good for orientation latency checks. 
+
 ## Get Log
+
+Use this to get a list of input angles and the associated output coefficients from the used Mach1Decode function.

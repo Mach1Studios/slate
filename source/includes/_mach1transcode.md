@@ -5,16 +5,28 @@ Mach1Transcode includes functions for use cases that utilizing Mach1Spatial's ag
 ## Usage
 Rapidly offline render to and from Mach1 formats. Supports expansion of more formats and more cross-conversions if requested.
 
->Example of usage in shell:
+> Example in command line for converting Mach1Spatial mix to First Order ambisonics: ACNSN3D
 
 ```
-m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt M1Spatial -out-file /path/to/output.wav
+m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt ACNSN3D -out-file /path/to/output.wav -out-file-chans 0
+```
+
+> Example in command line for converting 7.1 film mix to Mach1Spatial
+
+```
+m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt SevenOnePT_Cinema -out-fmt Mach1Spatial -out-file /path/to/output.wav
+```
+
+> Example in command line for converting Mach1Spatial to Mach1HorizonPairs (quad-binaural compliant)
+
+```
+m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt Mach1HorizonPairs -out-file /path/to/output.wav -out-file-chans 2
 ```
 
 ## Formats Supported
- - Stereo - L & R spatialized
- - Stereo_Cinema - L & R spatialized, forward focus
- - LCR - L & R spatialized with C mono
+
+### Mach1 Formats
+
  - M1Horizon (Mach1 Horizon / Quad) - L R Ls Rs
  - M1Horizon+S (Mach1 Horizon / Quad) - L R Ls Rs StereoL StereoR
  - M1HorizonPairs (Mach1 Horizon / Quad-Binaural) - FrontPair, LeftPair, RearPair, RightPair
@@ -22,6 +34,12 @@ m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt M1Spatial -out-file /
  - M1Spatial+S (Mach1Spatial) - Upper L R Ls Rs, Lower L R Ls Rs, StereoL StereoR
  - M1SpatialPairs (Mach1Spatial Pairs) - Upper front, left, rear, right, pairs, then lower same
  - M1SpatialFaces - Encoder for mono to cube faces
+
+### Traditional / Surround Formats
+
+ - Stereo - L & R spatialized
+ - Stereo_Cinema - L & R spatialized, forward focus
+ - LCR - L & R spatialized with C mono
  - FiveOh - L C R Ls Rs
  - FiveOneFilm (Pro Tools default) - L C R Ls Rs LFE
  - FiveOneFilm_Cinema (Pro Tools default) - L C R Ls Rs LFE, forward focus
@@ -43,7 +61,8 @@ m1-fmtconv -in-file /path/to/file.wav -in-fmt tbe -out-fmt M1Spatial -out-file /
  - NineOne 
  - NineZero
 
- Ambisonics (special thanks to VVAudio):
+### Ambisonic Formats (special thanks to VVAudio):
+
  - ACNSN3D - 1st order B-format, ACN order and SN3D weighting
  - FuMa - 1st order B-format, Furse-Malham order and weighting
  - ACNSN3DO2A - 2nd order B-format, AmbiX ACN order and SN3D weighting
