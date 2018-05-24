@@ -2,11 +2,15 @@
 
 Mach1Encode allows you to transform input audio streams into the Mach1Spatial VVBP 8 channel format. Included are functions needed for mono, stereo or quad/FOA audio streams. The input streams are referred to as `Points` in our SDK.
 
+The typical encoding process starts with creating an object of a class Mach1EncodeCore, and setting it up as described below. After that, you're meant to generate Points by calling generatePointResults() on the object of this class. You'll get as many points as there is input channels, and as many gains in each point as there is output channels. You then copy each input channel to each output channel with the according gain.
+
 ## Generate Point Results
 Returns the resulting `points` coefficients based on selected and calculated input/output configuration.
 
 ```cpp
-auto points = m1Encode.generatePointResults();
+M1EncodeCorePointResults points = m1Encode.generatePointResults();
+std::vector<std::vector<float>> gains = points.gains;
+// gains is a 2d vector of gains which has a gain for each input channel to each output channel
 ```
 
 ## Set Input Mode

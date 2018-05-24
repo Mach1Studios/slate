@@ -11,7 +11,7 @@ Import and link the appropriate target device's / IDE's library file.
 rsync -aved  ../../../addons/ofxMach1/libs/lib/osx/libMach1DecodeCAPI.dylib  "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
 install_name_tool -change libMach1DecodeCAPI.dylib @executable_path/../Frameworks/libMach1DecodeCAPI.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
 ```
-<aside class="notice">OF: when importing ofxMach1 add the following to your post-build script</aside>
+<aside class="notice">openFrameworks: when importing ofxMach1 add the following to your post-build script</aside>
 
 ## Set Angular Type
 > Set the Angular Type for the target device via the enum
@@ -54,7 +54,7 @@ mach1Decode.setAngularSettingsType(type: AngularSettingsType.m1iOSPortrait)
 - Unreal Engine: Right handed z-y-x 
 
 ## Set Filter Speed
-Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1Decode class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with >0.9 but could get some orientation latency when <0.85.
+Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1DecodeCore class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with >0.9 but could get some orientation latency when <0.85. The reason you might want angle smoothing is that it might help remove a zipper effect seen on some platforms and/or some devices.
 
 ```cpp
 float filterSpeed = 1.0f;
@@ -63,8 +63,18 @@ mach1Decode.setFilterSpeed(filterSpeed);
 ```
 
 ## Begin Buffer
+Call this function before reading from the Mach1Decode buffer.
 
+```
+mach1Decode.beginBuffer();
+```
 ## End Buffer
+Call this function after reading from the Mach1Decode buffer.
+
+```
+mach1Decode.endBuffer();
+```
+
 
 ## Mach1Spatial Decode
 8 Channel spatial mix decoding from our cuboid configuration. 
