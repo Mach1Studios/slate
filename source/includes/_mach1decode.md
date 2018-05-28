@@ -54,7 +54,7 @@ mach1Decode.setAngularSettingsType(type: AngularSettingsType.m1iOSPortrait)
 - Unreal Engine: Right handed z-y-x 
 
 ## Set Filter Speed
-Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1DecodeCore class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with >0.9 but could get some orientation latency when <0.85. The reason you might want angle smoothing is that it might help remove a zipper effect seen on some platforms and/or some devices.
+Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1DecodeCore class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with >0.9 but could get some orientation latency when <0.85. The reason you might want angle smoothing is that it might help remove a zipper effect seen on some poorer performing platforms or devices.
 
 ```cpp
 float filterSpeed = 1.0f;
@@ -65,19 +65,27 @@ mach1Decode.setFilterSpeed(filterSpeed);
 ## Begin Buffer
 Call this function before reading from the Mach1Decode buffer.
 
-```
+```cpp
 mach1Decode.beginBuffer();
 ```
+
+```swift
+mach1Decode.beginBuffer()
+```
+
 ## End Buffer
 Call this function after reading from the Mach1Decode buffer.
 
-```
+```cpp
 mach1Decode.endBuffer();
 ```
 
-## Choosing the decoding variant
-To choose the version of M1 Decoding algorithm, use this function:
+```swift
+mach1Decode.endBuffer()
+```
 
+## Choosing the decoding function variant
+To choose the version of M1 Decoding algorithm, use this function:
 ```cpp
 void setAlgorithmType(AlgorithmType newAlgorithmType);
 ```

@@ -3,7 +3,7 @@
 Mach1Transcode includes functions for use cases that utilizing Mach1Spatial's agnostic abilities and allows 1:1 VBAP style conversions from any surround or spatial audio format and to any other surround or spatial audio format. This is very helpful for apps that have certain input requirements but different output requirements based on whether the app is launched for VR/AR/MR or just mobile use without completely redesigning the application's structure for audio. This is also a recommended method of carrying one master spatial audio container and at endpoints converting it as needed without adverse signal altering effects seen in other spatial audio formats. 
 
 ## Usage
-Rapidly offline render to and from Mach1 formats. Supports expansion of more formats and more cross-conversions if requested.
+Rapidly offline render to and from Mach1 formats.
 
 > Example in command line for converting Mach1Spatial mix to First Order ambisonics: ACNSN3D
 
@@ -61,6 +61,8 @@ m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt Mach1
  - NineOne 
  - NineZero
 
+ <aside class="notice">Additional formats available upon request.</aside>
+
 ### Ambisonic Formats (special thanks to VVAudio):
 
  - ACNSN3D - 1st order B-format, ACN order and SN3D weighting
@@ -70,5 +72,3 @@ m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt Mach1
  - TBE - Facebook360 Hybrid 2nd order
  - ACNSN3DO3A - 3rd order B-format, AmbiX ACN order and SN3D weighting
  - FuMaO3A - 3rd order B-format, Furse-Malham order and weighting
-
-
