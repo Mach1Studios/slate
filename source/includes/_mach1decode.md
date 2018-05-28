@@ -75,15 +75,53 @@ Call this function after reading from the Mach1Decode buffer.
 mach1Decode.endBuffer();
 ```
 
+## Choosing the decoding variant
+To choose the version of M1 Decoding algorithm, use this function:
 
-## Mach1Spatial Decode
-8 Channel spatial mix decoding from our cuboid configuration. 
+```cpp
+void setAlgorithmType(AlgorithmType newAlgorithmType);
+```
+
+// m1Spatial = 0, m1AltSpatial, m1Horizon, m1HorizonPairs, m1SpatialPairs
+The available types of algorithms:
+1) m1Spatial
+Mach1Spatial. 8 Channel spatial mix decoding from our cuboid configuration. 
 This is the default and recommended decoding utilizing isotropic decoding behavior.
+
+2) m1Horizon
+Mach1Horizon. 4 channel spatial mix decoding for compass / yaw only configurations.
+Also able to decode and virtualize a first person perspective of Quad Surround mixes. 
+
+3) m1HorizonPairs 
+Mach1HorizonPairs. 8 channel spatial mix decoding for compass / yaw only that can support headlocked / non-diegetic stereo elements to be mastered within the mix / 8 channels.
+
+4) m1SpatialPairs
+Mach1SpatialPairs. Periphonic stereo pairs decoding.
+This function of decoding is deprecated and only helpful for experimental use cases!
+
+## Decoding
+
+The decode function's purpose is to give you updated volumes for each input audio channel for each frame in order for spatial effect to manifest itself. There are two versions of this function - one for cases when you might not need very low latency or couldn't include C/C++ directly, and another version for C/C++ high performance use.
+
+If using on audio thread, high performance version is recommended if possible.
 
 > Default Isotropic Decoding [recommended]: 
 
 ```cpp
-mach1Decode.spatialAlgo(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize = 0, int sampleIndex = 0);
+// lower performance version for non audio thread operation or for use in managed languages
+
+std::vector<float> volumes = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll);
+
+// you can get a per sample volumes frame if you specify the buffer size and the current sample index
+
+std::vector<float> volumes = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRollint bufferSize, int sampleIndex);
+
+// high performance version is meant to be used on the audio thread, it puts the resulting channel volumes
+// into a float array instead of allocating a result vector. Notice the pointer to volumeFrame array passed. The array itself has to have a size of 18 floats
+
+float volumeFrame [18];
+
+mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll, float *volumeFrame, bufferSize, int sampleIndex);
 ```
 
 > Alternative Periphonic Decoding [not recommended]:
@@ -93,40 +131,16 @@ mach1Decode.spatialAltAlgo(float deviceYaw, float devicePitch, float deviceRoll,
 ```
 
 Add headlocked / noon-diegetic stereo mix to the output summed coefficients.
+^^ DYLAN, I DON'T KNOW WHERE THAT MEANT TO BE
 
-## Mach1Horizon Decode
-4 channel spatial mix decoding for compass / yaw only configurations.
-Also able to decode and virtualize a first person perspective of Quad Surround mixes. 
 
-```cpp
-mach1Decode.horizonAlgo(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize = 0, int sampleIndex = 0);
-```
-
-Add headlocked / noon-diegetic stereo mix to the output summed coefficients.
-
-## Mach1HorizonPairs Decode
-8 channel spatial mix decoding for compass / yaw only that can support headlocked / non-diegetic stereo elements to be mastered within the mix / 8 channels.
-
-```cpp
-mach1Decode.horizonPairsAlgo(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize = 0, int sampleIndex = 0);
-```
-
-## Mach1SpatialPairs Decode
-<aside class="warning">This function of decoding is deprecated and only helpful for experimental use cases!</aside>
-
-> Periphonic stereo pairs decoding [not recommended]
-
-```cpp
-mach1Decode.spatialPairsAlgo(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize = 0, int sampleIndex = 0);
-```
-
-## Return Coefficients Example
+## Working with Decode and Volume Coefficients, Example
 Input orientation angles and return the current sample/buffers coefficients
 
 > Sample based example
 
 ```cpp
-volumes = mach1Decode.spatialAlgo(deivceYaw, devicePitch, deviceRoll);
+volumes = mach1Decode.decode(deivceYaw, devicePitch, deviceRoll);
 
 for (int i = 0; i < 8; i++) {
     playersLeft[i].setVolume(volumes[i * 2] * overallVolume);
@@ -136,7 +150,7 @@ for (int i = 0; i < 8; i++) {
 
 ```swift
 //Send device orientation to m1obj with the preferred algo
-let decodeArray: [Float]  = m1obj.spatialAlgo(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
+let decodeArray: [Float]  = m1obj.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
 
 //Use each coeff to decode multichannel Mach1 Spatial mix
 for i in 0...7 {
@@ -157,7 +171,7 @@ float volumes[18];
 mach1Decode.beginBuffer();
 for (size_t i = 0; i < samples; i++)
 {
-    mach1Decode.spatialAlgo(Yaw, Pitch, Roll, volumes, samples, i);
+    mach1Decode.decode(Yaw, Pitch, Roll, volumes, samples, i);
 
     for (int j = 0; j < 8; j++)
     {
