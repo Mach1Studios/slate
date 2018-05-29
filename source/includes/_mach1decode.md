@@ -62,6 +62,40 @@ float filterSpeed = 1.0f;
 mach1Decode.setFilterSpeed(filterSpeed);
 ```
 
+## Set Decoding Algorithm
+Use this function to setup and choose the required Mach1 decoding algorithm.
+
+### Mach1 Decoding Algorithm Types:
+ - m1Spatial = 0 (default spatial | 8 channels)
+ - m1AltSpatial = 1 (periphonic spatial | 8 channels)
+ - m1Horizon = 2 (compass / yaw | 4 channels)
+ - m1HorizonPairs = 3 (compass / yaw | 4x stereo mastered pairs)
+ - m1SpatialPairs = 4 (experimental periphonic pairs | 8x stereo mastered pairs)
+
+
+```cpp
+void setAlgorithmType(AlgorithmType newAlgorithmType);
+```
+
+#### m1Spatial
+Mach1Spatial. 8 Channel spatial mix decoding from our cuboid configuration. 
+This is the default and recommended decoding utilizing isotropic decoding behavior.
+
+#### m1SpatialAlt
+Mach1Spatial. 8 Channel spatial mix decoding from our cuboid configuration. 
+This is a Periphonic decoding weighted more toward yaw, prone to gimbal lock but can be useful for use cases that only need 2 out of 3 input angle types.
+
+#### m1Horizon
+Mach1Horizon. 4 channel spatial mix decoding for compass / yaw only configurations.
+Also able to decode and virtualize a first person perspective of Quad Surround mixes. 
+
+#### m1HorizonPairs 
+Mach1HorizonPairs. 8 channel spatial mix decoding for compass / yaw only that can support headlocked / non-diegetic stereo elements to be mastered within the mix / 8 channels. Supports and decodes Quad-Binaural mixes.
+
+#### m1SpatialPairs
+Mach1SpatialPairs. Periphonic stereo pairs decoding.
+This function of decoding is deprecated and only helpful for experimental use cases!
+
 ## Begin Buffer
 Call this function before reading from the Mach1Decode buffer.
 
@@ -83,29 +117,6 @@ mach1Decode.endBuffer();
 ```swift
 mach1Decode.endBuffer()
 ```
-
-## Choosing the decoding function variant
-To choose the version of M1 Decoding algorithm, use this function:
-```cpp
-void setAlgorithmType(AlgorithmType newAlgorithmType);
-```
-
-// m1Spatial = 0, m1AltSpatial, m1Horizon, m1HorizonPairs, m1SpatialPairs
-The available types of algorithms:
-1) m1Spatial
-Mach1Spatial. 8 Channel spatial mix decoding from our cuboid configuration. 
-This is the default and recommended decoding utilizing isotropic decoding behavior.
-
-2) m1Horizon
-Mach1Horizon. 4 channel spatial mix decoding for compass / yaw only configurations.
-Also able to decode and virtualize a first person perspective of Quad Surround mixes. 
-
-3) m1HorizonPairs 
-Mach1HorizonPairs. 8 channel spatial mix decoding for compass / yaw only that can support headlocked / non-diegetic stereo elements to be mastered within the mix / 8 channels.
-
-4) m1SpatialPairs
-Mach1SpatialPairs. Periphonic stereo pairs decoding.
-This function of decoding is deprecated and only helpful for experimental use cases!
 
 ## Decoding
 
@@ -132,17 +143,7 @@ float volumeFrame [18];
 mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll, float *volumeFrame, bufferSize, int sampleIndex);
 ```
 
-> Alternative Periphonic Decoding [not recommended]:
-
-```cpp
-mach1Decode.spatialAltAlgo(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize = 0, int sampleIndex = 0);
-```
-
-Add headlocked / noon-diegetic stereo mix to the output summed coefficients.
-^^ DYLAN, I DON'T KNOW WHERE THAT MEANT TO BE
-
-
-## Working with Decode and Volume Coefficients, Example
+## Example of Using Decoded Coefficients
 Input orientation angles and return the current sample/buffers coefficients
 
 > Sample based example
@@ -162,6 +163,7 @@ let decodeArray: [Float]  = m1obj.decode(Yaw: Float(deviceYaw), Pitch: Float(dev
 
 //Use each coeff to decode multichannel Mach1 Spatial mix
 for i in 0...7 {
+
     players[i * 2].volume = Double(decodeArray[i * 2])
     players[i * 2 + 1].volume = Double(decodeArray[i * 2 + 1])
     
@@ -194,7 +196,7 @@ mach1Decode.endBuffer();
 bufferRead += samples;
 ```
 
-## Get Current Time
+<!-- ## Get Current Time
 
 Use this to get the current time and correlate it to the incoming audio streams, good for debug. 
 
@@ -204,4 +206,4 @@ Use this to get the current angle being processed by Mach1Decode, good for orien
 
 ## Get Log
 
-Use this to get a list of input angles and the associated output coefficients from the used Mach1Decode function.
+Use this to get a list of input angles and the associated output coefficients from the used Mach1Decode function. -->
