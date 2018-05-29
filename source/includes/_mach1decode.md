@@ -2,6 +2,36 @@
 
 Mach1Decode supplies the functions needed to playback the Mach1Spatial VVBP 8channels to a stereo stream based on the device's orientation, this can be used for mobile device windowing or first person based media such as AR/VR/MR without any additional processing effects required.
 
+## Summary Use
+
+The Mach1Decode API is designed to be used the following way:
+
+Setup Step (setup/start):
+
+```cpp
+void setup(){
+    mach1Decode.setAlgorithmType(m1Spatial);
+    mach1Decode.setAngularSettingsType(m1Default);
+    mach1Decode.setFilterSpeed(1.0f);
+}
+void loop(){
+    mach1Decode.beginBuffer();
+    mach1Decode.decode(deviceYaw, devicePitch, deviceRoll);
+    mach1Decode.endBuffer();
+}
+```
+
+ - `setAlgorithmType`
+ - `setAngularSettingsType`
+ - `setFilterSpeed`
+
+Audio Loop:
+
+ - `beginBuffer`
+ - `decode`
+ - `getCurrentAngle` (debug/optional)
+ - `endBuffer`
+
 ## Installation
 Import and link the appropriate target device's / IDE's library file. 
 
