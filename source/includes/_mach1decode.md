@@ -10,8 +10,8 @@ Setup Step (setup/start):
 
 ```cpp
 void setup(){
-    mach1Decode.setAlgorithmType(m1Spatial);
-    mach1Decode.setAngularSettingsType(m1Default);
+    mach1Decode.setDecodeAlgoType(m1Spatial);
+    mach1Decode.setPlatformType(m1Default);
     mach1Decode.setFilterSpeed(1.0f);
 }
 void loop(){
@@ -43,9 +43,9 @@ install_name_tool -change libMach1DecodeCAPI.dylib @executable_path/../Framework
 ```
 <aside class="notice">openFrameworks: when importing ofxMach1 add the following to your post-build script</aside>
 
-## Set Angular Type
+## Set Platform Type
 > Set the Angular Type for the target device via the enum
-Use the `setAngularSettings` function to set the device's angle order and convention if applicable:
+Use the `setPlatformType` function to set the device's angle order and convention if applicable:
 
 ### Preset Types(enum):
  - m1Default
@@ -57,14 +57,14 @@ Use the `setAngularSettings` function to set the device's angle order and conven
  - m1iOSLandscape
 
 ```cpp
-mach1Decode.setAngularSettingsType(m1Default);
+mach1Decode.setPlatformType(m1Default);
 ```
 <!-- ```android
-mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
+mach1Decode.setPlatformType(Mach1Decode::Mach1PlatformType::m1Android);
 ``` -->
 
 ```swift
-mach1Decode.setAngularSettingsType(type: AngularSettingsType.m1iOSPortrait)
+mach1Decode.setPlatformType(type: Mach1PlatformType.m1iOSPortrait)
 ```
 
 ### Angle Order Conventions
@@ -104,7 +104,7 @@ Use this function to setup and choose the required Mach1 decoding algorithm.
 
 
 ```cpp
-void setAlgorithmType(AlgorithmType newAlgorithmType);
+void setDecodeAlgoType(Mach1DecodeAlgoType newAlgorithmType);
 ```
 
 #### m1Spatial
