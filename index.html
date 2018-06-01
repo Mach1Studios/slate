@@ -264,6 +264,9 @@
             <a href="#mach1decode-api" class="toc-h1 toc-link" data-title="Mach1Decode API">Mach1Decode API</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#summary-use" class="toc-h2 toc-link" data-title="Mach1Decode API">Summary Use</a>
+                  </li>
+                  <li>
                     <a href="#installation" class="toc-h2 toc-link" data-title="Mach1Decode API">Installation</a>
                   </li>
                   <li>
@@ -455,6 +458,35 @@ Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatia
 <pre class="highlight cpp tab-cpp"><code><span class="n">m1Encode</span><span class="p">.</span><span class="n">isotropicEncode</span> <span class="o">=</span> <span class="n">enableIsotropicEncode</span><span class="p">;</span>
 </code></pre><h1 id='mach1decode-api'>Mach1Decode API</h1>
 <p>Mach1Decode supplies the functions needed to playback the Mach1Spatial VVBP 8channels to a stereo stream based on the device&#39;s orientation, this can be used for mobile device windowing or first person based media such as AR/VR/MR without any additional processing effects required.</p>
+<h2 id='summary-use'>Summary Use</h2>
+<p>The Mach1Decode API is designed to be used the following way:</p>
+
+<p>Setup Step (setup/start):</p>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setup</span><span class="p">(){</span>
+    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">setAlgorithmType</span><span class="p">(</span><span class="n">m1Spatial</span><span class="p">);</span>
+    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">setAngularSettingsType</span><span class="p">(</span><span class="n">m1Default</span><span class="p">);</span>
+    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">setFilterSpeed</span><span class="p">(</span><span class="mf">1.0</span><span class="n">f</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="n">loop</span><span class="p">(){</span>
+    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">beginBuffer</span><span class="p">();</span>
+    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">deviceYaw</span><span class="p">,</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="n">deviceRoll</span><span class="p">);</span>
+    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">endBuffer</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre>
+<ul>
+<li><code>setAlgorithmType</code></li>
+<li><code>setAngularSettingsType</code></li>
+<li><code>setFilterSpeed</code></li>
+</ul>
+
+<p>Audio Loop:</p>
+
+<ul>
+<li><code>beginBuffer</code></li>
+<li><code>decode</code></li>
+<li><code>getCurrentAngle</code> (debug/optional)</li>
+<li><code>endBuffer</code></li>
+</ul>
 <h2 id='installation'>Installation</h2>
 <p>Import and link the appropriate target device&#39;s / IDE&#39;s library file. </p>
 
