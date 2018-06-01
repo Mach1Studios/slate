@@ -270,7 +270,7 @@
                     <a href="#installation" class="toc-h2 toc-link" data-title="Mach1Decode API">Installation</a>
                   </li>
                   <li>
-                    <a href="#set-angular-type" class="toc-h2 toc-link" data-title="Mach1Decode API">Set Angular Type</a>
+                    <a href="#set-platform-type" class="toc-h2 toc-link" data-title="Mach1Decode API">Set Platform Type</a>
                   </li>
                   <li>
                     <a href="#set-filter-speed" class="toc-h2 toc-link" data-title="Mach1Decode API">Set Filter Speed</a>
@@ -463,8 +463,8 @@ Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatia
 
 <p>Setup Step (setup/start):</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setup</span><span class="p">(){</span>
-    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">setAlgorithmType</span><span class="p">(</span><span class="n">m1Spatial</span><span class="p">);</span>
-    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">setAngularSettingsType</span><span class="p">(</span><span class="n">m1Default</span><span class="p">);</span>
+    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">setDecodeAlgoType</span><span class="p">(</span><span class="n">Mach1DecodeAlgoSpatial</span><span class="p">);</span>
+    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">setPlatformType</span><span class="p">(</span><span class="n">Mach1PlatformDefault</span><span class="p">);</span>
     <span class="n">mach1Decode</span><span class="p">.</span><span class="n">setFilterSpeed</span><span class="p">(</span><span class="mf">1.0</span><span class="n">f</span><span class="p">);</span>
 <span class="p">}</span>
 <span class="kt">void</span> <span class="n">loop</span><span class="p">(){</span>
@@ -497,27 +497,27 @@ Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatia
 install_name_tool -change libMach1DecodeCAPI.dylib @executable_path/../Frameworks/libMach1DecodeCAPI.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
 </code></pre>
 <aside class="notice">openFrameworks: when importing ofxMach1 add the following to your post-build script</aside>
-<h2 id='set-angular-type'>Set Angular Type</h2>
+<h2 id='set-platform-type'>Set Platform Type</h2>
 <blockquote>
 <p>Set the Angular Type for the target device via the enum
-Use the <code>setAngularSettings</code> function to set the device&#39;s angle order and convention if applicable:</p>
+Use the <code>setPlatformType</code> function to set the device&#39;s angle order and convention if applicable:</p>
 </blockquote>
 <h3 id='preset-types-enum'>Preset Types(enum):</h3>
 <ul>
-<li>m1Default</li>
-<li>m1Unity</li>
-<li>m1UE</li>
-<li>m1oFEasyCam</li>
-<li>m1Android</li>
-<li>m1iOSPortrait</li>
-<li>m1iOSLandscape</li>
+<li><code>Mach1PlatformDefault</code> = 0</li>
+<li><code>Mach1PlatformUnity</code> = 1</li>
+<li><code>Mach1PlatformUE</code> = 2</li>
+<li><code>Mach1PlatformOfEasyCam</code> = 3</li>
+<li><code>Mach1PlatformAndroid</code> = 4</li>
+<li><code>Mach1PlatformiOSPortrait</code> = 5</li>
+<li><code>Mach1PlatformiOSLandscape</code> = 6</li>
 </ul>
-<pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">setAngularSettingsType</span><span class="p">(</span><span class="n">m1Default</span><span class="p">);</span>
+<pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">setPlatformType</span><span class="p">(</span><span class="n">Mach1PlatformDefault</span><span class="p">);</span>
 </code></pre>
 <!-- ```android
-mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
+mach1Decode.setPlatformType(Mach1Decode::Mach1PlatformType::Mach1PlatformAndroid);
 ``` -->
-<pre class="highlight swift tab-swift"><code><span class="n">mach1Decode</span><span class="o">.</span><span class="nf">setAngularSettingsType</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">AngularSettingsType</span><span class="o">.</span><span class="n">m1iOSPortrait</span><span class="p">)</span>
+<pre class="highlight swift tab-swift"><code><span class="n">mach1Decode</span><span class="o">.</span><span class="nf">setPlatformType</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">Mach1PlatformType</span><span class="o">.</span><span class="kt">Mach1PlatformiOSPortrait</span><span class="p">)</span>
 </code></pre><h3 id='angle-order-conventions'>Angle Order Conventions</h3>
 <ol>
 <li>Order of Yaw, Pitch, Roll (Defined as angle applied first, second and third).</li>
@@ -571,25 +571,25 @@ mach1Decode.setAngularSettingsType(Mach1Decode::AngularSettingsType::m1Android);
 <p>Use this function to setup and choose the required Mach1 decoding algorithm.</p>
 <h3 id='mach1-decoding-algorithm-types'>Mach1 Decoding Algorithm Types:</h3>
 <ul>
-<li>m1Spatial = 0 (default spatial | 8 channels)</li>
-<li>m1AltSpatial = 1 (periphonic spatial | 8 channels)</li>
-<li>m1Horizon = 2 (compass / yaw | 4 channels)</li>
-<li>m1HorizonPairs = 3 (compass / yaw | 4x stereo mastered pairs)</li>
-<li>m1SpatialPairs = 4 (experimental periphonic pairs | 8x stereo mastered pairs)</li>
+<li><code>Mach1DecodeAlgoSpatial</code> = 0 (default spatial | 8 channels)</li>
+<li><code>Mach1DecodeAlgoAltSpatial</code> = 1 (periphonic spatial | 8 channels)</li>
+<li><code>Mach1DecodeAlgoHorizon</code> = 2 (compass / yaw | 4 channels)</li>
+<li><code>Mach1DecodeAlgoHorizonPairs</code> = 3 (compass / yaw | 4x stereo mastered pairs)</li>
+<li><code>Mach1DecodeAlgoSpatialPairs</code> = 4 (experimental periphonic pairs | 8x stereo mastered pairs)</li>
 </ul>
-<pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setAlgorithmType</span><span class="p">(</span><span class="n">AlgorithmType</span> <span class="n">newAlgorithmType</span><span class="p">);</span>
-</code></pre><h4 id='m1spatial'>m1Spatial</h4>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setDecodeAlgoType</span><span class="p">(</span><span class="n">Mach1DecodeAlgoType</span> <span class="n">newAlgorithmType</span><span class="p">);</span>
+</code></pre><h4 id='mach1decodealgospatial'>Mach1DecodeAlgoSpatial</h4>
 <p>Mach1Spatial. 8 Channel spatial mix decoding from our cuboid configuration. 
 This is the default and recommended decoding utilizing isotropic decoding behavior.</p>
-<h4 id='m1spatialalt'>m1SpatialAlt</h4>
+<h4 id='mach1decodealgoaltspatial'>Mach1DecodeAlgoAltSpatial</h4>
 <p>Mach1Spatial. 8 Channel spatial mix decoding from our cuboid configuration. 
 This is a Periphonic decoding weighted more toward yaw, prone to gimbal lock but can be useful for use cases that only need 2 out of 3 input angle types.</p>
-<h4 id='m1horizon'>m1Horizon</h4>
+<h4 id='mach1decodealgohorizon'>Mach1DecodeAlgoHorizon</h4>
 <p>Mach1Horizon. 4 channel spatial mix decoding for compass / yaw only configurations.
 Also able to decode and virtualize a first person perspective of Quad Surround mixes. </p>
-<h4 id='m1horizonpairs'>m1HorizonPairs</h4>
+<h4 id='mach1decodealgohorizonpairs'>Mach1DecodeAlgoHorizonPairs</h4>
 <p>Mach1HorizonPairs. 8 channel spatial mix decoding for compass / yaw only that can support headlocked / non-diegetic stereo elements to be mastered within the mix / 8 channels. Supports and decodes Quad-Binaural mixes.</p>
-<h4 id='m1spatialpairs'>m1SpatialPairs</h4>
+<h4 id='mach1decodealgospatialpairs'>Mach1DecodeAlgoSpatialPairs</h4>
 <p>Mach1SpatialPairs. Periphonic stereo pairs decoding.
 This function of decoding is deprecated and only helpful for experimental use cases!</p>
 <h2 id='begin-buffer'>Begin Buffer</h2>
