@@ -607,14 +607,15 @@ This function of decoding is deprecated and only helpful for experimental use ca
 
 <blockquote>
 <p>Default Isotropic Decoding [recommended]: </p>
-</blockquote>
-<pre class="highlight cpp tab-cpp"><code><span class="c1">// lower performance version for non audio thread operation or for use in managed languages
-</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">volumes</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">);</span>
 
-<span class="c1">// you can get a per sample volumes frame if you specify the buffer size and the current sample index
-</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">volumes</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRollint</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span><span class="p">);</span>
+<p>lower performance version for non audio thread operation or for use in managed languages</p>
+</blockquote>
+<pre class="highlight cpp tab-cpp"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">volumes</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>you can get a per sample volumes frame if you specify the buffer size and the current sample index</p>
+</blockquote>
+<pre class="highlight cpp tab-cpp"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">volumes</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRollint</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span><span class="p">);</span>
 
 <span class="c1">// high performance version is meant to be used on the audio thread, it puts the resulting channel volumes
 // into a float array instead of allocating a result vector. Notice the pointer to volumeFrame array passed. The array itself has to have a size of 18 floats
@@ -738,7 +739,7 @@ Use this to get a list of input angles and the associated output coefficients fr
 </ul>
 
 <p><aside class="notice">Additional formats available upon request.</aside></p>
-<h3 id='ambisonic-formats-special-thanks-to-vvaudio'>Ambisonic Formats (special thanks to VVAudio):</h3>
+<h3 id='ambisonic-formats-special-thanks-to-a-href-http-http-www-vvaudio-com-vvaudio-a'>Ambisonic Formats (special thanks to <a href="http://http//www.vvaudio.com/">VVAudio</a> ):</h3>
 <ul>
 <li>ACNSN3D - 1st order B-format, ACN order and SN3D weighting</li>
 <li>FuMa - 1st order B-format, Furse-Malham order and weighting</li>
