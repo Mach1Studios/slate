@@ -63,7 +63,7 @@ m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt Mach1
 
  <aside class="notice">Additional formats available upon request.</aside>
 
-### Ambisonic Formats (special thanks to VVAudio):
+### Ambisonic Formats (special thanks to [VVAudio](http://http://www.vvaudio.com/) ):
 
  - ACNSN3D - 1st order B-format, ACN order and SN3D weighting
  - FuMa - 1st order B-format, Furse-Malham order and weighting

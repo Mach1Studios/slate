@@ -156,13 +156,15 @@ If using on audio thread, high performance version is recommended if possible.
 
 > Default Isotropic Decoding [recommended]: 
 
+> lower performance version for non audio thread operation or for use in managed languages
+
 ```cpp
-// lower performance version for non audio thread operation or for use in managed languages
-
 std::vector<float> volumes = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll);
+```
 
-// you can get a per sample volumes frame if you specify the buffer size and the current sample index
+> you can get a per sample volumes frame if you specify the buffer size and the current sample index
 
+```cpp
 std::vector<float> volumes = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRollint bufferSize, int sampleIndex);
 
 // high performance version is meant to be used on the audio thread, it puts the resulting channel volumes
