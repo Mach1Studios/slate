@@ -4,6 +4,17 @@ Mach1Encode allows you to transform input audio streams into the Mach1Spatial VV
 
 The typical encoding process starts with creating an object of a class Mach1EncodeCore, and setting it up as described below. After that, you're meant to generate Points by calling generatePointResults() on the object of this class. You'll get as many points as there are input channels and as many gains in each point as there are output channels. You then copy each input channel to each output channel with the according gain.
 
+## Installation
+Import and link the appropriate target device's / IDE's library file. 
+
+> shell:
+
+```
+rsync -aved  "$OF_PATH/addons/ofxMach1/libs/lib/osx/libMach1EncodeCAPI.dylib" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
+install_name_tool -change libMach1EncodeCAPI.dylib @executable_path/../Frameworks/libMach1EncodeCAPI.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
+```
+<aside class="notice">openFrameworks: when importing ofxMach1 add the following to your post-build script</aside>
+
 ## Generate Point Results
 Returns the resulting `points` coefficients based on selected and calculated input/output configuration.
 

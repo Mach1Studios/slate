@@ -12,8 +12,8 @@ toc_footers:
 includes:
   - mach1encode
   - mach1decode
+  - mach1decodepositional
   - mach1transcode
-  - positional
   - commonissues
   - credit
 
@@ -34,6 +34,8 @@ The Mach1 Spatial SDK includes three components and libraries:
     Encode and process input streams/audio into a Mach1Spatial VVBP format.
   - **_Mach1Decode lib:_**
     Decode and process a Mach1Spatial VVBP format with device orientation / headtracking to output directional spatial audio.
+  - **_Mach1DecodePositional lib:_**
+    Add additional optional decoding layer to decode spatial mixes with 6DOF for positional and orientational decoding. 
   - **_Mach1Transcode lib:_**
     Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatial VVBP format.
 
