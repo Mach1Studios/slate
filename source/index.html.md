@@ -7,7 +7,6 @@ language_tabs:
 
 toc_footers:
   - <a href='http://www.qdepartment.com/__Mach1/research/'>Research Papers</a>
-  - <a href='http://www.mach1studios.com/signup'>Sign up for beta workflow tools</a>
 
 includes:
   - mach1encode
