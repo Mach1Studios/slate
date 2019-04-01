@@ -23,6 +23,26 @@ m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt SevenOnePT_Cinema -out-f
 m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt Mach1HorizonPairs -out-file /path/to/output.wav -out-file-chans 2
 ```
 
+## Suggested Metadata Spec [optional]
+
+Metadata is not required for decoding any Mach1 VVBP format, and often it is not recommended to rely on auto-detection methods but instead rely on UI/UX for user input upon uploading a Mach1 multichannel audio file for safest handling. This is due to their being several possible 8 channel formats and unless there are proper methods to filter and detect and handle each one, user input will be a safer option. There are many oppurtunities for transcoding or splitting a multichannel audio file all of which could undo metadata or apply false-positive metadata due to the many audio engines not built to handle multichannel solutions safely. 
+
+If autodetection is still required, use the following suggested specifications which will be applied to mixes that run out of M1-Transcoder and soon m1-transcode directly:
+
+Mach1 Spatial = `mach1spatial-8`
+Mach1 Spatial+ = `mach1spatial-12`
+Mach1 Spatial++ = `mach1spatial-16`
+Mach1 StSP = `mach1stsp-2`
+Mach1 Horizon = `mach1horizon-4`
+Mach1 Horizon Pairs = `mach1horizonpairs-8`
+
+Implemented via ICMT tag, 
+Example: 
+```
+  Metadata:
+    comment         : mach1spatial-8
+```
+
 ## Formats Supported
 
 ### Mach1 Formats
