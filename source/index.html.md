@@ -40,4 +40,21 @@ The Mach1 Spatial SDK includes three components and libraries:
 
 Mach1Encode and Mach1Decode are supported on OSX 10.7+, Windows 10+, iOS 9.0+ and Android API 19+. Unity 4.0+ and Unreal Engine 4.10+ examples are available and said engines are supported too on the aforementioned platforms. 
 
-Mach1Transcode is supported on OSX and Windows, game engine support coming soon.
+Mach1Transcode is supported on macOS, linux and Windows, game engine support coming soon.
+
+# Mach1 Internal Angle Standard
+### Positional 3D Coords
+  -  X+ = strafe right
+  -  X- = strafe left
+  -  Y+ = up
+  -  Y- = down
+  -  Z+ = forward
+  -  Z- = backward
+
+### Orientation Euler
+  -  Yaw[0]+ = rotate right [Range: 0->360 | -180->180]
+  -  Yaw[0]- = rotate left [Range: 0->360 | -180->180]
+  -  Pitch[1]+ = rotate up [Range: -90->90]
+  -  Pitch[1]- = rotate down [Range: -90->90]
+  -  Roll[2]+ = tilt right [Range: -90->90]
+  -  Roll[2]- = tilt left [Range: -90->90]

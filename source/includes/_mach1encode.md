@@ -5,14 +5,15 @@ Mach1Encode allows you to transform input audio streams into the Mach1Spatial VV
 The typical encoding process starts with creating an object of a class Mach1EncodeCore, and setting it up as described below. After that, you're meant to generate Points by calling generatePointResults() on the object of this class. You'll get as many points as there are input channels and as many gains in each point as there are output channels. You then copy each input channel to each output channel with the according gain.
 
 ## Installation
-Import and link the appropriate target device's / IDE's library file. 
-
 > shell:
 
 ```
 rsync -aved  "$OF_PATH/addons/ofxMach1/libs/lib/osx/libMach1EncodeCAPI.dylib" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
 install_name_tool -change libMach1EncodeCAPI.dylib @executable_path/../Frameworks/libMach1EncodeCAPI.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
 ```
+
+Import and link the appropriate target device's / IDE's library file. 
+
 <aside class="notice">openFrameworks: when importing ofxMach1 add the following to your post-build script</aside>
 
 ## Generate Point Results
@@ -68,64 +69,51 @@ if (outputKind == 1) { // Output: 7.1
 ```
 
 ## Set Rotation
-Rotates the point(s) around the center origin of the vector space.
-
-> UI value range: 0.0 -> 1.0 (0-360)
-
 ```cpp
 m1Encode.rotation = rotation;
 ```
+Rotates the point(s) around the center origin of the vector space.
+> UI value range: 0.0 -> 1.0 (0-360)
 
 ## Set Diverge
-Moves the point(s) to/from center origin of the vector space.
-
-> UI value range: -1.0 -> 1.0
-
 ```cpp
 m1Encode.diverge = diverge;
 ```
-
-## Set Pitch/Height
-Moves the point(s) up/down the vector space.
-
+Moves the point(s) to/from center origin of the vector space.
 > UI value range: -1.0 -> 1.0
 
+## Set Pitch/Height
 ```cpp
 m1Encode.pitch = pitch;
 ```
+Moves the point(s) up/down the vector space.
+> UI value range: -1.0 -> 1.0
 
 ## Set Stereo Rotation
-Rotates the two stereo points around the axis of the center point between them.
-
-> UI value range: -180.0 -> 180.0
-
 ```cpp
 m1Encode.sRotate = sRotation;
 ```
+Rotates the two stereo points around the axis of the center point between them.
+> UI value range: -180.0 -> 180.0
 
 ## Set Stereo Spread
-Increases or decreases the space between the two stereo points. 
-
-> UI value range: 0.0 -> 1.0
-
 ```cpp
 m1Encode.sSpread = sSpread;
 ```
+Increases or decreases the space between the two stereo points. 
+> UI value range: 0.0 -> 1.0
 
 ## Set Auto Orbit
-When active both stereo points rotate in relation to the center point between them so that they always triangulate toward center of the cuboid.
-
-> default value: true
-
 ```cpp
 m1Encode.autoOrbit = autoOrbit;
 ```
-
-## Set Isotropic / Periphonic
-When active encoding behavior acts evenly with distribution across all azimuth/rotation angles and all altitude/pitch angles.
-
+When active both stereo points rotate in relation to the center point between them so that they always triangulate toward center of the cuboid.
 > default value: true
 
+## Set Isotropic / Periphonic
 ```cpp
 m1Encode.isotropicEncode = enableIsotropicEncode;
 ```
+When active encoding behavior acts evenly with distribution across all azimuth/rotation angles and all altitude/pitch angles.
+> default value: true
+

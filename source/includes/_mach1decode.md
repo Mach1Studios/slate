@@ -33,14 +33,15 @@ Audio Loop:
  - `endBuffer`
 
 ## Installation
-Import and link the appropriate target device's / IDE's library file. 
-
 > shell:
 
 ```
 rsync -aved  "$OF_PATH/addons/ofxMach1/libs/lib/osx/libMach1DecodeCAPI.dylib" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
 install_name_tool -change libMach1DecodeCAPI.dylib @executable_path/../Frameworks/libMach1DecodeCAPI.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
 ```
+
+Import and link the appropriate target device's / IDE's library file. 
+
 <aside class="notice">openFrameworks: when importing ofxMach1 add the following to your post-build script</aside>
 
 ## Set Platform Type
@@ -64,19 +65,13 @@ mach1Decode.setPlatformType(Mach1Decode::Mach1PlatformType::Mach1PlatformAndroid
 ``` -->
 
 ```swift
-mach1Decode.setPlatformType(type: Mach1PlatformType.Mach1PlatformiOSPortrait)
+mach1Decode.setPlatformType(type: Mach1PlatformType.Mach1PlatformiOS)
 ```
 
 ### Angle Order Conventions
 1. Order of Yaw, Pitch, Roll (Defined as angle applied first, second and third).
 2. Direction of transform around each pole's positive movement (left or right rotation).
 3. integer Range before tranform completes 2(PI).
-
-| Order        | airplane      | telescope | symbol | angular velocity |
-| -------------:| -------------:| ---------:| ------:| ----------------:| 
-| applied first | heading | azimuth   | θ (theta) |         yaw         |
-| applied second      | attitude      | elevation | φ (phi) | pitch |
-| applied last | bank | tilt    | ψ (psi) | roll |
 
 ### Euler Angle Orders:
 - (yaw-pitch-roll)

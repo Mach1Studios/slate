@@ -22,13 +22,14 @@ Please view the examples in `examples/Unity|UnrealEngine` to see deployment of M
  - `updatePostionResults()`
 
 ## Installation
-Import and link the appropriate target device's / IDE's library file. 
-<aside class="notice">Requires libMach1DecodeCAPI for reference to spatial object and orientation decoding</aside>
-
 > shell:
 
 ```
 rsync -aved  "$OF_PATH/addons/ofxMach1/libs/lib/osx/libMach1DecodePositionalCAPI.dylib" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
 install_name_tool -change libMach1DecodeCAPI.dylib @executable_path/../Frameworks/libMach1DecodePositionalCAPI.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
 ```
+
+Import and link the appropriate target device's / IDE's library file. 
+<aside class="notice">Requires libMach1DecodeCAPI for reference to spatial object and orientation decoding</aside>
+
 <aside class="notice">openFrameworks: when importing ofxMach1 add the following to your post-build script</aside>
