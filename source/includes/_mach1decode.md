@@ -33,16 +33,8 @@ Audio Loop:
  - `endBuffer`
 
 ## Installation
-> shell:
-
-```
-rsync -aved  "$OF_PATH/addons/ofxMach1/libs/lib/osx/libMach1DecodeCAPI.dylib" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/";
-install_name_tool -change libMach1DecodeCAPI.dylib @executable_path/../Frameworks/libMach1DecodeCAPI.dylib "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME";
-```
 
 Import and link the appropriate target device's / IDE's library file. 
-
-<aside class="notice">openFrameworks: when importing ofxMach1 add the following to your post-build script</aside>
 
 ## Set Platform Type
 > Set the Angular Type for the target device via the enum
