@@ -771,8 +771,7 @@ Use this to get a list of input angles and the associated output coefficients fr
 <p>Mute mach1decode object (all coefficifient results becomes 0) when outside the positional reference shape/point</p>
 
 <p>Mute mach1decode object (all coefficifient results becomes 0) when inside the positional reference shape/point</p>
-<h3 id='manipulate-input-angles-for-positional-rotations'>Manipulate input angles for positional rotations</h3><pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setIgnoreTopBottom</span><span class="p">(</span><span class="kt">bool</span> <span class="n">ignoreTopBottom</span><span class="p">);</span>
-</code></pre><pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setUseYawForRotation</span><span class="p">(</span><span class="kt">bool</span> <span class="n">useYawForRotation</span><span class="p">);</span>
+<h3 id='manipulate-input-angles-for-positional-rotations'>Manipulate input angles for positional rotations</h3><pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setUseYawForRotation</span><span class="p">(</span><span class="kt">bool</span> <span class="n">useYawForRotation</span><span class="p">);</span>
 </code></pre>
 <p>Ignore Yaw angle rotation results from pivoting positionally</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setUsePitchForRotation</span><span class="p">(</span><span class="kt">bool</span> <span class="n">usePitchForRotation</span><span class="p">);</span>
@@ -781,15 +780,23 @@ Use this to get a list of input angles and the associated output coefficients fr
 <pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setUseRollForRotation</span><span class="p">(</span><span class="kt">bool</span> <span class="n">useRollForRotation</span><span class="p">);</span>
 </code></pre>
 <p>Ignore Roll angle rotation results from pivoting positionally</p>
-<h3 id='experimental-blendmode'>Experimental: BlendMode</h3>
-<p>This is a feature for combining two mach1decode spatial mixes to become blended for inside reference shape only, attenuation between both decode mixes are relative to each other and based on a center to exterior planes (walls) relationship.
-<code>cpp
+
+<!-- ### Experimental: BlendMode
+This is a feature for combining two mach1decode spatial mixes to become blended for inside reference shape only, attenuation between both decode mixes are relative to each other and based on a center to exterior planes (walls) relationship.
+```cpp
 void setUseBlendMode(bool useBlendMode);
-</code>
-Enable this experimental mode</p>
-<pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setFalloffCurveBlendMode</span><span class="p">(</span><span class="kt">float</span> <span class="n">falloffCurveBlendMode</span><span class="p">);</span>
-</code></pre>
-<p>Set the custom curve for the relationship between the center to the exterior planes. </p>
+```
+Enable this experimental mode
+
+```cpp
+void setIgnoreTopBottom(bool ignoreTopBottom);
+```
+Ignore height for blendmode during calculations
+
+```cpp
+void setFalloffCurveBlendMode(float falloffCurveBlendMode);
+```
+Set the custom curve for the relationship between the center to the exterior planes.  -->
 <h2 id='update-per-spatial-soundfield-position'>Update per Spatial Soundfield Position</h2>
 <p>Updatable variables for each mach1decode object. These are also able to be set once if needed.</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setCameraPosition</span><span class="p">(</span><span class="n">Mach1Point3DCore</span><span class="o">*</span> <span class="n">pos</span><span class="p">);</span>
@@ -828,7 +835,7 @@ Mach1Point3DCore getCurrentAngle();
 <code>cpp
 Mach1Point3DCore getVolumeRotation();
 </code></p>
-<h3 id='experimental-blendmode-2'>Experimental: BlendMode</h3><pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">getVolumesRoom</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">result</span><span class="p">);</span>
+<h3 id='experimental-blendmode'>Experimental: BlendMode</h3><pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">getVolumesRoom</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">result</span><span class="p">);</span>
 </code></pre>
 <p>Get coeff results for the center of &quot;Blend Mode&quot;. Very experimental!</p>
 <h3 id='update-falloff-attenuation'>Update Falloff/Attenuation</h3><pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setFalloffCurve</span><span class="p">(</span><span class="kt">float</span> <span class="n">falloffCurve</span><span class="p">);</span>
