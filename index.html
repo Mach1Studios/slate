@@ -763,20 +763,18 @@ Use this to get a list of input angles and the associated output coefficients fr
 <span class="n">mach1Decode</span><span class="p">.</span><span class="n">setFilterSpeed</span><span class="p">(</span><span class="n">filterSpeed</span><span class="p">);</span>
 </code></pre>
 <p>Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1DecodeCore class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with &gt;0.9 but could get some orientation latency when &lt;0.85. The reason you might want angle smoothing is that it might help remove a zipper effect seen on some poorer performing platforms or devices.</p>
-<h2 id='setup-for-advanced-settings'>Setup for Advanced Settings</h2><h3 id='mute-controls'>Mute Controls</h3>
-<p>Similar to the <code>setUseClosestPointRotationMuteInside</code> these functions give further control over placing a soundfield positionally and determining when it should/shouldn&#39;t output results.</p>
-<pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setMuteWhenOutsideObject</span><span class="p">(</span><span class="kt">bool</span> <span class="n">muteWhenOutsideObject</span><span class="p">);</span>
+<h2 id='setup-for-advanced-settings'>Setup for Advanced Settings</h2><h3 id='mute-controls'>Mute Controls</h3><pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setMuteWhenOutsideObject</span><span class="p">(</span><span class="kt">bool</span> <span class="n">muteWhenOutsideObject</span><span class="p">);</span>
 </code></pre>
-<p>Mute mach1decode object (all coefficifient results becomes 0) when outside the positional reference shape/point</p>
+<p>Similar to the <code>setUseClosestPointRotationMuteInside</code> these functions give further control over placing a soundfield positionally and determining when it should/shouldn&#39;t output results.</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setMuteWhenInsideObject</span><span class="p">(</span><span class="kt">bool</span> <span class="n">muteWhenInsideObject</span><span class="p">);</span>
 </code></pre>
+<p>Mute mach1decode object (all coefficifient results becomes 0) when outside the positional reference shape/point</p>
+
 <p>Mute mach1decode object (all coefficifient results becomes 0) when inside the positional reference shape/point</p>
-<h3 id='manipulate-input-angles-for-positional-rotations'>Manipulate input angles for positional rotations</h3>
-<p>void setIgnoreTopBottom(bool ignoreTopBottom);
-<code>cpp
-void setUseYawForRotation(bool useYawForRotation);
-</code>
-Ignore Yaw angle rotation results from pivoting positionally</p>
+<h3 id='manipulate-input-angles-for-positional-rotations'>Manipulate input angles for positional rotations</h3><pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setIgnoreTopBottom</span><span class="p">(</span><span class="kt">bool</span> <span class="n">ignoreTopBottom</span><span class="p">);</span>
+</code></pre><pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setUseYawForRotation</span><span class="p">(</span><span class="kt">bool</span> <span class="n">useYawForRotation</span><span class="p">);</span>
+</code></pre>
+<p>Ignore Yaw angle rotation results from pivoting positionally</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">void</span> <span class="n">setUsePitchForRotation</span><span class="p">(</span><span class="kt">bool</span> <span class="n">usePitchForRotation</span><span class="p">);</span>
 </code></pre>
 <p>Ignore Pitch angle rotation results from pivoting positionally</p>
