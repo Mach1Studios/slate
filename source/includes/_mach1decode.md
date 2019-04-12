@@ -46,8 +46,7 @@ Use the `setPlatformType` function to set the device's angle order and conventio
  - `Mach1PlatformUE` = 2
  - `Mach1PlatformOfEasyCam` = 3
  - `Mach1PlatformAndroid` = 4
- - `Mach1PlatformiOSPortrait` = 5
- - `Mach1PlatformiOSLandscape` = 6
+ - `Mach1PlatformiOS` = 5
 
 ```cpp
 mach1Decode.setPlatformType(Mach1PlatformDefault);
