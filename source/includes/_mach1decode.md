@@ -21,6 +21,19 @@ void loop(){
 }
 ```
 
+```swift
+override func viewDidLoad() {
+    mach1Decode.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial)
+    mach1Decode.setPlatformType(type: Mach1PlatformiOS)
+    mach1Decode.setFilterSpeed(filterSpeed: 1.0)
+}
+func update() {
+    mach1Decode.beginBuffer()
+    let decodeArray: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
+    mach1Decode.endBuffer()
+}
+```
+
  - `setAlgorithmType`
  - `setAngularSettingsType`
  - `setFilterSpeed`
@@ -31,6 +44,15 @@ Audio Loop:
  - `decode`
  - `getCurrentAngle` (debug/optional)
  - `endBuffer`
+
+### Decode Callback Mode Options
+The Mach1Decode class's decode function returns the coefficients for each external audio player's gain/volume to create the spatial decode per update at the current angle. The timing of when this callback can be designed with two different modes of use:
+
+ - Update decode results via the used audio player/engine's audio callback
+ - Update decode results via main loop (or any call)
+
+To utilize the first mode simply supply the int your audio player's are using for bufferSize and current index of sample in that buffer to the `decode(yaw, pitch, roll, bufferSize, sampleIndex)` function to syncronize and update with the audio callback
+To utilize the second mode simply supply `0` values to `bufferSize` and `sampleIndex`
 
 ## Installation
 
@@ -77,6 +99,9 @@ float filterSpeed = 1.0f;
 
 mach1Decode.setFilterSpeed(filterSpeed);
 ```
+```swift
+mach1Decode.setFilterSpeed(filterSpeed: 1.0)
+```
 
 ## Set Decoding Algorithm
 Use this function to setup and choose the required Mach1 decoding algorithm.
@@ -91,6 +116,9 @@ Use this function to setup and choose the required Mach1 decoding algorithm.
 
 ```cpp
 void setDecodeAlgoType(Mach1DecodeAlgoType newAlgorithmType);
+```
+```swift
+func setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoType)
 ```
 
 #### Mach1DecodeAlgoSpatial
@@ -118,7 +146,6 @@ Call this function before reading from the Mach1Decode buffer.
 ```cpp
 mach1Decode.beginBuffer();
 ```
-
 ```swift
 mach1Decode.beginBuffer()
 ```
@@ -129,7 +156,6 @@ Call this function after reading from the Mach1Decode buffer.
 ```cpp
 mach1Decode.endBuffer();
 ```
-
 ```swift
 mach1Decode.endBuffer()
 ```
@@ -146,6 +172,9 @@ If using on audio thread, high performance version is recommended if possible.
 
 ```cpp
 std::vector<float> volumes = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll);
+```
+```swift
+let decodeArray: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
 ```
 
 > you can get a per sample volumes frame if you specify the buffer size and the current sample index
@@ -174,19 +203,16 @@ for (int i = 0; i < 8; i++) {
     playersRight[i].setVolume(volumes[i * 2 + 1] * overallVolume);
 }
 ```
-
 ```swift
-//Send device orientation to m1obj with the preferred algo
-let decodeArray: [Float]  = m1obj.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
+//Send device orientation to mach1Decode object with the preferred algo
+mach1Decode.beginBuffer()
+let decodeArray: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
+mach1Decode.endBuffer()
 
 //Use each coeff to decode multichannel Mach1 Spatial mix
 for i in 0...7 {
-
     players[i * 2].volume = Double(decodeArray[i * 2])
     players[i * 2 + 1].volume = Double(decodeArray[i * 2 + 1])
-    
-    print(String(players[i * 2].currentTime) + " ; " + String(i * 2))
-    print(String(players[i * 2 + 1].currentTime) + " ; " + String(i * 2 + 1))
 }
 ```
 
@@ -214,14 +240,16 @@ mach1Decode.endBuffer();
 bufferRead += samples;
 ```
 
-<!-- ## Get Current Time
+## Get Current Time
 
-Use this to get the current time and correlate it to the incoming audio streams, good for debug. 
-
-## Get Current Angle
-
-Use this to get the current angle being processed by Mach1Decode, good for orientation latency checks. 
+Returns the current elapsed time in milliseconds (ms) since Mach1Decode object's creation. 
 
 ## Get Log
 
-Use this to get a list of input angles and the associated output coefficients from the used Mach1Decode function. -->
+Returns a string of the last log message (or empty string if none) from Mach1DecodeCAPI binary library. Use this to assist in debug with a list of input angles and the associated output coefficients from the used Mach1Decode function.
+
+<!-- 
+## Get Current Angle
+
+Use this to get the current angle being processed by Mach1Decode, good for orientation latency checks. 
+ -->

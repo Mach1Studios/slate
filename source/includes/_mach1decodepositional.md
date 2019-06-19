@@ -16,20 +16,47 @@ The Mach1DecodePositional API is designed to be added if 6DOF or positional plac
 void setup(){
     mach1DecodePositional.setDecodeAlgoType(Mach1DecodeAlgoSpatial);
     mach1DecodePositional.setPlatformType(Mach1PlatformDefault);
-    mach1DecodePositional.setUseFalloff(bool useFalloff);
-    mach1DecodePositional.setFalloffCurve(float falloffCurve);
-    mach1DecodePositional.setUseClosestPointRotationMuteInside(bool useClosestPointRotationMuteInside);
+    mach1DecodePositional.setUseAttenuation(bool useAttenuation);
+    mach1DecodePositional.setAttenuationCurve(float attenuationCurve);
+    mach1DecodePositional.setUsePlaneCalculation(bool usePlaneCalculation);
 }
 
 void loop(){
-    mach1DecodePositional.setCameraPosition(Mach1Point3D devicePos);
-    mach1DecodePositional.setCameraRotation(Mach1Point3D deviceRot);
+    mach1DecodePositional.setListenerPosition(Mach1Point3D devicePos);
+    mach1DecodePositional.setListenerRotation(Mach1Point3D deviceRot);
     mach1DecodePositional.setDecoderAlgoPosition(Mach1Point3D objPos);
     mach1DecodePositional.setDecoderAlgoRotation(Mach1Point3D objRot);
     mach1DecodePositional.setDecoderAlgoScale(Mach1Point3D objScale);
 
     mach1DecodePositional.getDist();
-    mach1DecodePositional.getVolumesWalls(float* result);
+    mach1DecodePositional.getCoefficients(float* result);
+}
+```
+
+```swift
+override func viewDidLoad() {
+    mach1DecodePositional.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial)
+    mach1DecodePositional.setPlatformType(type: Mach1PlatformiOS)
+    mach1DecodePositional.setFilterSpeed(filterSpeed: 1.0)
+    mach1DecodePositional.setUseAttenuation(useAttenuation: true)
+    mach1DecodePositional.setUsePlaneCalculation(bool: false)
+}
+func update() {
+    mach1DecodePositional.setListenerPosition(point: (devicePos))
+    mach1DecodePositional.setListenerRotation(point: Mach1Point3D(deviceRot))
+    mach1DecodePositional.setDecoderAlgoPosition(point: (objectPosition))
+    mach1DecodePositional.setDecoderAlgoRotation(point: Mach1Point3D(objectRotation))
+    mach1DecodePositional.setDecoderAlgoScale(point: Mach1Point3D(x: 0.1, y: 0.1, z: 0.1))
+
+    mach1DecodePositional.evaluatePositionResults()
+
+    var attenuation : Float = mach1DecodePositional.getDist()
+    attenuation = mapFloat(value: attenuation, inMin: 0, inMax: 3, outMin: 1, outMax: 0)
+    attenuation = clampFloat(value: attenuation, min: 0, max: 3)
+    mach1DecodePositional.setAttenuationCurve(attenuationCurve: attenuation)
+
+    var decodeArray: [Float] = Array(repeating: 0.0, count: 18)
+    mach1DecodePositional.getCoefficients(result: &decodeArray)
 }
 ```
 Setup Step (setup/start):
@@ -63,16 +90,25 @@ For Unreal Engine:
 
 The following are functions to aid in how positional distance effects the overall gain of an mach1decode object to any design. The resulting distance calculations can also be used for any external effect if created.
 
-### Falloff/Attenuation
+### Attenuation/Falloff
 ```cpp
-void setUseFalloff(bool useFalloff);
+void setUseAttenuation(bool useAttenuation);
+```
+```swift
+func setUseAttenuation(useAttenuation: Bool)
 ```
 Boolean turning on/off distance attenuation calculations on that mach1decode object
+<aside class="notice">setUseFalloff has been deprecated</aside>
 
 ### Reference positional point/plane/shape
 ```cpp
-void setUseClosestPointRotationMuteInside(bool useClosestPointRotationMuteInside);
+void setUsePlaneCalculation(bool usePlaneCalculation);
 ```
+```swift
+func setUsePlaneCalculation(bool usePlaneCalculation: Bool)
+```
+<aside class="notice">setUseClosestPointRotationMuteInside has been deprecated</aside>
+
 This very long named function can set whether the rotational pivots of a mach1decode soundfield are by referencing the device/camera to a positional point or the closest point of a plane (and further the closest plane of a shape). This allows each mach1decode object to be placed with more design options to prevent soundfield scenes from rotating when not needed.
 
 ### Set Filter Speed
@@ -80,6 +116,9 @@ This very long named function can set whether the rotational pivots of a mach1de
 float filterSpeed = 1.0f;
 
 mach1Decode.setFilterSpeed(filterSpeed);
+```
+```swift
+mach1Decode.setFilterSpeed(filterSpeed: 1.0)
 ```
 Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1DecodeCore class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with >0.9 but could get some orientation latency when <0.85. The reason you might want angle smoothing is that it might help remove a zipper effect seen on some poorer performing platforms or devices.
 
@@ -89,10 +128,16 @@ Filter speed determines the amount of angle smoothing applied to the orientation
 ```cpp
 void setMuteWhenOutsideObject(bool muteWhenOutsideObject);
 ```
+```swift
+func setMuteWhenOutsideObject(muteWhenOutsideObject: Bool)
+```
 Similar to the `setUseClosestPointRotationMuteInside` these functions give further control over placing a soundfield positionally and determining when it should/shouldn't output results.
 
 ```cpp
 void setMuteWhenInsideObject(bool muteWhenInsideObject);
+```
+```swift
+func setMuteWhenInsideObject(muteWhenInsideObject: Bool)
 ```
 Mute mach1decode object (all coefficifient results becomes 0) when outside the positional reference shape/point
 
@@ -102,15 +147,24 @@ Mute mach1decode object (all coefficifient results becomes 0) when inside the po
 ```cpp
 void setUseYawForRotation(bool useYawForRotation);
 ```
+```swift
+func setUseYawForRotation(bool useYawForRotation: Bool)
+```
 Ignore Yaw angle rotation results from pivoting positionally
 
 ```cpp
 void setUsePitchForRotation(bool usePitchForRotation);
 ```
+```swift
+func setUsePitchForRotation(bool usePitchForRotation: Bool)
+```
 Ignore Pitch angle rotation results from pivoting positionally
 
 ```cpp
 void setUseRollForRotation(bool useRollForRotation);
+```
+```swift
+func setUseRollForRotation(bool useRollForRotation: Bool)
 ```
 Ignore Roll angle rotation results from pivoting positionally
 
@@ -137,35 +191,59 @@ Updatable variables for each mach1decode object. These are also able to be set o
 ```cpp
 void setCameraPosition(Mach1Point3DCore* pos);
 ```
+```swift
+func setListenerPosition(point: Mach1Point3D)
+```
 Updates the device/camera's position in desired x,y,z space
+<aside class="notice">setCameraPosition has been deprecated</aside>
 
 ```cpp
 void setCameraRotation(Mach1Point3DCore* euler);
 ```
+```swift
+func setListenerRotation(point: Mach1Point3D)
+```
 Updates the device/camera's orientation with Euler angles (yaw, pitch, roll)
+<aside class="notice">setCameraRotation has been deprecated</aside>
 
 ```cpp
 void setCameraRotationQuat(Mach1Point4DCore* quat);
 ```
+```swift
+func setListenerRotationQuat(point: Mach1Point4D)
+```
 Updates the device/camera's orientation with Quaternion
+<aside class="notice">setCameraRotationQuat has been deprecated</aside>
 
 ```cpp
 void setDecoderAlgoPosition(Mach1Point3DCore* pos);
+```
+```swift
+func setDecoderAlgoPosition(point: Mach1Point3D)
 ```
 Updates the decode object's position in desired x,y,z space
 
 ```cpp
 void setDecoderAlgoRotation(Mach1Point3DCore* euler);
 ```
+```swift
+func setDecoderAlgoRotation(point: Mach1Point3D)
+```
 Updates the decode object's orientation with Euler angles (yaw, pitch, roll)
 
 ```cpp
 void setDecoderAlgoRotationQuat(Mach1Point4DCore* quat);
 ```
+```swift
+func setDecoderAlgoRotationQuat(point: Mach1Point4D)
+```
 Updates the decode object's orientation with Quaternion
 
 ```cpp
 void setDecoderAlgoScale(Mach1Point3DCore* scale);
+```
+```swift
+func setDecoderAlgoScale(point: Mach1Point3D)
 ```
 Updates the decode object's scale in desired x,y,z space
 
@@ -173,25 +251,41 @@ Updates the decode object's scale in desired x,y,z space
 ```cpp
 void evaluatePositionResults();
 ```
+```swift
+func evaluatePositionResults()
+```
 Calculate!
 
 ```cpp
-void getVolumesWalls(float *result);
+void getCoefficients(float *result);
+```
+```swift
+func getCoefficients(result: inout [Float])
 ```
 Get coefficient results for applying to mach1decode object for rotational and positional, replaces the results from: `mach1Decode.decode`
-
+<aside class="notice">getVolumesWalls has been deprecated</aside>
 
 ### Return Relative Comparisons
 ```cpp
 float getDist();
 ```
+```swift
+func getDist() -> Float
+```
 Get normalized distance between mach1decode object and device/camera
 ```cpp
-Mach1Point3DCore getCurrentAngle();
+Mach1Point3D getCurrentAngle();
+```
+```swift
+func getCurrentAngle() -> Mach1Point3D
 ```
 ```cpp
-Mach1Point3DCore getVolumeRotation();
+Mach1Point3D getCoefficientsRotation();
 ```
+```swift
+func getCoefficientsRotation() -> Mach1Point3D
+```
+<aside class="notice">getVolumeRotation has been deprecated</aside>
 
 <!-- ### Experimental: BlendMode
 ```cpp
@@ -201,6 +295,10 @@ Get coeff results for the center of "Blend Mode". Very experimental! -->
 
 ### Update Falloff/Attenuation
 ```cpp
-void setFalloffCurve(float falloffCurve);
+void setAttenuationCurve(float attenuationCurve);
+```
+```swift
+func setAttenuationCurve(attenuationCurve: Float)
 ```
 Set a resulting float of that curve to the current buffer
+<aside class="notice">setFalloffCurve has been deprecated</aside>
