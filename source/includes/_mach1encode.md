@@ -12,10 +12,10 @@ Import and link the appropriate target device's / IDE's library file.
 Returns the resulting `points` coefficients based on selected and calculated input/output configuration.
 
 ```cpp
-M1EncodeCorePointResults points = m1Encode.generatePointResults();
-// gains are 2d vector of gains which has gain coeff for each input channel
-// creating each output channel
-std::vector<std::vector<float>> gains = points.gains;
+m1Encode.generatePointResults();
+```
+```swift
+m1Encode.generatePointResults()
 ```
 
 ## Set Input Mode
@@ -44,6 +44,28 @@ if (inputKind == 4) { // Input: BFORMAT
     m1Encode.inputMode = M1Encode::INPUT_BFORMAT;
 }
 ```
+```swift
+var type : Mach1EncodeInputModeType = Mach1EncodeInputModeMono
+m1Encode.setInputMode(inputMode: type)
+
+if(soundFiles[soundIndex].count == 1) {
+    type = Mach1EncodeInputModeMono
+}
+else if(soundFiles[soundIndex].count == 2) {
+    type = Mach1EncodeInputModeStereo
+}
+else if (soundFiles[soundIndex].count == 4) {
+	if (quadMode){
+		type = Mach1EncodeInputModeQuad
+	}
+	if (aFormatMode){
+		type = Mach1EncodeInputModeAFormat
+	}
+	if (bFormatMode){
+		type = Mach1EncodeInputModeBFormat
+	}
+}
+```
 
 ## Set Output Mode
 Sets the output spatial format, Mach1Spatial or Mach1Horizon
@@ -52,60 +74,107 @@ Sets the output spatial format, Mach1Spatial or Mach1Horizon
  - OUTPUT_8CH (Mach1Spatial) [Yaw, Pitch, Roll]
 
 ```cpp
-if (outputKind == 0) { // Output: Quad
+if (outputKind == 0) { // Output: 4CH Mach1Horizon
     m1Encode.outputMode = M1Encode::OUTPUT_4CH;
 }
-if (outputKind == 1) { // Output: 7.1
+if (outputKind == 1) { // Output: 8CH Mach1Spatial
     m1Encode.outputMode = M1Encode::OUTPUT_8CH;
+}
+```
+```swift
+if (outputKind == 0) { // Output: 4CH Mach1Horizon
+    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputMode4Ch)
+}
+if (outputKind == 1) { // Output: 8CH Mach1Spatial
+    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputMode8Ch)
 }
 ```
 
 ## Set Rotation
 ```cpp
-m1Encode.rotation = rotation;
+m1Encode.setRotation = rotation;
+```
+```swift
+m1Encode.setRotation(rotation: rotation)
 ```
 Rotates the point(s) around the center origin of the vector space.
 > UI value range: 0.0 -> 1.0 (0-360)
 
 ## Set Diverge
 ```cpp
-m1Encode.diverge = diverge;
+m1Encode.setDiverge = diverge;
+```
+```swift
+m1Encode.setDiverge(diverge: diverge)
 ```
 Moves the point(s) to/from center origin of the vector space.
 > UI value range: -1.0 -> 1.0
 
 ## Set Pitch/Height
 ```cpp
-m1Encode.pitch = pitch;
+m1Encode.setPitch = pitch;
+```
+```swift
+m1Encode.setPitch(pitch: height)
 ```
 Moves the point(s) up/down the vector space.
 > UI value range: -1.0 -> 1.0
 
 ## Set Stereo Rotation
 ```cpp
-m1Encode.sRotate = sRotation;
+m1Encode.setStereoRotate = sRotation;
+```
+```swift
+m1Encode.setStereoRotate(setStereoRotate: stereoRotate)
 ```
 Rotates the two stereo points around the axis of the center point between them.
 > UI value range: -180.0 -> 180.0
 
 ## Set Stereo Spread
 ```cpp
-m1Encode.sSpread = sSpread;
+m1Encode.setStereoSpread = sSpread;
+```
+```swift
+m1Encode.setStereoSpread(setStereoSpread: stereoSpread)
 ```
 Increases or decreases the space between the two stereo points. 
 > UI value range: 0.0 -> 1.0
 
 ## Set Auto Orbit
 ```cpp
-m1Encode.autoOrbit = autoOrbit;
+m1Encode.setAutoOrbit = autoOrbit;
+```
+```swift
+m1Encode.setAutoOrbit(setAutoOrbit: true)
 ```
 When active both stereo points rotate in relation to the center point between them so that they always triangulate toward center of the cuboid.
 > default value: true
 
 ## Set Isotropic / Periphonic
 ```cpp
-m1Encode.isotropicEncode = enableIsotropicEncode;
+m1Encode.setIsotropicEncode = enableIsotropicEncode;
+```
+```swift
+m1Encode.setIsotropicEncode(setIsotropicEncode: true)
 ```
 When active encoding behavior acts evenly with distribution across all azimuth/rotation angles and all altitude/pitch angles.
 > default value: true
 
+## Inline Mach1Encode Object Decoder
+```cpp
+//Use each coeff to decode multichannel Mach1 Spatial mix
+volumes = m1Encode.getResultingVolumesDecoded(decodeType, decodeArray)
+
+for (int i = 0; i < 8; i++) {
+    players[i].volume = volumes[i] * volume
+}
+```
+```swift
+//Use each coeff to decode multichannel Mach1 Spatial mix
+var volumes : [Float] = m1Encode.getResultingVolumesDecoded(decodeType: decodeType, decodeResult: decodeArray)
+
+for i in 0..<players.count {
+    players[i].volume = volumes[i] * volume
+}
+```
+This function allows designs where only previewing or live rendering to decoded audio output is required without any step of rendering or exporting to disk. This enables designs where developers can stack and sum multiple Mach1Encode object's decoded outputs instead of using Mach1Encode objects to write to a master 8 channel intermediary file. Allowing shorthand versions of Mach1Encode->Mach1Decode->Stereo if only live playback is needed. 
