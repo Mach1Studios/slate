@@ -1023,29 +1023,13 @@ Get coeff results for the center of "Blend Mode". Very experimental! -->
 <pre class="highlight plaintext"><code>  Metadata:
     comment         : mach1spatial-8
 </code></pre><h2 id='examples-of-metadata-spec'>Examples of Metadata Spec</h2>
-<p>ffmpeg (wav output):</p>
+<p>ffmpeg (wav output): <code>-metadata ICMT=&quot;mach1spatial-8&quot;</code></p>
 
-<blockquote>
-<p><code>-metadata ICMT=&quot;mach1spatial-8&quot;</code></p>
-</blockquote>
+<p>ffmpeg (vorbis output): <code>-metadata spatial-audio=&#39;mach1spatial-8&#39;</code></p>
 
-<p>ffmpeg (vorbis output):</p>
+<p>ffmpeg (aac output): <code>-metadata comment=&#39;mach1spatial-8&#39;</code></p>
 
-<blockquote>
-<p><code>-metadata spatial-audio=&#39;mach1spatial-8&#39;</code></p>
-</blockquote>
-
-<p>ffmpeg (aac output):</p>
-
-<blockquote>
-<p><code>-metadata comment=&#39;mach1spatial-8&#39;</code></p>
-</blockquote>
-
-<p>libsndfile (wav output):</p>
-
-<blockquote>
-<p><code>outfiles[i].setString(0x05, &quot;mach1spatial-8&quot;);</code></p>
-</blockquote>
+<p>libsndfile (wav output): <code>outfiles[i].setString(0x05, &quot;mach1spatial-8&quot;);</code></p>
 <h2 id='formats-supported'>Formats Supported</h2><h3 id='mach1-formats'>Mach1 Formats</h3>
 <ul>
 <li>M1Horizon (Mach1 Horizon / Quad) - L R Ls Rs</li>
