@@ -32,7 +32,6 @@ void loop(){
     mach1DecodePositional.getCoefficients(float* result);
 }
 ```
-
 ```swift
 override func viewDidLoad() {
     mach1DecodePositional.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial)
@@ -59,6 +58,7 @@ func update() {
     mach1DecodePositional.getCoefficients(result: &decodeArray)
 }
 ```
+
 Setup Step (setup/start):
 
  - `setDecodeAlgoType`

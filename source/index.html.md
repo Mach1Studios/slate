@@ -4,6 +4,7 @@ title: Mach1 SDK Reference & Documentation
 language_tabs:
   - cpp
   - swift
+  - javascript
 
 toc_footers:
   - <a href='http://www.qdepartment.com/__Mach1/research/'>Research Papers</a>

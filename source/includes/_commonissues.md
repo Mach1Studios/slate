@@ -10,10 +10,6 @@ The following is a list of common heard issues during implementation and include
 If the rate of angles sending to the app layer with Mach1Decode integrated is too slow, this can cause some audible distortion / clicking issues added to the mix. The effect will sound like a zipper as you headtrack faster and faster. This is due to the difference of the returned coefficients being too large from result to result, causing the gain change applied to be too large and creating a "jump". We have included ways to filter the input angles into our functions however this is a band-aid to the issue if your target device has this issue. The idea is to filter and delay the inputting angles adding more intermidiary angles between each "jump" but at the cost of Orientation Latency (see above).
 </aside>
 
-```cpp
-
-```
-
 ### Audio/Visual Sync Issues
 <aside class="notice">
 It is important to ensure sync between a visual element in your project / application and the spatial audio mix. Ensure they are managed by the same function receiving the same call.

@@ -33,6 +33,21 @@ func update() {
     mach1Decode.endBuffer()
 }
 ```
+```javascript
+let mach1Decode = null;
+let mach1DecodeModule = Mach1DecodeModule();
+mach1DecodeModule.onInited = function() {
+    mach1Decode = new(mach1DecodeModule).Mach1Decode();
+    mach1Decode.setPlatformType(mach1Decode.Mach1PlatformType.Mach1PlatformOfEasyCam);
+    mach1Decode.setDecodeAlgoType(mach1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial);
+    mach1Decode.setFilterSpeed(0.95);
+};
+function update() {
+    mach1Decode.beginBuffer();
+    var decoded = mach1Decode.decode(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);
+    mach1Decode.endBuffer();
+}
+```
 
  - `setAlgorithmType`
  - `setAngularSettingsType`
@@ -80,6 +95,9 @@ mach1Decode.setPlatformType(Mach1Decode::Mach1PlatformType::Mach1PlatformAndroid
 ```swift
 mach1Decode.setPlatformType(type: Mach1PlatformType.Mach1PlatformiOS)
 ```
+```javascript
+mach1Decode.setPlatformType(m1Decode.Mach1PlatformType.Mach1PlatformOfEasyCam);
+```
 
 ### Angle Order Conventions
 1. Order of Yaw, Pitch, Roll (Defined as angle applied first, second and third).
@@ -102,6 +120,9 @@ mach1Decode.setFilterSpeed(filterSpeed);
 ```swift
 mach1Decode.setFilterSpeed(filterSpeed: 1.0)
 ```
+```javascript
+mach1Decode.setFilterSpeed(0.95);
+```
 
 ## Set Decoding Algorithm
 Use this function to setup and choose the required Mach1 decoding algorithm.
@@ -119,6 +140,9 @@ void setDecodeAlgoType(Mach1DecodeAlgoType newAlgorithmType);
 ```
 ```swift
 func setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoType)
+```
+```javascript
+mach1Decode.setDecodeAlgoType(m1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial);
 ```
 
 #### Mach1DecodeAlgoSpatial
@@ -149,6 +173,9 @@ mach1Decode.beginBuffer();
 ```swift
 mach1Decode.beginBuffer()
 ```
+```javascript
+mach1Decode.beginBuffer();
+```
 
 ## End Buffer
 Call this function after reading from the Mach1Decode buffer.
@@ -158,6 +185,9 @@ mach1Decode.endBuffer();
 ```
 ```swift
 mach1Decode.endBuffer()
+```
+```javascript
+mach1Decode.endBuffer();
 ```
 
 ## Decoding
@@ -175,6 +205,9 @@ std::vector<float> volumes = mach1Decode.decode(float deviceYaw, float devicePit
 ```
 ```swift
 let decodeArray: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
+```
+```javascript
+var decoded = m1Decode.decode(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);
 ```
 
 > you can get a per sample volumes frame if you specify the buffer size and the current sample index
