@@ -55,6 +55,15 @@ If autodetection is still required, use the following suggested specifications w
     comment         : mach1spatial-8
 ```
 
+## Examples of Metadata Spec
+ffmpeg (wav output): `-metadata ICMT="mach1spatial-8"`
+
+ffmpeg (vorbis output): `-metadata spatial-audio='mach1spatial-8'`
+
+ffmpeg (aac output): `-metadata comment='mach1spatial-8'`
+
+libsndfile (wav output): `outfiles[i].setString(0x05, "mach1spatial-8");`
+
 ## Formats Supported
 
 ### Mach1 Formats
@@ -95,7 +104,7 @@ If autodetection is still required, use the following suggested specifications w
 
  <aside class="notice">Additional formats available upon request.</aside>
 
-### Ambisonic Formats (special thanks to [VVAudio](http://http://www.vvaudio.com/) ):
+### Ambisonic Formats (special thanks to [VVAudio](https://www.vvaudio.com/))
 
  - ACNSN3D - 1st order B-format, ACN order and SN3D weighting
  - FuMa - 1st order B-format, Furse-Malham order and weighting
