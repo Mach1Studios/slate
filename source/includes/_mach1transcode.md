@@ -86,8 +86,8 @@ libsndfile (wav output): `outfiles[i].setString(0x05, "mach1spatial-8");`
  - FiveOneFilm_Cinema (Pro Tools default) - L C R Ls Rs LFE, forward focus
  - FiveOneSmpte (SMPTE/ITU for Dolby Digital - L R C LFE Ls Rs
  - FiveOneDts (DTS) - L R Ls Rs C LFE
- - SevenOnePT (Pro Tools default) - L C R Lss Rss Lsr Rsr LFE
- - SevenOnePT_Cinema (Pro Tools default) - L C R Lss Rss Lsr Rsr LFE, forward focus
+ - SevenOnePt (Pro Tools default) - L C R Lss Rss Lsr Rsr LFE
+ - SevenOnePt_Cinema (Pro Tools default) - L C R Lss Rss Lsr Rsr LFE, forward focus
  - SevenZero_Cinema - L C R Lss Rss Lsr Rsr, forward focus
  - SevenOneSDDS (Sony SDDS) - L Lc C Rc R Ls Rs LFE
  - SevenZeroSDDS (Sony SDDS) - L Lc C Rc R Ls Rs
