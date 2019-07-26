@@ -279,12 +279,14 @@ Mach1Point3D getCurrentAngle();
 ```swift
 func getCurrentAngle() -> Mach1Point3D
 ```
+Get the current angle of the mach1decode object
 ```cpp
 Mach1Point3D getCoefficientsRotation();
 ```
 ```swift
 func getCoefficientsRotation() -> Mach1Point3D
 ```
+Get the current rotation of the mach1decode object
 <aside class="notice">getVolumeRotation has been deprecated</aside>
 
 <!-- ### Experimental: BlendMode
