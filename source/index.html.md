@@ -7,7 +7,7 @@ language_tabs:
   - javascript
 
 toc_footers:
-  - <a href='http://dev.mach1.xyz/research/Mach1SpatialSystem-WhitePaper_180523.pdf'>Research Paper</a>
+  - <a href='https://mach1-public.s3.amazonaws.com/research/Mach1SpatialSystem-WhitePaper_180523.pdf'>Research Paper</a>
 
 includes:
   - mach1encode
