@@ -101,6 +101,7 @@ libsndfile (wav output): `outfiles[i].setString(0x05, "mach1spatial-8");`
  - SevenZeroFour - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts
  - NineOne 
  - NineZero
+ - 16.0 - 16 channel Surround 3D layout
 
  <aside class="notice">Additional formats available upon request.</aside>
 
@@ -113,3 +114,52 @@ libsndfile (wav output): `outfiles[i].setString(0x05, "mach1spatial-8");`
  - TBE - Facebook360 Hybrid 2nd order
  - ACNSN3DO3A - 3rd order B-format, AmbiX ACN order and SN3D weighting
  - FuMaO3A - 3rd order B-format, Furse-Malham order and weighting
+ - ACNSN3D1oa(maxRE) - 1st order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3D2oa(maxRE) - 2nd order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3D3oa(maxRE) - 3rd order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3D4oa(maxRE) - 4th order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3D5oa(maxRE) - 5th order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3D6oa(maxRE) - 6th order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3D7oa(maxRE) - 7th order, Ambix ACN order and SN3D-MaxRE from IEM
+
+### Custom Format/Configuration
+
+```
+./m1-transcode fmtconv -in-file /path/to/16channel.wav -in-fmt TTPoints -in-json /path/to/16ChannelDescription.json -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial -out-file-chans 0
+```
+
+Input JSON description of the surround/spatial soundfield setup per your design and input it with the `-in-json` arguement for any custom input or output transcoding.
+
+To use this set the `-in-fmt` or `-out-fmt` as `TTPoints`
+
+## Additional Features
+
+### LFE/SUB Channel Filter
+
+> Example of low pass filtering every channel but the Front-Right of the Mach1 Spatial mix and outputting it to stereo.
+
+```
+./m1-transcode fmtconv -in-file /path/to/input-m1spatial.wav -in-fmt M1Spatial -out-file /path/to/output-stereo.wav -lfe-sub 0,2,3,4,6,7 -out-fmt Stereo -out-file-chans 0
+```
+
+Use `-lfe-sub` arguement to indicate which input channels you want to apply a Low Pass Filter to, the arguement exapects a list of ints with commas to separate them.
+
+### Spatial Downmixer
+
+```
+./m1-transcode fmtconv -in-file /path/to/input-fiveOne.wav -in-fmt FiveOneFilm_Cinema -spatial-downmixer 0.9 -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial -out-file-chans 0
+```
+
+For scaling audio outputting to streaming use cases of Mach1Decode and use cases using the Mach1 Spatial output from Mach1Transcode we have included a way to compare the top vs. bottom of the input soundfield, if the difference is less than the set threshold (float) output format will be Mach1 Horizon. This is to allow soundfields that do not have much of a top vs bottom difference to output to a lesser channel Mach1 Horizon format to save on filesize while streaming.
+
+`-spatial-downmixer` arguement can be used to set this, the float after this arguement will be used as the threshold. If used this will effectively add an additional transoding after anything outputting to `Mach1 Spatial` to then transcode from `Mach1 Spatial` to `Mach1 Horizon` while respecting the content of the soundfield. 
+
+### Metadata Extractor
+
+```
+./m1-transcode fmtconv -in-file /path/to/input-ADM.wav -in-fmt SevenOneFour -out-file /path/to/output.wav -extract-metadata -out-fmt M1Spatial -out-file-chans 0
+```
+
+An ADM metadata reader and parser is embedded into m1-transcode binary executable to help with custom pipelines using Mach1Encode API to render Object Audio Soundfields into Mach1 Spatial mixes/renders for easier handling. 
+
+`-extract-metadata` will dump any found XML ADM metadata in the audio binary as a textfile with the same output name and path.
