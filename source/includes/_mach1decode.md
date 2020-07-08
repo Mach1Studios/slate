@@ -1,6 +1,6 @@
 # Mach1Decode API
 
-Mach1Decode supplies the functions needed to playback the Mach1Spatial VVBP 8channels to a stereo stream based on the device's orientation, this can be used for mobile device windowing or first person based media such as AR/VR/MR without any additional processing effects required.
+Mach1Decode supplies the functions needed to playback Mach1 Spatial VVBP formats to a stereo stream based on the device's orientation, this can be used for mobile device windowing or first person based media such as AR/VR/MR without any additional processing effects required.
 
 ## Summary Use
 

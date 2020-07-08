@@ -45,7 +45,7 @@ func update(decodeArray: [Float], decodeType: Mach1DecodeAlgoType){
     m1Encode.generatePointResults()
 
     //Use each coeff to decode multichannel Mach1 Spatial mix
-    var volumes : [Float] = m1Encode.getResultingVolumesDecoded(decodeType: decodeType, decodeResult: decodeArray)
+    var volumes : [Float] = m1Encode.getResultingCoeffsDecoded(decodeType: decodeType, decodeResult: decodeArray)
 
     for i in 0..<players.count {
         players[i].volume = volumes[i] * volume
@@ -279,7 +279,7 @@ When active encoding behavior acts evenly with distribution across all azimuth/r
 ## Inline Mach1Encode Object Decoder
 ```cpp
 //Use each coeff to decode multichannel Mach1 Spatial mix
-volumes = m1Encode.getResultingVolumesDecoded(decodeType, decodeArray)
+volumes = m1Encode.getResultingCoeffsDecoded(decodeType, decodeArray)
 
 for (int i = 0; i < 8; i++) {
     players[i].volume = volumes[i] * volume
@@ -287,10 +287,12 @@ for (int i = 0; i < 8; i++) {
 ```
 ```swift
 //Use each coeff to decode multichannel Mach1 Spatial mix
-var volumes : [Float] = m1Encode.getResultingVolumesDecoded(decodeType: decodeType, decodeResult: decodeArray)
+var volumes : [Float] = m1Encode.getResultingCoeffsDecoded(decodeType: decodeType, decodeResult: decodeArray)
 
 for i in 0..<players.count {
     players[i].volume = volumes[i] * volume
 }
 ```
 This function allows designs where only previewing or live rendering to decoded audio output is required without any step of rendering or exporting to disk. This enables designs where developers can stack and sum multiple Mach1Encode object's decoded outputs instead of using Mach1Encode objects to write to a master 8 channel intermediary file. Allowing shorthand versions of Mach1Encode->Mach1Decode->Stereo if only live playback is needed. 
+
+This can also be used to add object audio design to your application from the Mach1 Spatial APIs and add further control to an application to layer pre-rendered spatial audio and runtime spatial audio as needed.
