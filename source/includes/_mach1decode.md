@@ -20,7 +20,6 @@ void loop(){
     mach1Decode.endBuffer();
 }
 ```
-
 ```swift
 override func viewDidLoad() {
     mach1Decode.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial)
@@ -35,13 +34,12 @@ func update() {
 ```
 ```javascript
 let mach1Decode = null;
-let mach1DecodeModule = Mach1DecodeModule();
-mach1DecodeModule.onInited = function() {
-    mach1Decode = new(mach1DecodeModule).Mach1Decode();
-    mach1Decode.setPlatformType(mach1Decode.Mach1PlatformType.Mach1PlatformOfEasyCam);
-    mach1Decode.setDecodeAlgoType(mach1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial);
-    mach1Decode.setFilterSpeed(0.95);
-};
+Mach1DecodeModule().then(function(m1DecodeModule) {
+    m1Decode = new(m1DecodeModule).Mach1Decode();
+    m1Decode.setPlatformType(m1Decode.Mach1PlatformType.Mach1PlatformOfEasyCam);
+    m1Decode.setDecodeAlgoType(m1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial);
+    m1Decode.setFilterSpeed(0.95);
+});
 function update() {
     mach1Decode.beginBuffer();
     var decoded = mach1Decode.decode(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);

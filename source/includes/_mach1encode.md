@@ -54,10 +54,9 @@ func update(decodeArray: [Float], decodeType: Mach1DecodeAlgoType){
 
 ```javascript
 let m1Encode = null;
-let m1EncodeModule = Mach1EncodeModule();
-m1EncodeModule.onInited = function() {
+Mach1EncodeModule().then(function(m1EncodeModule) {     
     m1Encode = new(m1EncodeModule).Mach1Encode();
-};
+});
 function update() {
     m1Encode.setRotation(params.rotation);
     m1Encode.setDiverge(params.diverge);
