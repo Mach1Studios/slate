@@ -9,9 +9,9 @@ The Mach1Encode API is designed to aid in developing tools for inputting to a Ma
 
 ```cpp
 void update(){
-    m1Encode.setRotation(rotation);
+    m1Encode.setAzimuth(azimuth);
+    m1Encode.setElevation(elevation);
     m1Encode.setDiverge(diverge);
-    m1Encode.setPitch(pitch);
     m1Encode.setStereoRotate(sRotation);
     m1Encode.setStereoSpread(sSpread);
     m1Encode.setAutoOrbit(autoOrbit);
@@ -33,9 +33,9 @@ void update(){
 
 ```swift
 func update(decodeArray: [Float], decodeType: Mach1DecodeAlgoType){
-    m1Encode.setRotation(rotation: rotation)
+    m1Encode.setAzimuth(rotation: azimuth)
+    m1Encode.setElevation(pitch: elevation)
     m1Encode.setDiverge(diverge: diverge)
-    m1Encode.setPitch(pitch: height)
     m1Encode.setAutoOrbit(setAutoOrbit: true)
     m1Encode.setIsotropicEncode(setIsotropicEncode: true)
     m1Encode.setStereoSpread(setStereoSpread: stereoSpread)
@@ -58,15 +58,16 @@ Mach1EncodeModule().then(function(m1EncodeModule) {
     m1Encode = new(m1EncodeModule).Mach1Encode();
 });
 function update() {
-    m1Encode.setRotation(params.rotation);
+    m1Encode.setAzimuth(params.azimuth);
+    m1Encode.setElevation(params.elevation);
     m1Encode.setDiverge(params.diverge);
-    m1Encode.setPitch(params.pitch);
     m1Encode.setStereoRotate(params.sRotation);
     m1Encode.setStereoSpread(params.sSpread);
     m1Encode.setAutoOrbit(params.autoOrbit);
     m1Encode.setIsotropicEncode(params.enableIsotropicEncode);
 
     m1Encode.generatePointResults();
+    var encodeCoeffs = m1Encode.getGains();
 }
 ```
 

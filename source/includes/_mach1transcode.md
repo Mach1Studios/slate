@@ -1,4 +1,4 @@
-# Mach1Transcode API
+# Mach1Transcode CommandLine
 
 Mach1Transcode includes functions for use cases that utilizing Mach1Spatial's agnostic abilities and allows 1:1 VBAP style conversions from any surround or spatial audio format and to any other surround or spatial audio format. This is very helpful for apps that have certain input requirements but different output requirements based on whether the app is launched for VR/AR/MR or just mobile use without completely redesigning the application's structure for audio. This is also a recommended method of carrying one master spatial audio container and at endpoints converting it as needed without adverse signal altering effects seen in other spatial audio formats. 
 
@@ -163,3 +163,8 @@ For scaling audio outputting to streaming use cases of Mach1Decode and use cases
 An ADM metadata reader and parser is embedded into m1-transcode binary executable to help with custom pipelines using Mach1Encode API to render Object Audio Soundfields into Mach1 Spatial mixes/renders for easier handling. 
 
 `-extract-metadata` will dump any found XML ADM metadata in the audio binary as a textfile with the same output name and path.
+
+# Mach1Transcode API
+
+## Summary of Use
+
