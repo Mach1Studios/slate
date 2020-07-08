@@ -19,6 +19,8 @@ Options:
 
 bundle exec middleman build --clean
 
+M1DEV = dev-mach1-public
+
 parse_args() {
   # Set args from a local environment file.
   if [ -e ".env" ]; then
@@ -118,6 +120,8 @@ main() {
   fi
 
   restore_head
+
+  aws s3 cp ./build s3://$(M1DEV) --exclude "*" --include "*.html" --content-type="text/html" --metadata-directive="REPLACE" --cache-control 'max-age 0,no-cache,no-store,must-revalidate' --recursive --profile mach1
 }
 
 initial_deploy() {
