@@ -360,6 +360,9 @@
                   <li>
                     <a href="#formats-supported" class="toc-h2 toc-link" data-title="Mach1Transcode API">Formats Supported</a>
                   </li>
+                  <li>
+                    <a href="#additional-features" class="toc-h2 toc-link" data-title="Mach1Transcode API">Additional Features</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -467,7 +470,7 @@ Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatia
     <span class="n">m1Encode</span><span class="o">.</span><span class="nf">generatePointResults</span><span class="p">()</span>
 
     <span class="c1">//Use each coeff to decode multichannel Mach1 Spatial mix</span>
-    <span class="k">var</span> <span class="nv">volumes</span> <span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span> <span class="o">=</span> <span class="n">m1Encode</span><span class="o">.</span><span class="nf">getResultingVolumesDecoded</span><span class="p">(</span><span class="nv">decodeType</span><span class="p">:</span> <span class="n">decodeType</span><span class="p">,</span> <span class="nv">decodeResult</span><span class="p">:</span> <span class="n">decodeArray</span><span class="p">)</span>
+    <span class="k">var</span> <span class="nv">volumes</span> <span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span> <span class="o">=</span> <span class="n">m1Encode</span><span class="o">.</span><span class="nf">getResultingCoeffsDecoded</span><span class="p">(</span><span class="nv">decodeType</span><span class="p">:</span> <span class="n">decodeType</span><span class="p">,</span> <span class="nv">decodeResult</span><span class="p">:</span> <span class="n">decodeArray</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..&lt;</span><span class="n">players</span><span class="o">.</span><span class="n">count</span> <span class="p">{</span>
         <span class="n">players</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">volumes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">volume</span>
@@ -644,21 +647,23 @@ Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatia
 <p>default value: true</p>
 </blockquote>
 <h2 id='inline-mach1encode-object-decoder'>Inline Mach1Encode Object Decoder</h2><pre class="highlight cpp tab-cpp"><code><span class="c1">//Use each coeff to decode multichannel Mach1 Spatial mix
-</span><span class="n">volumes</span> <span class="o">=</span> <span class="n">m1Encode</span><span class="p">.</span><span class="n">getResultingVolumesDecoded</span><span class="p">(</span><span class="n">decodeType</span><span class="p">,</span> <span class="n">decodeArray</span><span class="p">)</span>
+</span><span class="n">volumes</span> <span class="o">=</span> <span class="n">m1Encode</span><span class="p">.</span><span class="n">getResultingCoeffsDecoded</span><span class="p">(</span><span class="n">decodeType</span><span class="p">,</span> <span class="n">decodeArray</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">players</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">volume</span> <span class="o">=</span> <span class="n">volumes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">volume</span>
 <span class="p">}</span>
 </code></pre><pre class="highlight swift tab-swift"><code><span class="c1">//Use each coeff to decode multichannel Mach1 Spatial mix</span>
-<span class="k">var</span> <span class="nv">volumes</span> <span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span> <span class="o">=</span> <span class="n">m1Encode</span><span class="o">.</span><span class="nf">getResultingVolumesDecoded</span><span class="p">(</span><span class="nv">decodeType</span><span class="p">:</span> <span class="n">decodeType</span><span class="p">,</span> <span class="nv">decodeResult</span><span class="p">:</span> <span class="n">decodeArray</span><span class="p">)</span>
+<span class="k">var</span> <span class="nv">volumes</span> <span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span> <span class="o">=</span> <span class="n">m1Encode</span><span class="o">.</span><span class="nf">getResultingCoeffsDecoded</span><span class="p">(</span><span class="nv">decodeType</span><span class="p">:</span> <span class="n">decodeType</span><span class="p">,</span> <span class="nv">decodeResult</span><span class="p">:</span> <span class="n">decodeArray</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..&lt;</span><span class="n">players</span><span class="o">.</span><span class="n">count</span> <span class="p">{</span>
     <span class="n">players</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">volumes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">volume</span>
 <span class="p">}</span>
 </code></pre>
 <p>This function allows designs where only previewing or live rendering to decoded audio output is required without any step of rendering or exporting to disk. This enables designs where developers can stack and sum multiple Mach1Encode object&#39;s decoded outputs instead of using Mach1Encode objects to write to a master 8 channel intermediary file. Allowing shorthand versions of Mach1Encode-&gt;Mach1Decode-&gt;Stereo if only live playback is needed. </p>
+
+<p>This can also be used to add object audio design to your application from the Mach1 Spatial APIs and add further control to an application to layer pre-rendered spatial audio and runtime spatial audio as needed.</p>
 <h1 id='mach1decode-api'>Mach1Decode API</h1>
-<p>Mach1Decode supplies the functions needed to playback the Mach1Spatial VVBP 8channels to a stereo stream based on the device&#39;s orientation, this can be used for mobile device windowing or first person based media such as AR/VR/MR without any additional processing effects required.</p>
+<p>Mach1Decode supplies the functions needed to playback Mach1 Spatial VVBP formats to a stereo stream based on the device&#39;s orientation, this can be used for mobile device windowing or first person based media such as AR/VR/MR without any additional processing effects required.</p>
 <h2 id='summary-use'>Summary Use</h2>
 <p>The Mach1Decode API is designed to be used the following way:</p>
 
@@ -1177,6 +1182,7 @@ Get coeff results for the center of "Blend Mode". Very experimental! -->
 <li>SevenZeroFour - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts</li>
 <li>NineOne </li>
 <li>NineZero</li>
+<li>16.0 - 16 channel Surround 3D layout</li>
 </ul>
 
 <p><aside class="notice">Additional formats available upon request.</aside></p>
@@ -1189,7 +1195,36 @@ Get coeff results for the center of "Blend Mode". Very experimental! -->
 <li>TBE - Facebook360 Hybrid 2nd order</li>
 <li>ACNSN3DO3A - 3rd order B-format, AmbiX ACN order and SN3D weighting</li>
 <li>FuMaO3A - 3rd order B-format, Furse-Malham order and weighting</li>
+<li>ACNSN3D1oa(maxRE) - 1st order, Ambix ACN order and SN3D-MaxRE from IEM</li>
+<li>ACNSN3D2oa(maxRE) - 2nd order, Ambix ACN order and SN3D-MaxRE from IEM</li>
+<li>ACNSN3D3oa(maxRE) - 3rd order, Ambix ACN order and SN3D-MaxRE from IEM</li>
+<li>ACNSN3D4oa(maxRE) - 4th order, Ambix ACN order and SN3D-MaxRE from IEM</li>
+<li>ACNSN3D5oa(maxRE) - 5th order, Ambix ACN order and SN3D-MaxRE from IEM</li>
+<li>ACNSN3D6oa(maxRE) - 6th order, Ambix ACN order and SN3D-MaxRE from IEM</li>
+<li>ACNSN3D7oa(maxRE) - 7th order, Ambix ACN order and SN3D-MaxRE from IEM</li>
 </ul>
+<h3 id='custom-format-configuration'>Custom Format/Configuration</h3><pre class="highlight plaintext"><code>./m1-transcode fmtconv -in-file /path/to/16channel.wav -in-fmt TTPoints -in-json /path/to/16ChannelDescription.json -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial -out-file-chans 0
+</code></pre>
+<p>Input JSON description of the surround/spatial soundfield setup per your design and input it with the <code>-in-json</code> arguement for any custom input or output transcoding.</p>
+
+<p>To use this set the <code>-in-fmt</code> or <code>-out-fmt</code> as <code>TTPoints</code></p>
+<h2 id='additional-features'>Additional Features</h2><h3 id='lfe-sub-channel-filter'>LFE/SUB Channel Filter</h3>
+<blockquote>
+<p>Example of low pass filtering every channel but the Front-Right of the Mach1 Spatial mix and outputting it to stereo.</p>
+</blockquote>
+<pre class="highlight plaintext"><code>./m1-transcode fmtconv -in-file /path/to/input-m1spatial.wav -in-fmt M1Spatial -out-file /path/to/output-stereo.wav -lfe-sub 0,2,3,4,6,7 -out-fmt Stereo -out-file-chans 0
+</code></pre>
+<p>Use <code>-lfe-sub</code> arguement to indicate which input channels you want to apply a Low Pass Filter to, the arguement exapects a list of ints with commas to separate them.</p>
+<h3 id='spatial-downmixer'>Spatial Downmixer</h3><pre class="highlight plaintext"><code>./m1-transcode fmtconv -in-file /path/to/input-fiveOne.wav -in-fmt FiveOneFilm_Cinema -spatial-downmixer 0.9 -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial -out-file-chans 0
+</code></pre>
+<p>For scaling audio outputting to streaming use cases of Mach1Decode and use cases using the Mach1 Spatial output from Mach1Transcode we have included a way to compare the top vs. bottom of the input soundfield, if the difference is less than the set threshold (float) output format will be Mach1 Horizon. This is to allow soundfields that do not have much of a top vs bottom difference to output to a lesser channel Mach1 Horizon format to save on filesize while streaming.</p>
+
+<p><code>-spatial-downmixer</code> arguement can be used to set this, the float after this arguement will be used as the threshold. If used this will effectively add an additional transoding after anything outputting to <code>Mach1 Spatial</code> to then transcode from <code>Mach1 Spatial</code> to <code>Mach1 Horizon</code> while respecting the content of the soundfield. </p>
+<h3 id='metadata-extractor'>Metadata Extractor</h3><pre class="highlight plaintext"><code>./m1-transcode fmtconv -in-file /path/to/input-ADM.wav -in-fmt SevenOneFour -out-file /path/to/output.wav -extract-metadata -out-fmt M1Spatial -out-file-chans 0
+</code></pre>
+<p>An ADM metadata reader and parser is embedded into m1-transcode binary executable to help with custom pipelines using Mach1Encode API to render Object Audio Soundfields into Mach1 Spatial mixes/renders for easier handling. </p>
+
+<p><code>-extract-metadata</code> will dump any found XML ADM metadata in the audio binary as a textfile with the same output name and path.</p>
 <h1 id='common-issues'>Common Issues</h1>
 <p>The following is a list of common heard issues during implementation and include audio tools to help find these issues as well as basic descriptions of their behavior and how they can be avoided.</p>
 <h3 id='orientation-latency-issues'>Orientation Latency Issues</h3>
