@@ -166,5 +166,42 @@ An ADM metadata reader and parser is embedded into m1-transcode binary executabl
 
 # Mach1Transcode API
 
+Mach1Transcode leverages the benefits of the Mach1 Spatial virtual vector based panning (VVBP) priniciples to enable faster than real time multichannel audio format conversions safely to retain the soundfield and not use any additional processing effects for simulation. Lack of processing effects ensures transparent input and output soundfields during conversion and the lightweight modular design of the API allows use with any audio handler or media library already natively installed. 
+
+Multichannel audio development and creative use currently has a lot of challenges plagued by legacy surround implementations, the Mach1Transcode API can be used to help customize multichannel and spatial audio pipelines in development and garner control without requiring adoption of legacy practices. 
+
 ## Summary of Use
 
+The Mach1Transcode API is designed openly by supplying a coefficient matrix for conversion, intepreted as needed. 
+However, the following will be an example of setting up Mach1Transcode for any input and for direct conversion to Mach1Spatial to be decoded with orientation to stereo for spatial previewing applications:
+
+```cpp
+
+```
+```swift
+import Mach1SpatialAPI
+private var m1Decode = Mach1Decode()
+private var m1Transcode = Mach1Transcode()
+
+// Mach1 Transcode Setup
+m1Transcode.setInputFormat(inFmt: Mach1TranscodeFormatType)
+m1Transcode.setOutputFormat(outFmt: Mach1TranscodeFormatM1Spatial)
+m1Transcode.processConversionPath()
+matrix = m1Transcode.getMatrixConversion()
+// Mach1 Decode Setup
+m1Decode.setPlatformType(type: Mach1PlatformiOS)
+m1Decode.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial)
+m1Decode.setFilterSpeed(filterSpeed: 1.0)
+
+// Called when updating InputFormat for Mach1Transcode
+m1Decode.beginBuffer()
+m1Decode.setRotationDegrees(newRotationDegrees: Mach1Point3D(x: 0, y: 0, z: 0))
+let result: [Float] = m1Decode.decodeCoeffsUsingTranscodeMatrix(matrix: matrix, channels: m1Transcode.getInputNumChannels())
+m1Decode.endBuffer()
+
+// Called when updating input orientation for Mach1Decode
+m1Decode.beginBuffer()
+m1Decode.setRotationDegrees(newRotationDegrees: Mach1Point3D(x: Float(deviceYaw), y: Float(devicePitch), z: Float(deviceRoll)))
+let result: [Float] = m1Decode.decodeCoeffsUsingTranscodeMatrix(matrix: matrix, channels: m1Transcode.getInputNumChannels())
+m1Decode.endBuffer()
+```
