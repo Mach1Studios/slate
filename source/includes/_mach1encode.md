@@ -94,8 +94,15 @@ Sets the number of input streams to be positioned as points.
  - INPUT_MONO
  - INPUT_STEREO
  - INPUT_QUAD
+ - INPUT_LCRS
  - INPUT_AFORMAT
- - INPUT_BFORMAT
+ - INPUT_FOAACN
+ - INPUT_FOAFUMA
+ - INPUT_2OAACN
+ - INPUT_2OAFUMA
+ - INPUT_3OAACN
+ - INPUT_3OAFUMA
+ - INPUT_LCR
 
 ```cpp
 if (inputKind == 0) { // Input: MONO
@@ -111,7 +118,7 @@ if (inputKind == 3) { // Input: AFORMAT
     m1Encode.inputMode = M1Encode::INPUT_AFORMAT;
 }
 if (inputKind == 4) { // Input: BFORMAT
-    m1Encode.inputMode = M1Encode::INPUT_BFORMAT;
+    m1Encode.inputMode = M1Encode::INPUT_FOAACN;
 }
 ```
 ```swift
@@ -132,7 +139,7 @@ else if (soundFiles[soundIndex].count == 4) {
 		type = Mach1EncodeInputModeAFormat
 	}
 	if (bFormatMode){
-		type = Mach1EncodeInputModeBFormat
+		type = Mach1EncodeInputModeBFOAACN
 	}
 }
 ```
@@ -149,39 +156,43 @@ if (params.inputKind == 2) { // Input: Quad
 if (params.inputKind == 3) { // Input: AFORMAT
     m1Encode.setInputMode(m1Encode.Mach1EncodeInputModeType.Mach1EncodeInputModeAFormat);
 }
-if (params.inputKind == 4) { // Input: BFORMAT
-    m1Encode.setInputMode(m1Encode.Mach1EncodeInputModeType.Mach1EncodeInputModeBFormat);
+if (params.inputKind == 4) { // Input: 1st Order Ambisonics (ACNSN3D)
+    m1Encode.setInputMode(m1Encode.Mach1EncodeInputModeType.Mach1EncodeInputModeBFOAACN);
 }
 ```
 
 ## Set Output Mode
 Sets the output spatial format, Mach1Spatial or Mach1Horizon
 
- - OUTPUT_4CH (Mach1Horizon) [Yaw only]
- - OUTPUT_8CH (Mach1Spatial) [Yaw, Pitch, Roll]
+ - Mach1Horizon (4ch) [Yaw]
+ - Mach1Spatial (8ch) [Yaw, Pitch, Roll]
+ - Mach1SpatialPlus (12ch) [Yaw, Pitch, Roll]
+ - Mach1SpatialPlusPlus (14ch) [Yaw, Pitch, Roll]
+ - Mach1SpatialExt (16ch) [Yaw, Pitch, Roll]
+ - Mach1SpatialExtPlus (18ch) [Yaw, Pitch, Roll]
 
 ```cpp
 if (outputKind == 0) { // Output: 4CH Mach1Horizon
-    m1Encode.outputMode = M1Encode::OUTPUT_4CH;
+    m1Encode.outputMode = M1Encode::Mach1Horizon;
 }
 if (outputKind == 1) { // Output: 8CH Mach1Spatial
-    m1Encode.outputMode = M1Encode::OUTPUT_8CH;
+    m1Encode.outputMode = M1Encode::Mach1Spatial;
 }
 ```
 ```swift
 if (outputKind == 0) { // Output: 4CH Mach1Horizon
-    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputMode4Ch)
+    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputModeM1Horizon)
 }
 if (outputKind == 1) { // Output: 8CH Mach1Spatial
-    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputMode8Ch)
+    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputModeM1Spatial)
 }
 ```
 ```javascript
-if (params.outputKind == 0) { // Output: Mach1Horizon / Quad
-    m1Encode.setOutputMode(m1Encode.Mach1EncodeOutputModeType.Mach1EncodeOutputMode4Ch);
+if (params.outputKind == 0) { // Output: 4CH Mach1Horizon
+    m1Encode.setOutputMode(m1Encode.Mach1EncodeOutputModeType.Mach1EncodeOutputModeM1Horizon);
 }
-if (params.outputKind == 1) { // Output: Mach1Spatial / Cuboid
-    m1Encode.setOutputMode(m1Encode.Mach1EncodeOutputModeType.Mach1EncodeOutputMode8Ch);
+if (params.outputKind == 1) { // Output: 8CH Mach1Spatial
+    m1Encode.setOutputMode(m1Encode.Mach1EncodeOutputModeType.Mach1EncodeOutputModeM1Spatial);
 }
 ```
 
@@ -291,6 +302,18 @@ var volumes : [Float] = m1Encode.getResultingCoeffsDecoded(decodeType: decodeTyp
 
 for i in 0..<players.count {
     players[i].volume = volumes[i] * volume
+}
+```
+```javascript
+m1Encode.generatePointResults();
+
+m1Decode.beginBuffer();
+var decoded = m1Decode.decode(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);
+m1Decode.endBuffer();
+
+var vol = [];
+if (params.outputKind == 1) { // Output: Mach1Spatial
+    vol = m1Encode.getResultingCoeffsDecoded(m1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial, decoded);
 }
 ```
 This function allows designs where only previewing or live rendering to decoded audio output is required without any step of rendering or exporting to disk. This enables designs where developers can stack and sum multiple Mach1Encode object's decoded outputs instead of using Mach1Encode objects to write to a master 8 channel intermediary file. Allowing shorthand versions of Mach1Encode->Mach1Decode->Stereo if only live playback is needed. 
