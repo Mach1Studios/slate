@@ -232,8 +232,11 @@ Import and link the appropriate target device's / IDE's library file and headers
 
 ## Set / Get Input Format
 ```cpp
+Mach1TranscodeFormatType inputMode;
+m1Transcode.setInputFormat(inputMode);
 ```
 ```swift
+m1Transcode.setInputFormat(inFmt: Mach1TranscodeFormatFiveOneFilm_Cinema)
 ```
 ```javascript
 ```
@@ -241,8 +244,11 @@ Set or return the input format/configuration for processing.
 
 ## Set / Get Output Format
 ```cpp
+Mach1TranscodeFormatType outputMode;
+m1Transcode.setOutputFormat(outputMode);
 ```
 ```swift
+m1Transcode.setOutputFormat(outFmt: Mach1TranscodeFormatM1Spatial)
 ```
 ```javascript
 ```
@@ -250,8 +256,10 @@ Set or return the output format/configuration for processing.
 
 ## Set / Get Spatial Downmixer
 ```cpp
+m1Transcode.setSpatialDownmixer();
 ```
 ```swift
+m1Transcode.setSpatialDownmixer()
 ```
 ```javascript
 ```
@@ -322,11 +330,71 @@ Applys an input gain to the output soundfield.
 ```
 Use this function to control when to call for calculating the format transcoding calculations.
 
-## Process Conversion
+## Get Conversion Path
 ```cpp
 ```
 ```swift
 ```
 ```javascript
 ```
+Returns the shortest found conversion path to get from input format X to output format Y, both set by `Mach1Transcode::setInputFormat(Mach1TranscodeFormatType inFmt)` and `Mach1Transcode::setOutputFormat(Mach1TranscodeFormatType outFmt)`. Majority of format instances will use Mach1Spatial as the middle format for non-Mach1-format -> non-Mach1-format transcodings. This is due to Mach1 Spatial being a platonic solid format, ideal for safe calculations without loss
+
+## Process Conversion Matrix
+```cpp
+std::vector<std::vector<float>> m1Coeffs; //2D array, [input channel][input channel's coeff]
+m1Coeffs = m1Transcode.getMatrixConversion();
+```
+```swift
+private var matrix: [[Float]] = []
+matrix = m1Transcode.getMatrixConversion()
+```
+```javascript
+```
+Returns the transcoding matrix of coefficients based on the set input and output formats.
+
+## Process Conversion
+```cpp
+```
+```swift
+m1Transcode.processConversion(float: inBufs, float: outBufs, int: numSamples)
+```
+```javascript
+```
 Call to process the conversion as set by previous functions.
+
+## Direct Agnostic Playback of All Input Formats via Mach1Decode
+```cpp
+```
+```swift
+// Basic struct for input audio/format
+struct AudioInput {
+    var name: String
+    var format: Mach1TranscodeFormatType
+    var files: [String]
+}
+
+// Declarations
+private var m1Decode = Mach1Decode()
+private var m1Transcode = Mach1Transcode()
+private var players: [AVAudioPlayer] = []
+private var matrix: [[Float]] = []
+
+// Setup
+m1Transcode.setInputFormat(inFmt: AudioInput.format)
+m1Transcode.setOutputFormat(outFmt: Mach1TranscodeFormatM1Spatial)
+m1Transcode.processConversionPath()
+matrix = m1Transcode.getMatrixConversion()
+
+// Loop
+m1Decode.beginBuffer()
+m1Decode.setRotationDegrees(newRotationDegrees: Mach1Point3D(x: 0, y: 0, z: 0)) // Update orientation as needed
+let result: [Float] = m1Decode.decodeCoeffsUsingTranscodeMatrix(matrix: matrix, channels: m1Transcode.getInputNumChannels())
+m1Decode.endBuffer()
+
+//Use each coeff to decode the multichannel Mach1 Spatial
+for i in 0..<result.count {
+    players[i].setVolume(result[i], fadeDuration: 0)
+}
+```
+```javascript
+```
