@@ -176,7 +176,29 @@ The Mach1Transcode API is designed openly by supplying a coefficient matrix for 
 However, the following will be an example of setting up Mach1Transcode for any input and for direct conversion to Mach1Spatial to be decoded with orientation to stereo for spatial previewing applications:
 
 ```cpp
+static void* decode(void* v);
+Mach1Transcode m1Transcode;
+static std::vector<std::vector<float>> m1Coeffs; //2D array, [input channel][input channel's coeff]
+Mach1TranscodeFormatType inputMode;
+Mach1TranscodeFormatType outputMode;
 
+// Mach1 Transcode Setup
+inputMode = Mach1TranscodeFormatACNSN3DmaxRE3oa;
+outputMode = Mach1TranscodeFormatM1Spatial;
+
+//resize coeffs array to the size of the current output
+m1Transcode.setOutputFormat(outputMode);
+for (int i = 0; i < m1Coeffs.size(); i++){
+    m1Coeffs[i].resize(m1Transcode.getOutputNumChannels(), 0.0f);
+}
+
+m1Transcode.setInputFormat(inputMode);
+m1Transcode.setOutputFormat(outputMode);
+
+// Called to update Mach1Transcode
+m1Transcode.setSpatialDownmixer();
+m1Transcode.processConversionPath();
+m1Coeffs = m1Transcode.getMatrixConversion();
 ```
 ```swift
 import Mach1SpatialAPI
@@ -205,3 +227,29 @@ m1Decode.setRotationDegrees(newRotationDegrees: Mach1Point3D(x: Float(deviceYaw)
 let result: [Float] = m1Decode.decodeCoeffsUsingTranscodeMatrix(matrix: matrix, channels: m1Transcode.getInputNumChannels())
 m1Decode.endBuffer()
 ```
+
+## Installation
+
+Import and link the appropriate target device's / IDE's library file and headers. 
+
+## Set / Get Input Format
+
+## Set / Get Output Format
+
+## Set / Get Spatial Downmixer
+
+## Set LFE / Sub Channels
+
+## Set Input as JSON
+
+## Set Input as TT Points
+
+## Set Input as ADM
+
+## Process Normalization
+
+## Process Master Gain
+
+## Process Conversion Path
+
+## Process Conversion
