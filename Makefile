@@ -12,7 +12,9 @@ endif
 install: 
 	# install all deps
 
-# improve caching when scaled up, apply cache age 0 only to files that change often
+build: 
+	bundle exec middleman build --clean
+
 deploy:
 	# deploys build to public AWS bucket
 	# NOTE: relies on `mach1` keys in `~/.aws/credentials`

@@ -171,10 +171,6 @@ Mach1Transcode leverages the benefits of the Mach1 Spatial virtual vector based 
 Multichannel audio development and creative use currently has a lot of challenges plagued by legacy surround implementations, the Mach1Transcode API can be used to help customize multichannel and spatial audio pipelines in development and garner control without requiring adoption of legacy practices. 
 
 ## Summary of Use
-
-The Mach1Transcode API is designed openly by supplying a coefficient matrix for conversion, intepreted as needed. 
-However, the following will be an example of setting up Mach1Transcode for any input and for direct conversion to Mach1Spatial to be decoded with orientation to stereo for spatial previewing applications:
-
 ```cpp
 static void* decode(void* v);
 Mach1Transcode m1Transcode;
@@ -227,6 +223,8 @@ m1Decode.setRotationDegrees(newRotationDegrees: Mach1Point3D(x: Float(deviceYaw)
 let result: [Float] = m1Decode.decodeCoeffsUsingTranscodeMatrix(matrix: matrix, channels: m1Transcode.getInputNumChannels())
 m1Decode.endBuffer()
 ```
+The Mach1Transcode API is designed openly by supplying a coefficient matrix for conversion, intepreted as needed. 
+However, the following will be an example of setting up Mach1Transcode for any input and for direct conversion to Mach1Spatial to be decoded with orientation to stereo for spatial previewing applications:
 
 ## Installation
 

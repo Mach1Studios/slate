@@ -19,7 +19,7 @@ Options:
 
 bundle exec middleman build --clean
 
-M1DEV = dev-mach1-public
+M1DEV=dev-mach1-public
 
 parse_args() {
   # Set args from a local environment file.
@@ -121,7 +121,16 @@ main() {
 
   restore_head
 
-  aws s3 cp ./build s3://$(M1DEV) --exclude "*" --include "*.html" --content-type="text/html" --metadata-directive="REPLACE" --cache-control 'max-age 0,no-cache,no-store,must-revalidate' --recursive --profile mach1
+  aws s3 sync ./build s3://$M1DEV --content-type text/html --cache-control no-cache --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.html" --profile mach1
+  aws s3 sync ./build s3://$M1DEV --content-type text/plain --cache-control no-cache --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.txt" --profile mach1
+  aws s3 sync ./build s3://$M1DEV --content-type text/css --cache-control no-cache --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.css" --profile mach1
+  aws s3 sync ./build s3://$M1DEV --content-type application/xhtml+xml --cache-control no-cache --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.xml" --profile mach1
+  aws s3 sync ./build s3://$M1DEV --content-type application/font-woff --cache-control no-cache --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.woff" --include "*.woff2" --profile mach1
+  aws s3 sync ./build s3://$M1DEV --content-type image/svg+xml --cache-control no-cache --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.svg" --profile mach1
+  aws s3 sync ./build s3://$M1DEV --content-type image/png --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.png" --profile mach1
+  aws s3 sync ./build s3://$M1DEV --content-type image/jpeg --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.jpg" --include "*.jpeg" --profile mach1
+  aws s3 sync ./build s3://$M1DEV --content-type image/tiff --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.tiff" --include "*.tif" --profile mach1
+  aws s3 sync ./build s3://$M1DEV --cache-control no-cache --acl public-read --metadata-directive REPLACE --include "*" --exclude ".git*" --exclude ".DS_Store" --exclude "Makefile" --exclude "*.html" --exclude "*.woff" --exclude "*.woff2" --exclude "*.txt" --exclude "*.css" --exclude "*.xml" --exclude "*.svg" --exclude "*.jpg" --exclude "*.tiff" --exclude "*.png" --exclude "*.aif" --exclude "*.aiff" --exclude "*.ogg" --exclude "*.mp3" --exclude "*.wav" --exclude "*.DS_Store" --profile mach1
 }
 
 initial_deploy() {
