@@ -233,23 +233,102 @@ m1Decode.endBuffer()
 Import and link the appropriate target device's / IDE's library file and headers. 
 
 ## Set / Get Input Format
+```cpp
+```
+```swift
+```
+```javascript
+```
+Set or return the input format/configuration for processing.
 
 ## Set / Get Output Format
+```cpp
+```
+```swift
+```
+```javascript
+```
+Set or return the output format/configuration for processing.
 
 ## Set / Get Spatial Downmixer
+```cpp
+```
+```swift
+```
+```javascript
+```
+Sets the threshold float for `getSpatialDownmixerPossibility` calculation. The `getSpatialDownmixerPossibility` returns true if the compared signals are less than the `setSpatialDownmixer(corrThreshold)`.
+> Float from 0.0 to 1.0 where 0.0 no difference and incrementing to 1.0 is more difference
+> When returned true; transcodings that are set to ouput to `Mach1Spatial` will process an additional conversion to `Mach1Horizon` 
 
 ## Set LFE / Sub Channels
+```cpp
+```
+```swift
+```
+```javascript
+```
+Applys a low pass filter (LPF) to each indicated channel index of the input format and soundfield. Input vector of ints representing the index of input channels to be processed.
 
 ## Set Input as JSON
+```cpp
+```
+```swift
+```
+```javascript
+```
+Sets the input format for transcoding from TT directly. View the JSON spec for describing a format here: https://dev.mach1.tech/#json-descriptions.
 
 ## Set Input as TT Points
+```cpp
+```
+```swift
+```
+```javascript
+```
+Sets the input format for transcoding from an external JSON source. View the JSON spec for describing a format here: https://dev.mach1.tech/#json-descriptions.
 
 ## Set Input as ADM
+```cpp
+```
+```swift
+```
+```javascript
+```
+Sets the input format for transcoding from the parsed ADM metadata within the audiofile.
 
 ## Process Normalization
+```cpp
+```
+```swift
+```
+```javascript
+```
 
 ## Process Master Gain
+```cpp
+```
+```swift
+```
+```javascript
+```
+Applys an input gain to the output soundfield. 
+> Parameters: Input buffer, Integer of input number of samples, Float for gain multiplier
 
 ## Process Conversion Path
+```cpp
+```
+```swift
+```
+```javascript
+```
+Use this function to control when to call for calculating the format transcoding calculations.
 
 ## Process Conversion
+```cpp
+```
+```swift
+```
+```javascript
+```
+Call to process the conversion as set by previous functions.
