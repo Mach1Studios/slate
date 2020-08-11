@@ -5,8 +5,6 @@ Mach1Encode allows you to transform input audio streams into the Mach1Spatial VV
 The typical encoding process starts with creating an object of a class Mach1EncodeCore, and setting it up as described below. After that, you're meant to generate Points by calling generatePointResults() on the object of this class. You'll get as many points as there are input channels and as many gains in each point as there are output channels. You then copy each input channel to each output channel with the according gain.
 
 ## Summary of Use
-The Mach1Encode API is designed to aid in developing tools for inputting to a Mach1 VVBP/SPS format. They give access to common calculations needed for the audio processing and UI/UX handling for panning/encoding Mach1 VVBP/SPS formats via the following common structure:
-
 ```cpp
 void update(){
     m1Encode.setAzimuth(azimuth);
@@ -30,7 +28,6 @@ void update(){
     mtx.unlock();
 }
 ```
-
 ```swift
 func update(decodeArray: [Float], decodeType: Mach1DecodeAlgoType){
     m1Encode.setAzimuth(rotation: azimuth)
@@ -51,7 +48,6 @@ func update(decodeArray: [Float], decodeType: Mach1DecodeAlgoType){
         players[i].volume = volumes[i] * volume
     }
 ```
-
 ```javascript
 let m1Encode = null;
 Mach1EncodeModule().then(function(m1EncodeModule) {     
@@ -70,6 +66,7 @@ function update() {
     var encodeCoeffs = m1Encode.getGains();
 }
 ```
+The Mach1Encode API is designed to aid in developing tools for inputting to a Mach1 VVBP/SPS format. They give access to common calculations needed for the audio processing and UI/UX handling for panning/encoding Mach1 VVBP/SPS formats via the following common structure:
 
 ## Installation
 

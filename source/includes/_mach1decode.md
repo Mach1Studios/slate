@@ -3,11 +3,6 @@
 Mach1Decode supplies the functions needed to playback Mach1 Spatial VVBP formats to a stereo stream based on the device's orientation, this can be used for mobile device windowing or first person based media such as AR/VR/MR without any additional processing effects required.
 
 ## Summary Use
-
-The Mach1Decode API is designed to be used the following way:
-
-Setup Step (setup/start):
-
 ```cpp
 void setup(){
     mach1Decode.setDecodeAlgoType(Mach1DecodeAlgoSpatial);
@@ -46,6 +41,9 @@ function update() {
     mach1Decode.endBuffer();
 }
 ```
+The Mach1Decode API is designed to be used the following way:
+
+Setup Step (setup/start):
 
  - `setAlgorithmType`
  - `setAngularSettingsType`
@@ -279,8 +277,6 @@ Returns the current elapsed time in milliseconds (ms) since Mach1Decode object's
 
 Returns a string of the last log message (or empty string if none) from Mach1DecodeCAPI binary library. Use this to assist in debug with a list of input angles and the associated output coefficients from the used Mach1Decode function.
 
-<!-- 
 ## Get Current Angle
 
 Use this to get the current angle being processed by Mach1Decode, good for orientation latency checks. 
- -->
