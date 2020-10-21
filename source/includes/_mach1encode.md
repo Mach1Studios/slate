@@ -10,12 +10,13 @@ void update(){
     m1Encode.setAzimuth(azimuth);
     m1Encode.setElevation(elevation);
     m1Encode.setDiverge(diverge);
+    m1Encode.setAutoOrbit(autoOrbit);
     m1Encode.setStereoRotate(sRotation);
     m1Encode.setStereoSpread(sSpread);
-    m1Encode.setAutoOrbit(autoOrbit);
-    m1Encode.setIsotropicEncode(enableIsotropicEncode);
-    m1Encode.setInputMode(Mach1EncodeInputModeType::Mach1EncodeInputModeMono);
     m1Decode.setDecodeAlgoType(Mach1DecodeAlgoSpatial);
+    m1Encode.setPannerMode(Mach1EncodePannerMode::Mach1EncodePannerModeIsotropicLinear);
+    m1Encode.setInputMode(Mach1EncodeInputModeType::Mach1EncodeInputModeMono);
+    m1Encode.setOutputMode(Mach1EncodeOutputModeType::Mach1EncodeOutputModeM1Spatial);
 
     mtx.lock();
     m1Encode.generatePointResults();
@@ -24,7 +25,7 @@ void update(){
     decoded = m1Decode.decode(decoderRotationY, decoderRotationP, decoderRotationR, 0, 0);
     m1Decode.endBuffer();
 
-    std::vector<float> volumes = this->volumes;
+    std::vector<float> gains = this->gains;
     mtx.unlock();
 }
 ```
@@ -34,18 +35,19 @@ func update(decodeArray: [Float], decodeType: Mach1DecodeAlgoType){
     m1Encode.setElevation(pitch: elevation)
     m1Encode.setDiverge(diverge: diverge)
     m1Encode.setAutoOrbit(setAutoOrbit: true)
-    m1Encode.setIsotropicEncode(setIsotropicEncode: true)
+    m1Encode.setStereoRotate(setStereoRotation: sRotation)
     m1Encode.setStereoSpread(setStereoSpread: stereoSpread)
+    m1Encode.setPannerMode(pannerMode: type)
     m1Encode.setInputMode(inputMode: type)
     m1Encode.setOutputMode(outputMode: type)
     
     m1Encode.generatePointResults()
 
     //Use each coeff to decode multichannel Mach1 Spatial mix
-    var volumes : [Float] = m1Encode.getResultingCoeffsDecoded(decodeType: decodeType, decodeResult: decodeArray)
+    var gains : [Float] = m1Encode.getResultingCoeffsDecoded(decodeType: decodeType, decodeResult: decodeArray)
 
     for i in 0..<players.count {
-        players[i].volume = volumes[i] * volume
+        players[i].volume = gains[i] * volume
     }
 ```
 ```javascript
@@ -60,7 +62,7 @@ function update() {
     m1Encode.setStereoRotate(params.sRotation);
     m1Encode.setStereoSpread(params.sSpread);
     m1Encode.setAutoOrbit(params.autoOrbit);
-    m1Encode.setIsotropicEncode(params.enableIsotropicEncode);
+    m1Encode.setPannerMode(params.pannerMode);
 
     m1Encode.generatePointResults();
     var encodeCoeffs = m1Encode.getGains();
@@ -193,6 +195,52 @@ if (params.outputKind == 1) { // Output: 8CH Mach1Spatial
 }
 ```
 
+## Set Panner Mode
+Sets the style and mode of panner input calculation
+
+ - Mach1EncodePannerModeIsotropicLinear [default]
+Acts evenly with distribution across all azimuth/rotation angles and all elevation/pitch angles.
+ 
+ - Mach1EncodePannerModeIsotropicEqualPower
+Acts evenly with distribution across all azimuth/rotation angles and all elevation/pitch angles and applies an equal power multiplier for normalized panning gain
+
+ - Mach1EncodePannerModePeriphonicLinear
+Acts evenly with distribution across azimuth/rotation angles but crossfades between the top quadrant and bottom quadrants of output for elevation/pitch angles 
+
+```cpp
+if (pannerMode == 0) {
+    m1Encode.setPannerMode = Mach1EncodePannerMode::Mach1EncodePannerModeIsotropicLinear;
+}
+if (pannerMode == 1) {
+    m1Encode.setPannerMode = Mach1EncodePannerMode::Mach1EncodePannerModeIsotropicEqualPower;
+}
+if (pannerMode == 2) {
+    m1Encode.setPannerMode = Mach1EncodePannerMode::Mach1EncodePannerModePeriphonicLinear;
+}
+```
+```swift
+if (pannerMode == 0) {
+    m1Encode.setPannerMode(pannerMode: Mach1EncodePannerModeIsotropicLinear)
+}
+if (pannerMode == 1) {
+    m1Encode.setPannerMode(pannerMode: Mach1EncodePannerModeIsotropicEqualPower)
+}
+if (pannerMode == 2) {
+    m1Encode.setPannerMode(pannerMode: Mach1EncodePannerModePeriphonicLinear)
+}
+```
+```javascript
+if (params.pannerMode == 0) {
+    m1Encode.setPannerMode(m1Encode.Mach1EncodePannerMode.Mach1EncodePannerModeIsotropicLinear);
+}
+if (params.pannerMode == 1) {
+    m1Encode.setPannerMode(m1Encode.Mach1EncodePannerMode.Mach1EncodePannerModeIsotropicEqualPower);
+}
+if (params.pannerMode == 2) {
+    m1Encode.setPannerMode(m1Encode.Mach1EncodePannerMode.Mach1EncodePannerModePeriphonicLinear);
+}
+```
+
 ## Set Rotation
 ```cpp
 m1Encode.setRotation = rotation;
@@ -269,19 +317,6 @@ m1Encode.setAutoOrbit(setAutoOrbit: true)
 m1Encode.setAutoOrbit(params.autoOrbit);
 ```
 When active both stereo points rotate in relation to the center point between them so that they always triangulate toward center of the cuboid.
-> default value: true
-
-## Set Isotropic / Periphonic
-```cpp
-m1Encode.setIsotropicEncode = enableIsotropicEncode;
-```
-```swift
-m1Encode.setIsotropicEncode(setIsotropicEncode: true)
-```
-```javascript
-m1Encode.setIsotropicEncode(params.enableIsotropicEncode);
-```
-When active encoding behavior acts evenly with distribution across all azimuth/rotation angles and all altitude/pitch angles.
 > default value: true
 
 ## Inline Mach1Encode Object Decoder
