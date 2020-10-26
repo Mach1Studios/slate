@@ -44,6 +44,31 @@ Mach1Encode and Mach1Decode are C based and cross compiler friendly with pre-bui
 Mach1Transcode is supported on macOS, linux and Windows, game engine support coming soon.
 
 # Mach1 Internal Angle Standard
+We decided to cherrypick and clarify how we think and describe rotations & translations in space, focused more to unify creators and developers and derived more from a first person perspective. After long deliberation on using various existing standards, they had places where they worked and places where they didn’t, they also were not very “humanized” and in an effort to fix this, we follow these guidelines:
+
+###Coordinate / Angle / Rotation Description Expectations:
+   - Rotations can be individually explained per axis with signed rotations
+   - Rotations are explained from a center perspective point of view (FPV - First Person View)
+
+### Mach1 YPR Polar Expectation of Describing Orientation:
+_Common use: Mach1Decode API, Mach1DecodePositional API_
+
+   - Yaw (left -> right | where rotating left is negative)
+   - Pitch (down -> up | where rotating down is negative)
+   - Roll (top-pointing-left -> top-pointing-right | where rotating top of object left is negative)
+
+### Mach1 AED Expectation of Describing Polar Points:
+_Common use: Mach1Encode API_
+
+   - Azimuth (left -> right | where rotating left is negative)
+   - Elevation (down -> up | where rotating down is negative)
+   - Diverge (backward -> forward | where behind origin of Azimuth/Elevation is negative)
+
+### Mach1 XYZ Coordinate Expectation of Vector Points:
+   - X (left -> right | where -X is left)
+   - Y (front -> back | where -Y is back)
+   - Z (top -> bottom | where -Z is bottom)
+
 ### Positional 3D Coords
   -  X+ = strafe right
   -  X- = strafe left
