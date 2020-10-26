@@ -230,6 +230,18 @@
             <a href="#mach1-internal-angle-standard" class="toc-h1 toc-link" data-title="Mach1 Internal Angle Standard">Mach1 Internal Angle Standard</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#coordinate-angle-rotation-description-expectations" class="toc-h2 toc-link" data-title="Mach1 Internal Angle Standard">Coordinate / Angle / Rotation Description Expectations:</a>
+                  </li>
+                  <li>
+                    <a href="#mach1-ypr-polar-expectation-of-describing-orientation" class="toc-h2 toc-link" data-title="Mach1 Internal Angle Standard">Mach1 YPR Polar Expectation of Describing Orientation:</a>
+                  </li>
+                  <li>
+                    <a href="#mach1-aed-expectation-of-describing-polar-points" class="toc-h2 toc-link" data-title="Mach1 Internal Angle Standard">Mach1 AED Expectation of Describing Polar Points:</a>
+                  </li>
+                  <li>
+                    <a href="#mach1-xyz-coordinate-expectation-of-vector-points" class="toc-h2 toc-link" data-title="Mach1 Internal Angle Standard">Mach1 XYZ Coordinate Expectation of Vector Points:</a>
+                  </li>
+                  <li>
                     <a href="#positional-3d-coords" class="toc-h2 toc-link" data-title="Mach1 Internal Angle Standard">Positional 3D Coords</a>
                   </li>
                   <li>
@@ -467,7 +479,36 @@ Transcode / convert any audio format (surround/spatial) to or from a Mach1Spatia
 <p>Mach1Encode and Mach1Decode are C based and cross compiler friendly with pre-built library files supported on OSX 10.7+, Windows 10+, ARM based devices (Raspberry Pi), iOS 9.0+ and Android API 19+. Unity 4.0+ and Unreal Engine 4.10+ examples are available and said engines are supported too on the aforementioned platforms. </p>
 
 <p>Mach1Transcode is supported on macOS, linux and Windows, game engine support coming soon.</p>
-<h1 id='mach1-internal-angle-standard'>Mach1 Internal Angle Standard</h1><h3 id='positional-3d-coords'>Positional 3D Coords</h3>
+<h1 id='mach1-internal-angle-standard'>Mach1 Internal Angle Standard</h1>
+<p>We decided to cherrypick and clarify how we think and describe rotations &amp; translations in space, focused more to unify creators and developers and derived more from a first person perspective. After long deliberation on using various existing standards, they had places where they worked and places where they didn’t, they also were not very “humanized” and in an effort to fix this, we follow these guidelines:</p>
+<h3 id='coordinate-angle-rotation-description-expectations'>Coordinate / Angle / Rotation Description Expectations:</h3>
+<ul>
+<li>Rotations can be individually explained per axis with signed rotations</li>
+<li>Rotations are explained from a center perspective point of view (FPV - First Person View)</li>
+</ul>
+<h3 id='mach1-ypr-polar-expectation-of-describing-orientation'>Mach1 YPR Polar Expectation of Describing Orientation:</h3>
+<p><em>Common use: Mach1Decode API, Mach1DecodePositional API</em></p>
+
+<ul>
+<li>Yaw (left -&gt; right | where rotating left is negative)</li>
+<li>Pitch (down -&gt; up | where rotating down is negative)</li>
+<li>Roll (top-pointing-left -&gt; top-pointing-right | where rotating top of object left is negative)</li>
+</ul>
+<h3 id='mach1-aed-expectation-of-describing-polar-points'>Mach1 AED Expectation of Describing Polar Points:</h3>
+<p><em>Common use: Mach1Encode API</em></p>
+
+<ul>
+<li>Azimuth (left -&gt; right | where rotating left is negative)</li>
+<li>Elevation (down -&gt; up | where rotating down is negative)</li>
+<li>Diverge (backward -&gt; forward | where behind origin of Azimuth/Elevation is negative)</li>
+</ul>
+<h3 id='mach1-xyz-coordinate-expectation-of-vector-points'>Mach1 XYZ Coordinate Expectation of Vector Points:</h3>
+<ul>
+<li>X (left -&gt; right | where -X is left)</li>
+<li>Y (front -&gt; back | where -Y is back)</li>
+<li>Z (top -&gt; bottom | where -Z is bottom)</li>
+</ul>
+<h3 id='positional-3d-coords'>Positional 3D Coords</h3>
 <ul>
 <li> X+ = strafe right</li>
 <li> X- = strafe left</li>
