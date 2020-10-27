@@ -52,12 +52,13 @@ Setup Step (setup/start):
 Audio Loop:
 
  - `beginBuffer`
- - `decode`
+ - `setRotation` / `setRotationDegrees` / `setRotationRadians` / `setRotationQuat`
+ - `decode` / `decodeCoeffs`
  - `getCurrentAngle` (debug/optional)
  - `endBuffer`
 
-### Decode Callback Mode Options
-The Mach1Decode class's decode function returns the coefficients for each external audio player's gain/volume to create the spatial decode per update at the current angle. The timing of when this callback can be designed with two different modes of use:
+### Using Mach1Decode `decode` Callback Options
+The Mach1Decode class's decode function returns the coefficients for each external audio players' gains/volumes to create the spatial decode per update at the current angle. The timing of when this callback can be designed with two different modes of use:
 
  - Update decode results via the used audio player/engine's audio callback
  - Update decode results via main loop (or any call)
@@ -186,9 +187,48 @@ mach1Decode.endBuffer()
 mach1Decode.endBuffer();
 ```
 
-## Decoding
+## Decode
+There are four exposed functions that can be called at any time to set the next rotation. This maximizes design possibilities where rotations update may need to be called less or more than the calculated returned coefficients are needed. In general their are three ways to calculate `decode` values for your native audio player.
 
-The decode function's purpose is to give you updated volumes for each input audio channel for each frame in order for spatial effect to manifest itself. There are two versions of this function - one for cases when you might not need very low latency or couldn't include C/C++ directly, and another version for C/C++ high performance use.
+1. Use `setRotation` / `setRotationDegrees` / `setRotationRadians` / `setRotationQuat` before you call `decodeCoeffs()`
+2. Use `decode()` with inline arguments in Euler degrees
+3. Use `decodeCoeffsUsingTranscodeMatrix()`
+
+### 1. DecodeCoeffs()
+For easier use with more design cases we have a function for "decode" that uses the last called `setRotation` function in case your use case needs different input rotation descriptions or have different places that the orientation is updated compared to the audio thread your decode might be applied within. 
+
+Please view the section on `setRotation` to learn more about the different functions for updating input rotations to Mach1Decode.
+
+```cpp
+mach1Decode.setRotationDegrees(float deviceYaw, float devicePitch, float deviceRoll);
+std::vector<float> decodedGains = mach1Decode.decodeCoeffs();
+```
+```swift
+mach1Decode.setRotationDegrees(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
+let decodedGains: [Float]  = mach1Decode.decodeCoeffs()
+```
+```javascript
+m1Decode.setRotationDegrees(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);
+var decodedGains = m1Decode.decodeCoeffs();
+```
+
+### 2. Decode()
+An all in one call to `decode(float yaw, float pitch, float roll)` with the input orientation rotation described in absolute Euler degrees can be used.
+
+```cpp
+std::vector<float> decodedGains = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll);
+```
+```swift
+let decodedGains: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
+```
+```javascript
+var decodedGains = m1Decode.decode(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);
+```
+
+### 3. DecodeCoeffsUsingTranscodeMatrix()
+
+### Decoding Design
+The decode function's purpose is to give you updated gains/volumes for each input audio channel for each frame in order for spatial effect to manifest itself. There are two versions of this function - one for cases when you might not need very low latency or couldn't include C/C++ directly, and another version for C/C++ high performance use.
 
 If using on audio thread, high performance version is recommended if possible.
 
@@ -197,27 +237,15 @@ If using on audio thread, high performance version is recommended if possible.
 > lower performance version for non audio thread operation or for use in managed languages
 
 ```cpp
-std::vector<float> volumes = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll);
-```
-```swift
-let decodeArray: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
-```
-```javascript
-var decoded = m1Decode.decode(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);
-```
+std::vector<float> decodedGains = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize, int sampleIndex);
 
-> you can get a per sample volumes frame if you specify the buffer size and the current sample index
-
-```cpp
-std::vector<float> volumes = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRollint bufferSize, int sampleIndex);
-
-// high performance version is meant to be used on the audio thread, it puts the resulting channel volumes
+// high performance version is meant to be used on the audio thread, it puts the resulting channel gains/volumes
 // into a float array instead of allocating a result vector. Notice the pointer to volumeFrame array passed. The array itself has to have a size of 18 floats
 
-float volumeFrame [18];
-
-mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll, float *volumeFrame, bufferSize, int sampleIndex);
+float decodedGainsFrame [18];
+mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll, float *decodedGainsFrame, int bufferSize, int sampleIndex);
 ```
+> you can get a per sample gains/volumes frame if you specify the buffer size and the current sample index
 
 ## Example of Using Decoded Coefficients
 Input orientation angles and return the current sample/buffers coefficients
@@ -225,23 +253,23 @@ Input orientation angles and return the current sample/buffers coefficients
 > Sample based example
 
 ```cpp
-volumes = mach1Decode.decode(deivceYaw, devicePitch, deviceRoll);
+decodedGains = mach1Decode.decode(deivceYaw, devicePitch, deviceRoll);
 
 for (int i = 0; i < 8; i++) {
-    playersLeft[i].setVolume(volumes[i * 2] * overallVolume);
-    playersRight[i].setVolume(volumes[i * 2 + 1] * overallVolume);
+    playersLeft[i].setVolume(decodedGains[i * 2] * overallVolume);
+    playersRight[i].setVolume(decodedGains[i * 2 + 1] * overallVolume);
 }
 ```
 ```swift
 //Send device orientation to mach1Decode object with the preferred algo
 mach1Decode.beginBuffer()
-let decodeArray: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
+let decodedGains: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
 mach1Decode.endBuffer()
 
 //Use each coeff to decode multichannel Mach1 Spatial mix
 for i in 0...7 {
-    players[i * 2].volume = Double(decodeArray[i * 2])
-    players[i * 2 + 1].volume = Double(decodeArray[i * 2 + 1])
+    players[i * 2].volume = Double(decodedGains[i * 2])
+    players[i * 2 + 1].volume = Double(decodedGains[i * 2 + 1])
 }
 ```
 
@@ -249,17 +277,17 @@ for i in 0...7 {
 
 ```cpp
 //16 coefficients of spatial, 2 coefficients of headlocked stereo
-float volumes[18];
+float decodedGains[18];
 
 mach1Decode.beginBuffer();
 for (size_t i = 0; i < samples; i++)
 {
-    mach1Decode.decode(Yaw, Pitch, Roll, volumes, samples, i);
+    mach1Decode.decode(Yaw, Pitch, Roll, decodedGains, samples, i);
 
     for (int j = 0; j < 8; j++)
     {
-        sndL += volumes[j * 2 + 0] * buffer[j][idx];
-        sndR += volumes[j * 2 + 1] * buffer[j][idx];
+        sndL += decodedGains[j * 2 + 0] * buffer[j][idx];
+        sndR += decodedGains[j * 2 + 1] * buffer[j][idx];
     }
 
     buf[i * 2 + 0] = (short) (sndL * (SHRT_MAX-1));
@@ -268,6 +296,9 @@ for (size_t i = 0; i < samples; i++)
 mach1Decode.endBuffer();
 bufferRead += samples;
 ```
+
+## Set Rotation
+
 
 ## Get Current Time
 
