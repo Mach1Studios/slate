@@ -886,14 +886,14 @@ To utilize the second mode simply supply <code>0</code> values to <code>bufferSi
 <code>cpp
 mach1Decode.setPlatformType(Mach1PlatformDefault);
 </code>
-&lt;!-- <code>android
-mach1Decode.setPlatformType(Mach1Decode::Mach1PlatformType::Mach1PlatformAndroid);
-</code> --&gt;</p>
+<code>swift
+mach1Decode.setPlatformType(type: Mach1PlatformType.Mach1PlatformiOS)
+</code>
+<code>javascript
+mach1Decode.setPlatformType(m1Decode.Mach1PlatformType.Mach1PlatformOfEasyCam);
+</code>
+Use the <code>setPlatformType</code> function to set the device&#39;s angle order and convention if applicable:</p>
 </blockquote>
-<pre class="highlight swift tab-swift"><code><span class="n">mach1Decode</span><span class="o">.</span><span class="nf">setPlatformType</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">Mach1PlatformType</span><span class="o">.</span><span class="kt">Mach1PlatformiOS</span><span class="p">)</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="nx">mach1Decode</span><span class="p">.</span><span class="nx">setPlatformType</span><span class="p">(</span><span class="nx">m1Decode</span><span class="p">.</span><span class="nx">Mach1PlatformType</span><span class="p">.</span><span class="nx">Mach1PlatformOfEasyCam</span><span class="p">);</span>
-</code></pre>
-<p>Use the <code>setPlatformType</code> function to set the device&#39;s angle order and convention if applicable:</p>
 <h3 id='preset-types-enum'>Preset Types(enum):</h3>
 <ul>
 <li><code>Mach1PlatformDefault</code> = 0</li>
