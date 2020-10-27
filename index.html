@@ -987,7 +987,10 @@ This function of decoding is deprecated and only helpful for experimental use ca
 <p>Default Isotropic Decoding [recommended]: </p>
 
 <p>lower performance version for non audio thread operation or for use in managed languages</p>
-
+</blockquote>
+<pre class="highlight cpp tab-cpp"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">volumes</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">);</span>
+</code></pre>
+<blockquote>
 <p>you can get a per sample gains/volumes frame if you specify the buffer size and the current sample index</p>
 </blockquote>
 <pre class="highlight cpp tab-cpp"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">decodedGains</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span><span class="p">);</span>
