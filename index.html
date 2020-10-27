@@ -318,10 +318,13 @@
                     <a href="#end-buffer" class="toc-h2 toc-link" data-title="Mach1Decode API">End Buffer</a>
                   </li>
                   <li>
-                    <a href="#decoding" class="toc-h2 toc-link" data-title="Mach1Decode API">Decoding</a>
+                    <a href="#decode" class="toc-h2 toc-link" data-title="Mach1Decode API">Decode</a>
                   </li>
                   <li>
                     <a href="#example-of-using-decoded-coefficients" class="toc-h2 toc-link" data-title="Mach1Decode API">Example of Using Decoded Coefficients</a>
+                  </li>
+                  <li>
+                    <a href="#set-rotation" class="toc-h2 toc-link" data-title="Mach1Decode API">Set Rotation</a>
                   </li>
                   <li>
                     <a href="#get-current-time" class="toc-h2 toc-link" data-title="Mach1Decode API">Get Current Time</a>
@@ -860,12 +863,13 @@ Acts evenly with distribution across azimuth/rotation angles but crossfades betw
 
 <ul>
 <li><code>beginBuffer</code></li>
-<li><code>decode</code></li>
+<li><code>setRotation</code> / <code>setRotationDegrees</code> / <code>setRotationRadians</code> / <code>setRotationQuat</code></li>
+<li><code>decode</code> / <code>decodeCoeffs</code></li>
 <li><code>getCurrentAngle</code> (debug/optional)</li>
 <li><code>endBuffer</code></li>
 </ul>
-<h3 id='decode-callback-mode-options'>Decode Callback Mode Options</h3>
-<p>The Mach1Decode class&#39;s decode function returns the coefficients for each external audio player&#39;s gain/volume to create the spatial decode per update at the current angle. The timing of when this callback can be designed with two different modes of use:</p>
+<h3 id='using-mach1decode-code-decode-code-callback-options'>Using Mach1Decode <code>decode</code> Callback Options</h3>
+<p>The Mach1Decode class&#39;s decode function returns the coefficients for each external audio players&#39; gains/volumes to create the spatial decode per update at the current angle. The timing of when this callback can be designed with two different modes of use:</p>
 
 <ul>
 <li>Update decode results via the used audio player/engine&#39;s audio callback</li>
@@ -953,8 +957,31 @@ This function of decoding is deprecated and only helpful for experimental use ca
 <pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">endBuffer</span><span class="p">();</span>
 </code></pre><pre class="highlight swift tab-swift"><code><span class="n">mach1Decode</span><span class="o">.</span><span class="nf">endBuffer</span><span class="p">()</span>
 </code></pre><pre class="highlight javascript tab-javascript"><code><span class="nx">mach1Decode</span><span class="p">.</span><span class="nx">endBuffer</span><span class="p">();</span>
-</code></pre><h2 id='decoding'>Decoding</h2>
-<p>The decode function&#39;s purpose is to give you updated volumes for each input audio channel for each frame in order for spatial effect to manifest itself. There are two versions of this function - one for cases when you might not need very low latency or couldn&#39;t include C/C++ directly, and another version for C/C++ high performance use.</p>
+</code></pre><h2 id='decode'>Decode</h2>
+<p>There are four exposed functions that can be called at any time to set the next rotation. This maximizes design possibilities where rotations update may need to be called less or more than the calculated returned coefficients are needed. In general their are three ways to calculate <code>decode</code> values for your native audio player.</p>
+
+<ol>
+<li>Use <code>setRotation</code> / <code>setRotationDegrees</code> / <code>setRotationRadians</code> / <code>setRotationQuat</code> before you call <code>decodeCoeffs()</code></li>
+<li>Use <code>decode()</code> with inline arguments in Euler degrees</li>
+<li>Use <code>decodeCoeffsUsingTranscodeMatrix()</code></li>
+</ol>
+<h3 id='1-decodecoeffs'>1. DecodeCoeffs()</h3>
+<p>For easier use with more design cases we have a function for &quot;decode&quot; that uses the last called <code>setRotation</code> function in case your use case needs different input rotation descriptions or have different places that the orientation is updated compared to the audio thread your decode might be applied within. </p>
+
+<p>Please view the section on <code>setRotation</code> to learn more about the different functions for updating input rotations to Mach1Decode.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">mach1Decode</span><span class="p">.</span><span class="n">setRotationDegrees</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">decodedGains</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decodeCoeffs</span><span class="p">();</span>
+</code></pre><pre class="highlight swift tab-swift"><code><span class="n">mach1Decode</span><span class="o">.</span><span class="nf">setRotationDegrees</span><span class="p">(</span><span class="kt">Yaw</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceYaw</span><span class="p">),</span> <span class="kt">Pitch</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">devicePitch</span><span class="p">),</span> <span class="kt">Roll</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceRoll</span><span class="p">))</span>
+<span class="k">let</span> <span class="nv">decodedGains</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span>  <span class="o">=</span> <span class="n">mach1Decode</span><span class="o">.</span><span class="nf">decodeCoeffs</span><span class="p">()</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="nx">m1Decode</span><span class="p">.</span><span class="nx">setRotationDegrees</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">decoderRotationY</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">decoderRotationP</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">decoderRotationR</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">decodedGains</span> <span class="o">=</span> <span class="nx">m1Decode</span><span class="p">.</span><span class="nx">decodeCoeffs</span><span class="p">();</span>
+</code></pre><h3 id='2-decode'>2. Decode()</h3>
+<p>An all in one call to <code>decode(float yaw, float pitch, float roll)</code> with the input orientation rotation described in absolute Euler degrees can be used.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">decodedGains</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">);</span>
+</code></pre><pre class="highlight swift tab-swift"><code><span class="k">let</span> <span class="nv">decodedGains</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span>  <span class="o">=</span> <span class="n">mach1Decode</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Yaw</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceYaw</span><span class="p">),</span> <span class="kt">Pitch</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">devicePitch</span><span class="p">),</span> <span class="kt">Roll</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceRoll</span><span class="p">))</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">decodedGains</span> <span class="o">=</span> <span class="nx">m1Decode</span><span class="p">.</span><span class="nx">decode</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">decoderRotationY</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">decoderRotationP</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">decoderRotationR</span><span class="p">);</span>
+</code></pre><h3 id='3-decodecoeffsusingtranscodematrix'>3. DecodeCoeffsUsingTranscodeMatrix()</h3><h3 id='decoding-design'>Decoding Design</h3>
+<p>The decode function&#39;s purpose is to give you updated gains/volumes for each input audio channel for each frame in order for spatial effect to manifest itself. There are two versions of this function - one for cases when you might not need very low latency or couldn&#39;t include C/C++ directly, and another version for C/C++ high performance use.</p>
 
 <p>If using on audio thread, high performance version is recommended if possible.</p>
 
@@ -963,59 +990,55 @@ This function of decoding is deprecated and only helpful for experimental use ca
 
 <p>lower performance version for non audio thread operation or for use in managed languages</p>
 </blockquote>
-<pre class="highlight cpp tab-cpp"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">volumes</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">);</span>
-</code></pre><pre class="highlight swift tab-swift"><code><span class="k">let</span> <span class="nv">decodeArray</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span>  <span class="o">=</span> <span class="n">mach1Decode</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Yaw</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceYaw</span><span class="p">),</span> <span class="kt">Pitch</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">devicePitch</span><span class="p">),</span> <span class="kt">Roll</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceRoll</span><span class="p">))</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">decoded</span> <span class="o">=</span> <span class="nx">m1Decode</span><span class="p">.</span><span class="nx">decode</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">decoderRotationY</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">decoderRotationP</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">decoderRotationR</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>you can get a per sample volumes frame if you specify the buffer size and the current sample index</p>
-</blockquote>
-<pre class="highlight cpp tab-cpp"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">volumes</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRollint</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span><span class="p">);</span>
+<pre class="highlight cpp tab-cpp"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">decodedGains</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span><span class="p">);</span>
 
-<span class="c1">// high performance version is meant to be used on the audio thread, it puts the resulting channel volumes
+<span class="c1">// high performance version is meant to be used on the audio thread, it puts the resulting channel gains/volumes
 // into a float array instead of allocating a result vector. Notice the pointer to volumeFrame array passed. The array itself has to have a size of 18 floats
 </span>
-<span class="kt">float</span> <span class="n">volumeFrame</span> <span class="p">[</span><span class="mi">18</span><span class="p">];</span>
-
-<span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">volumeFrame</span><span class="p">,</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span><span class="p">);</span>
-</code></pre><h2 id='example-of-using-decoded-coefficients'>Example of Using Decoded Coefficients</h2>
+<span class="kt">float</span> <span class="n">decodedGainsFrame</span> <span class="p">[</span><span class="mi">18</span><span class="p">];</span>
+<span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">decodedGainsFrame</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>you can get a per sample gains/volumes frame if you specify the buffer size and the current sample index</p>
+</blockquote>
+<h2 id='example-of-using-decoded-coefficients'>Example of Using Decoded Coefficients</h2>
 <p>Input orientation angles and return the current sample/buffers coefficients</p>
 
 <blockquote>
 <p>Sample based example</p>
 </blockquote>
-<pre class="highlight cpp tab-cpp"><code><span class="n">volumes</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">deivceYaw</span><span class="p">,</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="n">deviceRoll</span><span class="p">);</span>
+<pre class="highlight cpp tab-cpp"><code><span class="n">decodedGains</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">deivceYaw</span><span class="p">,</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="n">deviceRoll</span><span class="p">);</span>
 
 <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">playersLeft</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">setVolume</span><span class="p">(</span><span class="n">volumes</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">overallVolume</span><span class="p">);</span>
-    <span class="n">playersRight</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">setVolume</span><span class="p">(</span><span class="n">volumes</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">overallVolume</span><span class="p">);</span>
+    <span class="n">playersLeft</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">setVolume</span><span class="p">(</span><span class="n">decodedGains</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">overallVolume</span><span class="p">);</span>
+    <span class="n">playersRight</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">setVolume</span><span class="p">(</span><span class="n">decodedGains</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">overallVolume</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre><pre class="highlight swift tab-swift"><code><span class="c1">//Send device orientation to mach1Decode object with the preferred algo</span>
 <span class="n">mach1Decode</span><span class="o">.</span><span class="nf">beginBuffer</span><span class="p">()</span>
-<span class="k">let</span> <span class="nv">decodeArray</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span>  <span class="o">=</span> <span class="n">mach1Decode</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Yaw</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceYaw</span><span class="p">),</span> <span class="kt">Pitch</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">devicePitch</span><span class="p">),</span> <span class="kt">Roll</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceRoll</span><span class="p">))</span>
+<span class="k">let</span> <span class="nv">decodedGains</span><span class="p">:</span> <span class="p">[</span><span class="kt">Float</span><span class="p">]</span>  <span class="o">=</span> <span class="n">mach1Decode</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Yaw</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceYaw</span><span class="p">),</span> <span class="kt">Pitch</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">devicePitch</span><span class="p">),</span> <span class="kt">Roll</span><span class="p">:</span> <span class="kt">Float</span><span class="p">(</span><span class="n">deviceRoll</span><span class="p">))</span>
 <span class="n">mach1Decode</span><span class="o">.</span><span class="nf">endBuffer</span><span class="p">()</span>
 
 <span class="c1">//Use each coeff to decode multichannel Mach1 Spatial mix</span>
 <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">...</span><span class="mi">7</span> <span class="p">{</span>
-    <span class="n">players</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="kt">Double</span><span class="p">(</span><span class="n">decodeArray</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">])</span>
-    <span class="n">players</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="kt">Double</span><span class="p">(</span><span class="n">decodeArray</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">players</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="kt">Double</span><span class="p">(</span><span class="n">decodedGains</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="n">players</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="kt">Double</span><span class="p">(</span><span class="n">decodedGains</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
 <p>Buffer based example</p>
 </blockquote>
 <pre class="highlight cpp tab-cpp"><code><span class="c1">//16 coefficients of spatial, 2 coefficients of headlocked stereo
-</span><span class="kt">float</span> <span class="n">volumes</span><span class="p">[</span><span class="mi">18</span><span class="p">];</span>
+</span><span class="kt">float</span> <span class="n">decodedGains</span><span class="p">[</span><span class="mi">18</span><span class="p">];</span>
 
 <span class="n">mach1Decode</span><span class="p">.</span><span class="n">beginBuffer</span><span class="p">();</span>
 <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">samples</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">Yaw</span><span class="p">,</span> <span class="n">Pitch</span><span class="p">,</span> <span class="n">Roll</span><span class="p">,</span> <span class="n">volumes</span><span class="p">,</span> <span class="n">samples</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+    <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">Yaw</span><span class="p">,</span> <span class="n">Pitch</span><span class="p">,</span> <span class="n">Roll</span><span class="p">,</span> <span class="n">decodedGains</span><span class="p">,</span> <span class="n">samples</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
 
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">sndL</span> <span class="o">+=</span> <span class="n">volumes</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">buffer</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">idx</span><span class="p">];</span>
-        <span class="n">sndR</span> <span class="o">+=</span> <span class="n">volumes</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">buffer</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">idx</span><span class="p">];</span>
+        <span class="n">sndL</span> <span class="o">+=</span> <span class="n">decodedGains</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">buffer</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">idx</span><span class="p">];</span>
+        <span class="n">sndR</span> <span class="o">+=</span> <span class="n">decodedGains</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">buffer</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">idx</span><span class="p">];</span>
     <span class="p">}</span>
 
     <span class="n">buf</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">short</span><span class="p">)</span> <span class="p">(</span><span class="n">sndL</span> <span class="o">*</span> <span class="p">(</span><span class="n">SHRT_MAX</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
@@ -1023,7 +1046,7 @@ This function of decoding is deprecated and only helpful for experimental use ca
 <span class="p">}</span>
 <span class="n">mach1Decode</span><span class="p">.</span><span class="n">endBuffer</span><span class="p">();</span>
 <span class="n">bufferRead</span> <span class="o">+=</span> <span class="n">samples</span><span class="p">;</span>
-</code></pre><h2 id='get-current-time'>Get Current Time</h2>
+</code></pre><h2 id='set-rotation'>Set Rotation</h2><h2 id='get-current-time'>Get Current Time</h2>
 <p>Returns the current elapsed time in milliseconds (ms) since Mach1Decode object&#39;s creation. </p>
 <h2 id='get-log'>Get Log</h2>
 <p>Returns a string of the last log message (or empty string if none) from Mach1DecodeCAPI binary library. Use this to assist in debug with a list of input angles and the associated output coefficients from the used Mach1Decode function.</p>
