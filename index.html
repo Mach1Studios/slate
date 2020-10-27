@@ -984,20 +984,21 @@ This function of decoding is deprecated and only helpful for experimental use ca
 <p>An all in one call to <code>decode(float yaw, float pitch, float roll)</code> with the input orientation rotation described in absolute Euler degrees can be used.</p>
 <h3 id='decoding-design'>Decoding Design</h3>
 <blockquote>
-<p>Default Isotropic Decoding [recommended]: 
-lower performance version for non audio thread operation or for use in managed languages
-you can get a per sample gains/volumes frame if you specify the buffer size and the current sample index
-```cpp
-std::vector<float> decodedGains = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll, int bufferSize, int sampleIndex);</p>
+<p>Default Isotropic Decoding [recommended]: </p>
+
+<p>lower performance version for non audio thread operation or for use in managed languages</p>
+
+<p>you can get a per sample gains/volumes frame if you specify the buffer size and the current sample index</p>
 </blockquote>
+<pre class="highlight cpp tab-cpp"><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">decodedGains</span> <span class="o">=</span> <span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span><span class="p">);</span>
 
-<p>// high performance version is meant to be used on the audio thread, it puts the resulting channel gains/volumes
-// into a float array instead of allocating a result vector. Notice the pointer to volumeFrame array passed. The array itself has to have a size of 18 floats</p>
-
-<p>float decodedGainsFrame [18];
-mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll, float *decodedGainsFrame, int bufferSize, int sampleIndex);
-```
-The decode function&#39;s purpose is to give you updated gains/volumes for each input audio channel for each frame in order for spatial effect to manifest itself. There are two versions of this function - one for cases when you might not need very low latency or couldn&#39;t include C/C++ directly, and another version for C/C++ high performance use.</p>
+<span class="c1">// high performance version is meant to be used on the audio thread, it puts the resulting channel gains/volumes
+// into a float array instead of allocating a result vector. Notice the pointer to volumeFrame array passed. The array itself has to have a size of 18 floats
+</span>
+<span class="kt">float</span> <span class="n">decodedGainsFrame</span> <span class="p">[</span><span class="mi">18</span><span class="p">];</span>
+<span class="n">mach1Decode</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="kt">float</span> <span class="n">deviceYaw</span><span class="p">,</span> <span class="kt">float</span> <span class="n">devicePitch</span><span class="p">,</span> <span class="kt">float</span> <span class="n">deviceRoll</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">decodedGainsFrame</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sampleIndex</span><span class="p">);</span>
+</code></pre>
+<p>The decode function&#39;s purpose is to give you updated gains/volumes for each input audio channel for each frame in order for spatial effect to manifest itself. There are two versions of this function - one for cases when you might not need very low latency or couldn&#39;t include C/C++ directly, and another version for C/C++ high performance use.</p>
 
 <p>If using on audio thread, high performance version is recommended if possible.</p>
 <h2 id='example-of-using-decoded-coefficients'>Example of Using Decoded Coefficients</h2>
