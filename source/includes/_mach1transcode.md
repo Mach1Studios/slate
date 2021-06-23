@@ -99,8 +99,6 @@ libsndfile (wav output): `outfiles[i].setString(0x05, "mach1spatial-8");`
  - SevenZeroTwo - L C R Lss Rss Lsr Rsr Lts Rts
  - SevenOneFour - L C R Lss Rss Lsr Rsr LFE FLts FRts BLts BRts
  - SevenZeroFour - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts
- - NineOne 
- - NineZero
  - 16.0 - 16 channel Surround 3D layout
 
  <aside class="notice">Additional formats available upon request.</aside>
@@ -114,13 +112,15 @@ libsndfile (wav output): `outfiles[i].setString(0x05, "mach1spatial-8");`
  - TBE - Facebook360 Hybrid 2nd order
  - ACNSN3DO3A - 3rd order B-format, AmbiX ACN order and SN3D weighting
  - FuMaO3A - 3rd order B-format, Furse-Malham order and weighting
- - ACNSN3D1oa(maxRE) - 1st order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3D2oa(maxRE) - 2nd order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3D3oa(maxRE) - 3rd order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3D4oa(maxRE) - 4th order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3D5oa(maxRE) - 5th order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3D6oa(maxRE) - 6th order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3D7oa(maxRE) - 7th order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3DmaxRE1oa - 1st order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3DmaxRE2oa - 2nd order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3DmaxRE3oa - 3rd order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3DmaxRE4oa - 4th order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3DmaxRE5oa - 5th order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3DmaxRE6oa - 6th order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3DmaxRE7oa - 7th order, Ambix ACN order and SN3D-MaxRE from IEM
+ - ACNSN3DYorkBasic1oa - 1st order, Ambix ACN order and SN3D-Basic weighting from York University
+ - ACNSN3DYorkmaxRE1oa - 1st order, Ambix ACN order and SN3D-MaxRE weighting from York University
 
 ### Custom Format/Configuration
 
