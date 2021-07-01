@@ -31,8 +31,8 @@ void update(){
 ```
 ```swift
 func update(decodeArray: [Float], decodeType: Mach1DecodeAlgoType){
-    m1Encode.setAzimuth(rotation: azimuth)
-    m1Encode.setElevation(pitch: elevation)
+    m1Encode.setAzimuth(azimuth: azimuth)
+    m1Encode.setElevation(elevation: elevation)
     m1Encode.setDiverge(diverge: diverge)
     m1Encode.setAutoOrbit(setAutoOrbit: true)
     m1Encode.setStereoRotate(setStereoRotation: sRotation)
@@ -241,18 +241,44 @@ if (params.pannerMode == 2) {
 }
 ```
 
-## Set Rotation
+## Set Azimuth
 ```cpp
-m1Encode.setRotation = rotation;
+m1Encode.setAzimuth = azimuthFromMinus1To1;
 ```
 ```swift
-m1Encode.setRotation(rotation: rotation)
+m1Encode.setAzimuth(azimuth: azimuthFromMinus1To1)
 ```
 ```javascript
-m1Encode.setRotation(params.rotation);
+m1Encode.setAzimuth(params.azimuthFromMinus1To1);
 ```
 Rotates the point(s) around the center origin of the vector space.
-> UI value range: 0.0 -> 1.0 (0-360)
+> UI value range: 0.0 -> 1.0 (0 -> 360)
+
+## Set Azimuth Degrees
+```cpp
+m1Encode.setAzimuthDegrees = azimuthDegrees;
+```
+```swift
+m1Encode.setAzimuthDegrees(azimuth: azimuthDegrees)
+```
+```javascript
+m1Encode.setAzimuthDegrees(params.azimuthDegrees);
+```
+Rotates the point(s) around the center origin of the vector space.
+> UI value range: 0.0 -> 360.0
+
+## Set Azimuth Radians
+```cpp
+m1Encode.setAzimuthRadians = azimuthRadians;
+```
+```swift
+m1Encode.setAzimuthRadians(azimuth: azimuthRadians)
+```
+```javascript
+m1Encode.setAzimuthRadians(params.azimuthRadians);
+```
+Rotates the point(s) around the center origin of the vector space.
+> UI value range: 0 -> 2PI (0 -> 360)
 
 ## Set Diverge
 ```cpp
@@ -267,18 +293,44 @@ m1Encode.setDiverge(params.diverge);
 Moves the point(s) to/from center origin of the vector space.
 > UI value range: -1.0 -> 1.0
 
-## Set Pitch/Height
+## Set Elevation
 ```cpp
-m1Encode.setPitch = pitch;
+m1Encode.setElevation = elevationFromMinus1to1;
 ```
 ```swift
-m1Encode.setPitch(pitch: height)
+m1Encode.setElevation(elevation: elevationFromMinus1to1)
 ```
 ```javascript
-m1Encode.setPitch(params.pitch);
+m1Encode.setElevation(params.elevationFromMinus1to1);
 ```
 Moves the point(s) up/down the vector space.
-> UI value range: -1.0 -> 1.0
+> UI value range: -1.0 -> 1.0 (-90 -> 90)
+
+## Set Elevation Degrees
+```cpp
+m1Encode.setElevationDegrees = elevationFromMinus90to90;
+```
+```swift
+m1Encode.setElevationDegrees(elevation: elevationFromMinus90to90)
+```
+```javascript
+m1Encode.setElevationDegrees(params.elevationFromMinus90to90);
+```
+Moves the point(s) up/down the vector space.
+> UI value range: -90 -> 90
+
+## Set Elevation Radians
+```cpp
+m1Encode.setElevationRadians = elevationFromMinusHalfPItoHalfPI;
+```
+```swift
+m1Encode.setElevationRadians(elevation: elevationFromMinusHalfPItoHalfPI)
+```
+```javascript
+m1Encode.setElevationRadians(params.elevationFromMinusHalfPItoHalfPI);
+```
+Moves the point(s) up/down the vector space.
+> UI value range: -PI/2 -> PI/2 (-90 -> 90)
 
 ## Set Stereo Rotation
 ```cpp
