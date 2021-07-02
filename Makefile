@@ -1,6 +1,6 @@
 # Mach1 demos page deployment
 
-s3_bucket_name = mdev-mach1-public
+s3_bucket_name = dev-mach1-public
 
 # getting OS type
 ifeq ($(OS),Windows_NT)
