@@ -12,10 +12,13 @@ endif
 install: 
 	# install all deps
 
-build: 
-	bundle exec middleman build --clean
+build: clean
+	bundle exec middleman build --verbose --clean
 
-deploy:
+clean: 
+	rm -rf build
+
+deploy: build
 	# deploys build to public AWS bucket
 	# NOTE: relies on `mach1` keys in `~/.aws/credentials`
 	aws s3 sync ./ s3://$(s3_bucket_name) --content-type text/html --cache-control no-cache --acl public-read --metadata-directive REPLACE --exclude "*" --include "*.html" --profile mach1
