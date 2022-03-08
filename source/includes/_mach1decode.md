@@ -7,12 +7,15 @@ Mach1Decode supplies the functions needed to playback Mach1 Spatial VVBP formats
 void setup(){
     mach1Decode.setDecodeAlgoType(Mach1DecodeAlgoSpatial);
     mach1Decode.setPlatformType(Mach1PlatformDefault);
-    mach1Decode.setFilterSpeed(1.0f);
+    mach1Decode.setFilterSpeed(0.95f);
 }
 void loop(){
+    mach1Decode.setRotation(deviceYaw, devicePitch, deviceRoll); // normalized rotation input
     mach1Decode.beginBuffer();
-    mach1Decode.decode(deviceYaw, devicePitch, deviceRoll);
+    auto gainCoeffs = mach1Decode.decodeCoeffs();
     mach1Decode.endBuffer();
+
+    // Apply gainCoeffs to gain/volume of array of audioplayers for custom spatial audio mixer
 }
 ```
 ```swift

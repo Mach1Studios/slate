@@ -101,6 +101,9 @@ libsndfile (wav output): `outfiles[i].setString(0x05, "mach1spatial-8");`
  - SevenZeroFour - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts
  - 16.0 - 16 channel Surround 3D layout
 
+### ADM Injected Formats
+ - DolbyAtmosSevenOneTwo - L R C LFE Lss Rss Lsr Rsr Lts Rts [ADM Metadata]
+
  <aside class="notice">Additional formats available upon request.</aside>
 
 ### Ambisonic Formats (special thanks to [VVAudio](https://www.vvaudio.com/))
