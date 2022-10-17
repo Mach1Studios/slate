@@ -182,8 +182,8 @@ Mach1TranscodeFormatType inputMode;
 Mach1TranscodeFormatType outputMode;
 
 // Mach1 Transcode Setup
-inputMode = Mach1TranscodeFormatACNSN3DmaxRE3oa;
-outputMode = Mach1TranscodeFormatM1Spatial;
+inputMode = "ACNSN3DmaxRE3oa";
+outputMode = "M1Spatial-8";
 
 //resize coeffs array to the size of the current output
 m1Transcode.setOutputFormat(outputMode);
@@ -206,12 +206,12 @@ private var m1Transcode = Mach1Transcode()
 
 // Mach1 Transcode Setup
 m1Transcode.setInputFormat(inFmt: Mach1TranscodeFormatType)
-m1Transcode.setOutputFormat(outFmt: Mach1TranscodeFormatM1Spatial)
+m1Transcode.setOutputFormat(outFmt: "M1Spatial-8")
 m1Transcode.processConversionPath()
 matrix = m1Transcode.getMatrixConversion()
 // Mach1 Decode Setup
 m1Decode.setPlatformType(type: Mach1PlatformiOS)
-m1Decode.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial)
+m1Decode.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial_8)
 m1Decode.setFilterSpeed(filterSpeed: 1.0)
 
 // Called when updating InputFormat for Mach1Transcode

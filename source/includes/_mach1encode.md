@@ -16,7 +16,7 @@ void update(){
     m1Decode.setDecodeAlgoType(Mach1DecodeAlgoSpatial);
     m1Encode.setPannerMode(Mach1EncodePannerMode::Mach1EncodePannerModeIsotropicLinear);
     m1Encode.setInputMode(Mach1EncodeInputModeType::Mach1EncodeInputModeMono);
-    m1Encode.setOutputMode(Mach1EncodeOutputModeType::Mach1EncodeOutputModeM1Spatial);
+    m1Encode.setOutputMode(Mach1EncodeOutputModeType::Mach1EncodeOutputModeM1Spatial_8);
 
     mtx.lock();
     m1Encode.generatePointResults();
@@ -163,39 +163,42 @@ if (params.inputKind == 4) { // Input: 1st Order Ambisonics (ACNSN3D)
 ## Set Output Mode
 Sets the output spatial format, Mach1Spatial or Mach1Horizon
 
- - Mach1Horizon (4ch) [Yaw]
- - Mach1Spatial (8ch) [Yaw, Pitch, Roll]
- - Mach1SpatialPlus (12ch) [Yaw, Pitch, Roll]
- - Mach1SpatialPlusPlus (14ch) [Yaw, Pitch, Roll]
- - Mach1SpatialExt (16ch) [Yaw, Pitch, Roll]
- - Mach1SpatialExtPlus (18ch) [Yaw, Pitch, Roll]
+ - Mach1EncodeOutputModeM1Spatial_8 (8ch) [Yaw, Pitch, Roll] {default}
+ - Mach1EncodeOutputModeM1Horizon_4 (4ch) [Yaw]
+ - Mach1EncodeOutputModeM1Spatial_12 (12ch) [Yaw, Pitch, Roll]
+ - Mach1EncodeOutputModeM1Spatial_14 (14ch) [Yaw, Pitch, Roll]
+ - Mach1EncodeOutputModeM1Spatial_18 (18ch) [Yaw, Pitch, Roll]
+ - Mach1EncodeOutputModeM1Spatial_32 (32ch) [Yaw, Pitch, Roll]
+ - Mach1EncodeOutputModeM1Spatial_36 (36ch) [Yaw, Pitch, Roll]
+ - Mach1EncodeOutputModeM1Spatial_48 (48ch) [Yaw, Pitch, Roll]
+ - Mach1EncodeOutputModeM1Spatial_60 (60ch) [Yaw, Pitch, Roll]
 
 ```cpp
 if (outputKind == 0) { // Output: 4CH Mach1Horizon
-    m1Encode.outputMode = M1Encode::Mach1Horizon;
+    m1Encode.outputMode = M1Encode::Mach1EncodeOutputModeM1Horizon_4;
 }
 if (outputKind == 1) { // Output: 8CH Mach1Spatial
-    m1Encode.outputMode = M1Encode::Mach1Spatial;
+    m1Encode.outputMode = M1Encode::Mach1EncodeOutputModeM1Spatial_8;
 }
 ```
 ```swift
 if (outputKind == 0) { // Output: 4CH Mach1Horizon
-    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputModeM1Horizon)
+    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputModeM1Horizon_4)
 }
 if (outputKind == 1) { // Output: 8CH Mach1Spatial
-    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputModeM1Spatial)
+    m1Encode.setOutputMode(outputMode: Mach1EncodeOutputModeM1Spatial_8)
 }
 ```
 ```javascript
 if (params.outputKind == 0) { // Output: 4CH Mach1Horizon
-    m1Encode.setOutputMode(m1Encode.Mach1EncodeOutputModeType.Mach1EncodeOutputModeM1Horizon);
+    m1Encode.setOutputMode(m1Encode.Mach1EncodeOutputModeType.Mach1EncodeOutputModeM1Horizon_4);
 }
 if (params.outputKind == 1) { // Output: 8CH Mach1Spatial
-    m1Encode.setOutputMode(m1Encode.Mach1EncodeOutputModeType.Mach1EncodeOutputModeM1Spatial);
+    m1Encode.setOutputMode(m1Encode.Mach1EncodeOutputModeType.Mach1EncodeOutputModeM1Spatial_8);
 }
 ```
 
-## Set Panner Mode
+<!-- ## Set Panner Mode
 Sets the style and mode of panner input calculation
 
  - Mach1EncodePannerModeIsotropicLinear [default]
@@ -239,7 +242,7 @@ if (params.pannerMode == 1) {
 if (params.pannerMode == 2) {
     m1Encode.setPannerMode(m1Encode.Mach1EncodePannerMode.Mach1EncodePannerModePeriphonicLinear);
 }
-```
+``` -->
 
 ## Set Azimuth
 ```cpp

@@ -5,7 +5,7 @@ Mach1Decode supplies the functions needed to playback Mach1 Spatial VVBP formats
 ## Summary Use
 ```cpp
 void setup(){
-    mach1Decode.setDecodeAlgoType(Mach1DecodeAlgoSpatial);
+    mach1Decode.setDecodeAlgoType(Mach1DecodeAlgoSpatial_8);
     mach1Decode.setPlatformType(Mach1PlatformDefault);
     mach1Decode.setFilterSpeed(0.95f);
 }
@@ -20,7 +20,7 @@ void loop(){
 ```
 ```swift
 override func viewDidLoad() {
-    mach1Decode.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial)
+    mach1Decode.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial_8)
     mach1Decode.setPlatformType(type: Mach1PlatformiOS)
     mach1Decode.setFilterSpeed(filterSpeed: 1.0)
 }
@@ -35,7 +35,7 @@ let mach1Decode = null;
 Mach1DecodeModule().then(function(m1DecodeModule) {
     m1Decode = new(m1DecodeModule).Mach1Decode();
     m1Decode.setPlatformType(m1Decode.Mach1PlatformType.Mach1PlatformDefault);
-    m1Decode.setDecodeAlgoType(m1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial);
+    m1Decode.setDecodeAlgoType(m1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial_8);
     m1Decode.setFilterSpeed(0.95);
 });
 function update() {
@@ -89,11 +89,11 @@ Use the `setPlatformType` function to set the device's angle order and conventio
 
 ### Preset Types(enum):
  - `Mach1PlatformDefault` = 0
- - `Mach1PlatformUnity` = 1
- - `Mach1PlatformUE` = 2
- - `Mach1PlatformOfEasyCam` = 3
- - `Mach1PlatformAndroid` = 4
- - `Mach1PlatformiOS` = 5
+ - `Mach1PlatformUnity`
+ - `Mach1PlatformUE`
+ - `Mach1PlatformOfEasyCam`
+ - `Mach1PlatformAndroid`
+ - `Mach1PlatformiOS`
 
 ### Angle Order Conventions
 1. Order of Yaw, Pitch, Roll (Defined as angle applied first, second and third).
@@ -127,35 +127,25 @@ void setDecodeAlgoType(Mach1DecodeAlgoType newAlgorithmType);
 func setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoType)
 ```
 ```javascript
-mach1Decode.setDecodeAlgoType(m1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial);
+mach1Decode.setDecodeAlgoType(m1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial_8);
 ```
 Use this function to setup and choose the required Mach1 decoding algorithm.
 
 ### Mach1 Decoding Algorithm Types:
- - `Mach1DecodeAlgoSpatial` = 0 (default spatial | 8 channels)
- - `Mach1DecodeAlgoAltSpatial` = 1 (periphonic spatial | 8 channels)
- - `Mach1DecodeAlgoHorizon` = 2 (compass / yaw | 4 channels)
- - `Mach1DecodeAlgoHorizonPairs` = 3 (compass / yaw | 4x stereo mastered pairs)
- - `Mach1DecodeAlgoSpatialPairs` = 4 (experimental periphonic pairs | 8x stereo mastered pairs)
+ - `Mach1DecodeAlgoSpatial_8` = 0 (default spatial | 8 channels)
+ - `Mach1DecodeAlgoHorizon_4` (compass / yaw | 4 channels)
+ - `Mach1DecodeAlgoHorizonPairs` (compass / yaw | 4x stereo mastered pairs)
 
-#### Mach1DecodeAlgoSpatial
+#### Mach1DecodeAlgoSpatial_8
 Mach1Spatial. 8 Channel spatial mix decoding from our cuboid configuration. 
 This is the default and recommended decoding utilizing isotropic decoding behavior.
 
-#### Mach1DecodeAlgoAltSpatial
-Mach1Spatial. 8 Channel spatial mix decoding from our cuboid configuration. 
-This is a Periphonic decoding weighted more toward yaw, prone to gimbal lock but can be useful for use cases that only need 2 out of 3 input angle types.
-
-#### Mach1DecodeAlgoHorizon
+#### Mach1DecodeAlgoHorizon_4
 Mach1Horizon. 4 channel spatial mix decoding for compass / yaw only configurations.
 Also able to decode and virtualize a first person perspective of Quad Surround mixes. 
 
 #### Mach1DecodeAlgoHorizonPairs 
 Mach1HorizonPairs. 8 channel spatial mix decoding for compass / yaw only that can support headlocked / non-diegetic stereo elements to be mastered within the mix / 8 channels. Supports and decodes Quad-Binaural mixes.
-
-#### Mach1DecodeAlgoSpatialPairs
-Mach1SpatialPairs. Periphonic stereo pairs decoding.
-This function of decoding is deprecated and only helpful for experimental use cases!
 
 ## Begin Buffer
 ```cpp
