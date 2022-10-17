@@ -7,19 +7,19 @@ Rapidly offline render to and from Mach1 formats.
 
 > Example in command line for converting Mach1Spatial mix to First Order ambisonics: ACNSN3D
 
-```
+```shell
 m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt ACNSN3D -out-file /path/to/output.wav -out-file-chans 0
 ```
 
 > Example in command line for converting 7.1 film mix to Mach1Spatial
 
-```
+```shell
 m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt SevenOnePT_Cinema -out-fmt Mach1Spatial -out-file /path/to/output.wav
 ```
 
 > Example in command line for converting Mach1Spatial to Mach1HorizonPairs (quad-binaural compliant)
 
-```
+```shell
 m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt Mach1HorizonPairs -out-file /path/to/output.wav -out-file-chans 2
 ```
 
@@ -50,7 +50,7 @@ If autodetection is still required, use the following suggested specifications w
 
 > Example:
 
-```
+```shell
   Metadata:
     comment         : mach1spatial-8
 ```
@@ -127,7 +127,7 @@ libsndfile (wav output): `outfiles[i].setString(0x05, "mach1spatial-8");`
 
 ### Custom Format/Configuration
 
-```
+```shell
 ./m1-transcode fmtconv -in-file /path/to/16channel.wav -in-fmt TTPoints -in-json /path/to/16ChannelDescription.json -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial -out-file-chans 0
 ```
 
@@ -141,7 +141,7 @@ To use this set the `-in-fmt` or `-out-fmt` as `TTPoints`
 
 > Example of low pass filtering every channel but the Front-Right of the Mach1 Spatial mix and outputting it to stereo.
 
-```
+```shell
 ./m1-transcode fmtconv -in-file /path/to/input-m1spatial.wav -in-fmt M1Spatial -out-file /path/to/output-stereo.wav -lfe-sub 0,2,3,4,6,7 -out-fmt Stereo -out-file-chans 0
 ```
 
@@ -149,7 +149,7 @@ Use `-lfe-sub` arguement to indicate which input channels you want to apply a Lo
 
 ### Spatial Downmixer
 
-```
+```shell
 ./m1-transcode fmtconv -in-file /path/to/input-fiveOne.wav -in-fmt FiveOneFilm_Cinema -spatial-downmixer 0.9 -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial -out-file-chans 0
 ```
 
@@ -159,7 +159,7 @@ For scaling audio outputting to streaming use cases of Mach1Decode and use cases
 
 ### Metadata Extractor
 
-```
+```shell
 ./m1-transcode fmtconv -in-file /path/to/input-ADM.wav -in-fmt SevenOneFour -out-file /path/to/output.wav -extract-metadata -out-fmt M1Spatial -out-file-chans 0
 ```
 
@@ -199,6 +199,7 @@ m1Transcode.setSpatialDownmixer();
 m1Transcode.processConversionPath();
 m1Coeffs = m1Transcode.getMatrixConversion();
 ```
+
 ```swift
 import Mach1SpatialAPI
 private var m1Decode = Mach1Decode()
@@ -238,11 +239,11 @@ Import and link the appropriate target device's / IDE's library file and headers
 Mach1TranscodeFormatType inputMode;
 m1Transcode.setInputFormat(inputMode);
 ```
+
 ```swift
 m1Transcode.setInputFormat(inFmt: Mach1TranscodeFormatFiveOneFilm_Cinema)
 ```
-```javascript
-```
+
 Set or return the input format/configuration for processing.
 
 ## Set / Get Output Format
@@ -250,96 +251,56 @@ Set or return the input format/configuration for processing.
 Mach1TranscodeFormatType outputMode;
 m1Transcode.setOutputFormat(outputMode);
 ```
+
 ```swift
 m1Transcode.setOutputFormat(outFmt: Mach1TranscodeFormatM1Spatial)
 ```
-```javascript
-```
+
 Set or return the output format/configuration for processing.
 
 ## Set / Get Spatial Downmixer
 ```cpp
 m1Transcode.setSpatialDownmixer();
 ```
+
 ```swift
 m1Transcode.setSpatialDownmixer()
 ```
-```javascript
-```
+
 Sets the threshold float for `getSpatialDownmixerPossibility` calculation. The `getSpatialDownmixerPossibility` returns true if the compared signals are less than the `setSpatialDownmixer(corrThreshold)`.
 > Float from 0.0 to 1.0 where 0.0 no difference and incrementing to 1.0 is more difference
 > When returned true; transcodings that are set to ouput to `Mach1Spatial` will process an additional conversion to `Mach1Horizon` 
 
 ## Set LFE / Sub Channels
-```cpp
-```
-```swift
-```
-```javascript
-```
+
 Applys a low pass filter (LPF) to each indicated channel index of the input format and soundfield. Input vector of ints representing the index of input channels to be processed.
 
 ## Set Input as JSON
-```cpp
-```
-```swift
-```
-```javascript
-```
+
 Sets the input format for transcoding from TT directly. View the JSON spec for describing a format here: https://dev.mach1.tech/#json-descriptions.
 
 ## Set Input as TT Points
-```cpp
-```
-```swift
-```
-```javascript
-```
+
 Sets the input format for transcoding from an external JSON source. View the JSON spec for describing a format here: https://dev.mach1.tech/#json-descriptions.
 
 ## Set Input as ADM
-```cpp
-```
-```swift
-```
-```javascript
-```
+
 Sets the input format for transcoding from the parsed ADM metadata within the audiofile.
 
 ## Process Normalization
-```cpp
-```
-```swift
-```
-```javascript
-```
+
 
 ## Process Master Gain
-```cpp
-```
-```swift
-```
-```javascript
-```
+
 Applys an input gain to the output soundfield. 
 > Parameters: Input buffer, Integer of input number of samples, Float for gain multiplier
 
 ## Process Conversion Path
-```cpp
-```
-```swift
-```
-```javascript
-```
+
 Use this function to control when to call for calculating the format transcoding calculations.
 
 ## Get Conversion Path
-```cpp
-```
-```swift
-```
-```javascript
-```
+
 Returns the shortest found conversion path to get from input format X to output format Y, both set by `Mach1Transcode::setInputFormat(Mach1TranscodeFormatType inFmt)` and `Mach1Transcode::setOutputFormat(Mach1TranscodeFormatType outFmt)`. Majority of format instances will use Mach1Spatial as the middle format for non-Mach1-format -> non-Mach1-format transcodings. This is due to Mach1 Spatial being a platonic solid format, ideal for safe calculations without loss
 
 ## Process Conversion Matrix
@@ -347,27 +308,25 @@ Returns the shortest found conversion path to get from input format X to output 
 std::vector<std::vector<float>> m1Coeffs; //2D array, [input channel][input channel's coeff]
 m1Coeffs = m1Transcode.getMatrixConversion();
 ```
+
 ```swift
 private var matrix: [[Float]] = []
 matrix = m1Transcode.getMatrixConversion()
 ```
-```javascript
-```
+
 Returns the transcoding matrix of coefficients based on the set input and output formats.
 
 ## Process Conversion
 ```cpp
 ```
+
 ```swift
 m1Transcode.processConversion(float: inBufs, float: outBufs, int: numSamples)
 ```
-```javascript
-```
+
 Call to process the conversion as set by previous functions.
 
 ## Direct Agnostic Playback of All Input Formats via Mach1Decode
-```cpp
-```
 ```swift
 // Basic struct for input audio/format
 struct AudioInput {
@@ -398,6 +357,4 @@ m1Decode.endBuffer()
 for i in 0..<result.count {
     players[i].setVolume(result[i], fadeDuration: 0)
 }
-```
-```javascript
 ```

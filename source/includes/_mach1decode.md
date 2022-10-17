@@ -18,6 +18,7 @@ void loop(){
     // Apply gainCoeffs to gain/volume of array of audioplayers for custom spatial audio mixer
 }
 ```
+
 ```swift
 override func viewDidLoad() {
     mach1Decode.setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoSpatial_8)
@@ -32,6 +33,7 @@ func update() {
     // Apply gainCoeffs to gain/volume of array of audioplayers for custom spatial audio mixer
 }
 ```
+
 ```javascript
 let mach1Decode = null;
 Mach1DecodeModule().then(function(m1DecodeModule) {
@@ -48,6 +50,7 @@ function update() {
     // Apply gainCoeffs to gain/volume of array of audioplayers for custom spatial audio mixer
 }
 ```
+
 The Mach1Decode API is designed to be used the following way:
 
 Setup Step (setup/start):
@@ -83,9 +86,11 @@ Import and link the appropriate target device's / IDE's library file.
 ```cpp
 mach1Decode.setPlatformType(Mach1PlatformDefault);
 ```
+
 ```swift
 mach1Decode.setPlatformType(type: Mach1PlatformType.Mach1PlatformiOS)
 ```
+
 ```javascript
 mach1Decode.setPlatformType(m1Decode.Mach1PlatformType.Mach1PlatformOfEasyCam);
 ```
@@ -115,24 +120,30 @@ float filterSpeed = 1.0f;
 
 mach1Decode.setFilterSpeed(filterSpeed);
 ```
+
 ```swift
 mach1Decode.setFilterSpeed(filterSpeed: 1.0)
 ```
+
 ```javascript
 mach1Decode.setFilterSpeed(0.95);
 ```
+
 Filter speed determines the amount of angle smoothing applied to the orientation angles used for the Mach1DecodeCore class. 1.0 would mean that there is no filtering applied, 0.1 would add a long ramp effect of intermediary angles between each angle sample. It should be noted that you will not have any negative effects with >0.9 but could get some orientation latency when <0.85. The reason you might want angle smoothing is that it might help remove a zipper effect seen on some poorer performing platforms or devices.
 
 ## Set Decoding Algorithm
 ```cpp
 void setDecodeAlgoType(Mach1DecodeAlgoType newAlgorithmType);
 ```
+
 ```swift
 func setDecodeAlgoType(newAlgorithmType: Mach1DecodeAlgoType)
 ```
+
 ```javascript
 mach1Decode.setDecodeAlgoType(m1Decode.Mach1DecodeAlgoType.Mach1DecodeAlgoSpatial_8);
 ```
+
 Use this function to setup and choose the required Mach1 decoding algorithm.
 
 ### Mach1 Decoding Algorithm Types:
@@ -155,24 +166,30 @@ Mach1HorizonPairs. 8 channel spatial mix decoding for compass / yaw only that ca
 ```cpp
 mach1Decode.beginBuffer();
 ```
+
 ```swift
 mach1Decode.beginBuffer()
 ```
+
 ```javascript
 mach1Decode.beginBuffer();
 ```
+
 Call this function before reading from the Mach1Decode buffer.
 
 ## End Buffer
 ```cpp
 mach1Decode.endBuffer();
 ```
+
 ```swift
 mach1Decode.endBuffer()
 ```
+
 ```javascript
 mach1Decode.endBuffer();
 ```
+
 Call this function after reading from the Mach1Decode buffer.
 
 ## Decode
@@ -187,14 +204,17 @@ There are four exposed functions that can be called at any time to set the next 
 mach1Decode.setRotationDegrees(float deviceYaw, float devicePitch, float deviceRoll);
 std::vector<float> decodedGains = mach1Decode.decodeCoeffs();
 ```
+
 ```swift
 mach1Decode.setRotationDegrees(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
 let decodedGains: [Float]  = mach1Decode.decodeCoeffs()
 ```
+
 ```javascript
 m1Decode.setRotationDegrees(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);
 var decodedGains = m1Decode.decodeCoeffs();
 ```
+
 For easier use with more design cases we have a function for "decode" that uses the last called `setRotation` function in case your use case needs different input rotation descriptions or have different places that the orientation is updated compared to the audio thread your decode might be applied within. 
 
 Please view the section on `setRotation` to learn more about the different functions for updating input rotations to Mach1Decode.
@@ -203,9 +223,11 @@ Please view the section on `setRotation` to learn more about the different funct
 ```cpp
 std::vector<float> decodedGains = mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll);
 ```
+
 ```swift
 let decodedGains: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
 ```
+
 ```javascript
 var decodedGains = m1Decode.decode(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);
 ```
@@ -231,6 +253,7 @@ std::vector<float> decodedGains = mach1Decode.decode(float deviceYaw, float devi
 float decodedGainsFrame [18];
 mach1Decode.decode(float deviceYaw, float devicePitch, float deviceRoll, float *decodedGainsFrame, int bufferSize, int sampleIndex);
 ```
+
 The decode function's purpose is to give you updated gains/volumes for each input audio channel for each frame in order for spatial effect to manifest itself. There are two versions of this function - one for cases when you might not need very low latency or couldn't include C/C++ directly, and another version for C/C++ high performance use.
 
 If using on audio thread, high performance version is recommended if possible.
@@ -246,6 +269,7 @@ for (int i = 0; i < 8; i++) {
     playersRight[i].setVolume(decodedGains[i * 2 + 1] * overallVolume);
 }
 ```
+
 ```swift
 //Send device orientation to mach1Decode object with the preferred algo
 mach1Decode.beginBuffer()
@@ -282,6 +306,7 @@ for (size_t i = 0; i < samples; i++)
 mach1Decode.endBuffer();
 bufferRead += samples;
 ```
+
 Input orientation angles and return the current sample/buffers coefficients
 
 ## Set Rotation
@@ -293,9 +318,11 @@ Use one of these functions to update new rotation values for Mach1Decode, ideall
 ```cpp
 mach1Decode.setRotation(float deviceYawNorm, float devicePitchNorm, float deviceRollNorm);
 ```
+
 ```swift
 mach1Decode.setRotation(Yaw: Float(deviceYawNorm), Pitch: Float(devicePitchNorm), Roll: Float(deviceRollNorm))
 ```
+
 ```javascript
 m1Decode.setRotation(params.decoderRotationYNorm, params.decoderRotationPNorm, params.decoderRotationRNorm);
 ```
@@ -308,9 +335,11 @@ m1Decode.setRotation(params.decoderRotationYNorm, params.decoderRotationPNorm, p
 ```cpp
 mach1Decode.setRotationDegrees(float deviceYawDegrees, float devicePitchDegrees, float deviceRollDegrees);
 ```
+
 ```swift
 mach1Decode.setRotationDegrees(Yaw: Float(deviceYawDegrees), Pitch: Float(devicePitchDegrees), Roll: Float(deviceRollDegrees))
 ```
+
 ```javascript
 m1Decode.setRotationDegrees(params.decoderRotationYDegrees, params.decoderRotationPDegrees, params.decoderRotationRDegrees);
 ```
@@ -323,9 +352,11 @@ m1Decode.setRotationDegrees(params.decoderRotationYDegrees, params.decoderRotati
 ```cpp
 mach1Decode.setRotationRadians(float deviceYawRads, float devicePitchRads, float deviceRollRads);
 ```
+
 ```swift
 mach1Decode.setRotationRadians(Yaw: Float(deviceYawRads), Pitch: Float(devicePitchRads), Roll: Float(deviceRollRads))
 ```
+
 ```javascript
 m1Decode.setRotationRadians(params.decoderRotationYRads, params.decoderRotationPRads, params.decoderRotationRRads);
 ```
@@ -338,9 +369,11 @@ m1Decode.setRotationRadians(params.decoderRotationYRads, params.decoderRotationP
 ```cpp
 mach1Decode.setRotationQuat(float deviceW, float deviceX, float deviceY, float deviceZ);
 ```
+
 ```swift
 mach1Decode.setRotationQuat(W: Float(deviceW), X: Float(deviceX), Y: Float(deviceY), Z: Float(deviceZ))
 ```
+
 ```javascript
 m1Decode.setRotationQuat(params.deviceW, params.deviceX, params.deviceY, params.deviceZ);
 ```
