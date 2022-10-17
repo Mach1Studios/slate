@@ -18,6 +18,11 @@ includes:
   - credit
 
 search: true
+code_clipboard: true
+
+meta:
+  - name: Mach1 Spatial APIs
+    content: Documentation for the Mach1 Spatial APIs
 ---
 
 # Introduction

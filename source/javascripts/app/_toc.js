@@ -3,6 +3,9 @@
 ;(function () {
   'use strict';
 
+  var htmlPattern = /<[^>]*>/g;
+  var loaded = false;
+
   var debounce = function(func, waitTime) {
     var timeout = false;
     return function() {
@@ -35,7 +38,7 @@
       $toc.find(tocLinkSelector).each(function() {
         var targetId = $(this).attr('href');
         if (targetId[0] === "#") {
-          headerHeights[targetId] = $(targetId).offset().top;
+          headerHeights[targetId] = $("#" + $.escapeSelector(targetId.substring(1))).offset().top;
         }
       });
     };
@@ -57,6 +60,12 @@
         }
       }
 
+      // Catch the initial load case
+      if (currentTop == scrollOffset && !loaded) {
+        best = window.location.hash;
+        loaded = true;
+      }
+
       var $best = $toc.find("[href='" + best + "']").first();
       if (!$best.hasClass("active")) {
         // .active is applied to the ToC link we're currently on, and its parent <ul>s selected by tocListSelector
@@ -68,11 +77,15 @@
         $best.siblings(tocListSelector).addClass("active");
         $toc.find(tocListSelector).filter(":not(.active)").slideUp(150);
         $toc.find(tocListSelector).filter(".active").slideDown(150);
-        if (window.history.pushState) {
-          window.history.pushState(null, "", best);
+        if (window.history.replaceState) {
+          window.history.replaceState(null, "", best);
         }
-        // TODO remove classnames
-        document.title = $best.data("title") + " – " + originalTitle;
+        var thisTitle = $best.data("title");
+        if (thisTitle !== undefined && thisTitle.length > 0) {
+          document.title = thisTitle.replace(htmlPattern, "") + " – " + originalTitle;
+        } else {
+          document.title = originalTitle;
+        }
       }
     };
 
