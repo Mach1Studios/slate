@@ -28,6 +28,8 @@ func update() {
     mach1Decode.beginBuffer()
     let decodeArray: [Float]  = mach1Decode.decode(Yaw: Float(deviceYaw), Pitch: Float(devicePitch), Roll: Float(deviceRoll))
     mach1Decode.endBuffer()
+
+    // Apply gainCoeffs to gain/volume of array of audioplayers for custom spatial audio mixer
 }
 ```
 ```javascript
@@ -42,6 +44,8 @@ function update() {
     mach1Decode.beginBuffer();
     var decoded = mach1Decode.decode(params.decoderRotationY, params.decoderRotationP, params.decoderRotationR);
     mach1Decode.endBuffer();
+
+    // Apply gainCoeffs to gain/volume of array of audioplayers for custom spatial audio mixer
 }
 ```
 The Mach1Decode API is designed to be used the following way:

@@ -29,6 +29,7 @@ void update(){
     mtx.unlock();
 }
 ```
+
 ```swift
 func update(decodeArray: [Float], decodeType: Mach1DecodeAlgoType){
     m1Encode.setAzimuth(azimuth: azimuth)
@@ -50,6 +51,7 @@ func update(decodeArray: [Float], decodeType: Mach1DecodeAlgoType){
         players[i].volume = gains[i] * volume
     }
 ```
+
 ```javascript
 let m1Encode = null;
 Mach1EncodeModule().then(function(m1EncodeModule) {     

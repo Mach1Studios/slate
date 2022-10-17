@@ -2,7 +2,7 @@
 title: Mach1 SDK Reference & Documentation
 
 language_tabs:
-  - cpp
+  - cpp: C/C++
   - swift
   - javascript
 
@@ -18,11 +18,13 @@ includes:
   - credit
 
 search: true
-code_clipboard: true
+code_clipboard: false
 
 meta:
-  - name: Mach1 Spatial APIs
+  - name: description
     content: Documentation for the Mach1 Spatial APIs
+  - name: keywords
+    content: Mach1,Mach1Spatial,Spatial,Documentation
 ---
 
 # Introduction
