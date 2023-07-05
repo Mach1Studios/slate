@@ -8,41 +8,41 @@ Rapidly offline render to and from Mach1 formats.
 > Example in command line for converting Mach1Spatial mix to First Order ambisonics: ACNSN3D
 
 ```shell
-m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt ACNSN3D -out-file /path/to/output.wav -out-file-chans 0
+m1-transcode -in-file /path/to/file.wav -in-fmt M1Spatial-8 -out-fmt ACNSN3D -out-file /path/to/output.wav -out-file-chans 0
 ```
 
 > Example in command line for converting 7.1 film mix to Mach1Spatial
 
 ```shell
-m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt SevenOnePT_Cinema -out-fmt Mach1Spatial -out-file /path/to/output.wav
+m1-transcode -in-file /path/to/file.wav -in-fmt 7.1_C -out-fmt Mach1Spatial-8 -out-file /path/to/output.wav
 ```
 
 > Example in command line for converting Mach1Spatial to Mach1HorizonPairs (quad-binaural compliant)
 
 ```shell
-m1-transcode fmtconv -in-file /path/to/file.wav -in-fmt M1Spatial -out-fmt Mach1HorizonPairs -out-file /path/to/output.wav -out-file-chans 2
+m1-transcode -in-file /path/to/file.wav -in-fmt M1Spatial-8 -out-fmt Mach1HorizonPairs -out-file /path/to/output.wav -out-file-chans 2
 ```
 
 ## Suggested Metadata Spec [optional]
 
-> Mach1 Spatial = `mach1spatial-8`
+> Mach1Spatial-8 = `mach1spatial-8`
 
 
-> Mach1 Spatial+ = `mach1spatial-12`
+> Mach1Spatial-12= `mach1spatial-12`
 
 
-> Mach1 Spatial++ = `mach1spatial-16`
+> Mach1Spatial-14 = `mach1spatial-16`
 
 
 > Mach1 StSP = `mach1stsp-2`
 
 
-> Mach1 Horizon = `mach1horizon-4`
+> Mach1Spatial-4 = `mach1horizon-4`
 
 
-> Mach1 Horizon Pairs = `mach1horizon-8`
+> Mach1Horizon Pairs = `mach1horizon-8`
 
-Metadata is not required for decoding any Mach1 VVBP format, and often it is not recommended to rely on auto-detection methods but instead rely on UI/UX for user input upon uploading a Mach1 multichannel audio file for safest handling. This is due to their being several possible 8 channel formats and unless there are proper methods to filter and detect and handle each one, user input will be a safer option. There are many oppurtunities for transcoding or splitting a multichannel audio file all of which could undo metadata or apply false-positive metadata due to the many audio engines not built to handle multichannel solutions safely. 
+Metadata is not required for decoding any Mach1 Spatial VVBP format, and often it is not recommended to rely on auto-detection methods but instead rely on UI/UX for user input upon uploading a Mach1 multichannel audio file for safest handling. This is due to their being several possible 8 channel formats and unless there are proper methods to filter and detect and handle each one, user input will be a safer option. There are many oppurtunities for transcoding or splitting a multichannel audio file all of which could undo metadata or apply false-positive metadata due to the many audio engines not built to handle multichannel solutions safely. 
 
 If autodetection is still required, use the following suggested specifications which will be applied to mixes that run out of M1-Transcoder and soon m1-transcode directly:
 
@@ -65,75 +65,27 @@ ffmpeg (aac output): `-metadata comment='mach1spatial-8'`
 libsndfile (wav output): `outfiles[i].setString(0x05, "mach1spatial-8");`
 
 ## Formats Supported
+The most up to date location for the supported formats are: [Supported Formats List](https://github.com/Mach1Studios/m1-sdk/blob/master/public/Mach1TranscodeConstants.h#L98-L243)
 
-### Mach1 Formats
+### [Mach1 & Vector Based Formats](https://github.com/Mach1Studios/m1-sdk/blob/master/public/Mach1TranscodeVectorFormats.h)
 
- - M1Horizon (Mach1 Horizon / Quad) - L R Ls Rs
- - M1Horizon+S (Mach1 Horizon / Quad) - L R Ls Rs StereoL StereoR
- - M1HorizonPairs (Mach1 Horizon / Quad-Binaural) - FrontPair, LeftPair, RearPair, RightPair
- - M1Spatial (Mach1Spatial) - Upper L R Ls Rs, Lower L R Ls Rs
- - M1Spatial+S (Mach1Spatial) - Upper L R Ls Rs, Lower L R Ls Rs, StereoL StereoR
- - M1SpatialPairs (Mach1Spatial Pairs) - Upper front, left, rear, right, pairs, then lower same
- - M1SpatialFaces - Encoder for mono to cube faces
+### [Surround Formats](https://github.com/Mach1Studios/m1-sdk/blob/master/public/Mach1TranscodeSurroundFormats.h)
 
-### Traditional / Surround Formats
+### [Ambisonic & Spherical Formats](https://github.com/Mach1Studios/m1-sdk/blob/master/public/Mach1TranscodeAmbisonicFormats.h) (special thanks to [VVAudio](https://www.vvaudio.com/))
 
- - Stereo - L & R spatialized
- - Stereo_Cinema - L & R spatialized, forward focus
- - LCR - L & R spatialized with C mono
- - FiveOh - L C R Ls Rs
- - FiveOneFilm (Pro Tools default) - L C R Ls Rs LFE
- - FiveOneFilm_Cinema (Pro Tools default) - L C R Ls Rs LFE, forward focus
- - FiveOneSmpte (SMPTE/ITU for Dolby Digital - L R C LFE Ls Rs
- - FiveOneDts (DTS) - L R Ls Rs C LFE
- - SevenOnePt (Pro Tools default) - L C R Lss Rss Lsr Rsr LFE
- - SevenOnePt_Cinema (Pro Tools default) - L C R Lss Rss Lsr Rsr LFE, forward focus
- - SevenZero_Cinema - L C R Lss Rss Lsr Rsr, forward focus
- - SevenOneSDDS (Sony SDDS) - L Lc C Rc R Ls Rs LFE
- - SevenZeroSDDS (Sony SDDS) - L Lc C Rc R Ls Rs
- - FiveOneTwo - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts
- - FiveZeroTwo - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts
- - FiveOneFour - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts
- - FiveZeroFour - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts
- - SevenOneTwo - L C R Lss Rss Lsr Rsr LFE Lts Rts
- - SevenZeroTwo - L C R Lss Rss Lsr Rsr Lts Rts
- - SevenOneFour - L C R Lss Rss Lsr Rsr LFE FLts FRts BLts BRts
- - SevenZeroFour - L C R Lss Rss Lsr Rsr FLts FRts BLts BRts
- - 16.0 - 16 channel Surround 3D layout
+### [Mic Array Formats](https://github.com/Mach1Studios/m1-sdk/blob/master/public/Mach1TranscodeMicArrayFormats.h)
 
-### ADM Injected Formats
- - DolbyAtmosSevenOneTwo - L R C LFE Lss Rss Lsr Rsr Lts Rts [ADM Metadata]
-
- <aside class="notice">Additional formats available upon request.</aside>
-
-### Ambisonic Formats (special thanks to [VVAudio](https://www.vvaudio.com/))
-
- - ACNSN3D - 1st order B-format, ACN order and SN3D weighting
- - FuMa - 1st order B-format, Furse-Malham order and weighting
- - ACNSN3DO2A - 2nd order B-format, AmbiX ACN order and SN3D weighting
- - FuMaO2A - 2nd order B-format, Furse-Malham order and weighting
- - TBE - Facebook360 Hybrid 2nd order
- - ACNSN3DO3A - 3rd order B-format, AmbiX ACN order and SN3D weighting
- - FuMaO3A - 3rd order B-format, Furse-Malham order and weighting
- - ACNSN3DmaxRE1oa - 1st order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3DmaxRE2oa - 2nd order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3DmaxRE3oa - 3rd order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3DmaxRE4oa - 4th order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3DmaxRE5oa - 5th order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3DmaxRE6oa - 6th order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3DmaxRE7oa - 7th order, Ambix ACN order and SN3D-MaxRE from IEM
- - ACNSN3DYorkBasic1oa - 1st order, Ambix ACN order and SN3D-Basic weighting from York University
- - ACNSN3DYorkmaxRE1oa - 1st order, Ambix ACN order and SN3D-MaxRE weighting from York University
+<aside class="notice">Additional formats available upon request.</aside>
 
 ### Custom Format/Configuration
 
 ```shell
-./m1-transcode fmtconv -in-file /path/to/16channel.wav -in-fmt TTPoints -in-json /path/to/16ChannelDescription.json -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial -out-file-chans 0
+./m1-transcode -in-file /path/to/16channel.wav -in-fmt CustomPoints -in-json /path/to/16ChannelDescription.json -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial-8 -out-file-chans 0
 ```
 
 Input JSON description of the surround/spatial soundfield setup per your design and input it with the `-in-json` arguement for any custom input or output transcoding.
 
-To use this set the `-in-fmt` or `-out-fmt` as `TTPoints`
+To use this set the `-in-fmt` or `-out-fmt` as `CustomPoints`
 
 ## Additional Features
 
@@ -142,7 +94,7 @@ To use this set the `-in-fmt` or `-out-fmt` as `TTPoints`
 > Example of low pass filtering every channel but the Front-Right of the Mach1 Spatial mix and outputting it to stereo.
 
 ```shell
-./m1-transcode fmtconv -in-file /path/to/input-m1spatial.wav -in-fmt M1Spatial -out-file /path/to/output-stereo.wav -lfe-sub 0,2,3,4,6,7 -out-fmt Stereo -out-file-chans 0
+./m1-transcode -in-file /path/to/input-m1spatial.wav -in-fmt M1Spatial-8 -out-file /path/to/output-stereo.wav -lfe-sub 0,2,3,4,6,7 -out-fmt Stereo -out-file-chans 0
 ```
 
 Use `-lfe-sub` arguement to indicate which input channels you want to apply a Low Pass Filter to, the arguement exapects a list of ints with commas to separate them.
@@ -150,7 +102,7 @@ Use `-lfe-sub` arguement to indicate which input channels you want to apply a Lo
 ### Spatial Downmixer
 
 ```shell
-./m1-transcode fmtconv -in-file /path/to/input-fiveOne.wav -in-fmt FiveOneFilm_Cinema -spatial-downmixer 0.9 -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial -out-file-chans 0
+./m1-transcode -in-file /path/to/input-fiveOne.wav -in-fmt 5.1_C -spatial-downmixer 0.9 -out-file /path/to/output-m1spatial.wav -out-fmt M1Spatial-8 -out-file-chans 0
 ```
 
 For scaling audio outputting to streaming use cases of Mach1Decode and use cases using the Mach1 Spatial output from Mach1Transcode we have included a way to compare the top vs. bottom of the input soundfield, if the difference is less than the set threshold (float) output format will be Mach1 Horizon. This is to allow soundfields that do not have much of a top vs bottom difference to output to a lesser channel Mach1 Horizon format to save on filesize while streaming.
@@ -160,7 +112,7 @@ For scaling audio outputting to streaming use cases of Mach1Decode and use cases
 ### Metadata Extractor
 
 ```shell
-./m1-transcode fmtconv -in-file /path/to/input-ADM.wav -in-fmt SevenOneFour -out-file /path/to/output.wav -extract-metadata -out-fmt M1Spatial -out-file-chans 0
+./m1-transcode -in-file /path/to/input-ADM.wav -in-fmt 7.1.4_C_SIM -out-file /path/to/output.wav -extract-metadata -out-fmt M1Spatial-8 -out-file-chans 0
 ```
 
 An ADM metadata reader and parser is embedded into m1-transcode binary executable to help with custom pipelines using Mach1Encode API to render Object Audio Soundfields into Mach1 Spatial mixes/renders for easier handling. 
@@ -275,20 +227,13 @@ Sets the threshold float for `getSpatialDownmixerPossibility` calculation. The `
 
 Applys a low pass filter (LPF) to each indicated channel index of the input format and soundfield. Input vector of ints representing the index of input channels to be processed.
 
-## Set Input as JSON
-
-Sets the input format for transcoding from TT directly. View the JSON spec for describing a format here: https://dev.mach1.tech/#json-descriptions.
-
-## Set Input as TT Points
+## Set Input as Custom Points
 
 Sets the input format for transcoding from an external JSON source. View the JSON spec for describing a format here: https://dev.mach1.tech/#json-descriptions.
 
 ## Set Input as ADM
 
 Sets the input format for transcoding from the parsed ADM metadata within the audiofile.
-
-## Process Normalization
-
 
 ## Process Master Gain
 

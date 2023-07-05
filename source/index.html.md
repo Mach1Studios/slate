@@ -92,3 +92,51 @@ _Common use: Mach1Encode API_
   -  Roll[2]+ = tilt right [Range: -90->90]
   -  Roll[2]- = tilt left [Range: -90->90]
 _The orientation convention is based on the first person perspective point of view to make interfacing as easy to interpret as possible._
+
+# JSON Descriptions
+When utilizing the `CustomPoints` formats for the Mach1Transcode API for either the input or output format description you can describe the custom format via JSON using the following syntax and example:
+
+### Concept
+Each input channel is described as a "point", this can be described either spherically via `usePolar` or via cartesian coordinates either of which should match the descriptions outlined in [Mach1 Internal Angle Standard](#mach1-internal-angle-standard).
+
+#### Advanced
+  - [IN DEVELOPMENT] `gain` descriptions can be added for further custom normalization schemes.
+
+### Point Description
+
+#### Using Cartesian
+  - `x` with values between -1.0 and 1.0
+  - `y` with values between -1.0 and 1.0
+  - `z` with values between -1.0 and 1.0
+#### Using Polar / Spherical (in degrees)
+  - `azimuth` with values between -180.0 and 180.0 _(conversions to radians happen internally)_
+  - `elevation` with values between -180.0 and 180.0 _(conversions to radians happen internally)_
+  - `diverge` with values between -1.0 and 1.0
+
+  - `name` a string description of the channel or point
+  - `usePolar` a boolean description of skipping cartesian input of the point, expected as `0`/`1` or `false`/`true` _(REQUIRED FOR POLAR/SPHERICAL DESCRIPTIONS OF EACH POINT)_
+  
+### Example
+The following is a 2 channel example description
+```
+ {
+    "points": [
+        {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "usePolar": true,
+            "azimuth": -45.0,
+            "elevation": 0.0,
+            "diverge": 1.0,
+            "name": "L"
+        },
+        {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 0.0,
+            "name": "R"
+        },
+    ]
+}
+```
