@@ -108,6 +108,7 @@ Each input channel is described as a "point", this can be described either spher
   - `x` with values between -1.0 and 1.0
   - `y` with values between -1.0 and 1.0
   - `z` with values between -1.0 and 1.0
+  
 #### Using Polar / Spherical (in degrees)
   - `azimuth` with values between -180.0 and 180.0 _(conversions to radians happen internally)_
   - `elevation` with values between -180.0 and 180.0 _(conversions to radians happen internally)_
