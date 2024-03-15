@@ -14,7 +14,7 @@ void update(){
     m1Encode.setStereoRotate(sRotation);
     m1Encode.setStereoSpread(sSpread);
     m1Decode.setDecodeAlgoType(Mach1DecodeAlgoSpatial);
-    m1Encode.setPannerMode(Mach1EncodePannerMode::Mach1EncodePannerModeIsotropicLinear);
+    m1Encode.setPannerMode(Mach1EncodePannerModeType::Mach1EncodePannerModeIsotropicLinear);
     m1Encode.setInputMode(Mach1EncodeInputModeType::Mach1EncodeInputModeMono);
     m1Encode.setOutputMode(Mach1EncodeOutputModeType::Mach1EncodeOutputModeM1Spatial_8);
 
@@ -217,13 +217,13 @@ Acts evenly with distribution across azimuth/rotation angles but crossfades betw
 
 ```cpp
 if (pannerMode == 0) {
-    m1Encode.setPannerMode = Mach1EncodePannerMode::Mach1EncodePannerModeIsotropicLinear;
+    m1Encode.setPannerMode = Mach1EncodePannerModeType::Mach1EncodePannerModeIsotropicLinear;
 }
 if (pannerMode == 1) {
-    m1Encode.setPannerMode = Mach1EncodePannerMode::Mach1EncodePannerModeIsotropicEqualPower;
+    m1Encode.setPannerMode = Mach1EncodePannerModeType::Mach1EncodePannerModeIsotropicEqualPower;
 }
 if (pannerMode == 2) {
-    m1Encode.setPannerMode = Mach1EncodePannerMode::Mach1EncodePannerModePeriphonicLinear;
+    m1Encode.setPannerMode = Mach1EncodePannerModeType::Mach1EncodePannerModePeriphonicLinear;
 }
 ```
 
@@ -241,13 +241,13 @@ if (pannerMode == 2) {
 
 ```javascript
 if (params.pannerMode == 0) {
-    m1Encode.setPannerMode(m1Encode.Mach1EncodePannerMode.Mach1EncodePannerModeIsotropicLinear);
+    m1Encode.setPannerMode(m1Encode.Mach1EncodePannerModeType.Mach1EncodePannerModeIsotropicLinear);
 }
 if (params.pannerMode == 1) {
-    m1Encode.setPannerMode(m1Encode.Mach1EncodePannerMode.Mach1EncodePannerModeIsotropicEqualPower);
+    m1Encode.setPannerMode(m1Encode.Mach1EncodePannerModeType.Mach1EncodePannerModeIsotropicEqualPower);
 }
 if (params.pannerMode == 2) {
-    m1Encode.setPannerMode(m1Encode.Mach1EncodePannerMode.Mach1EncodePannerModePeriphonicLinear);
+    m1Encode.setPannerMode(m1Encode.Mach1EncodePannerModeType.Mach1EncodePannerModePeriphonicLinear);
 }
 ``` -->
 
